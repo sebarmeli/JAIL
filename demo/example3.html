@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>jQuery Asynch Image Loader - Example 1</title>
+		<link href="css/style.css" rel="stylesheets" />
+		<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
+		<script type="text/javascript" src="../JqueryAsynchImageLoader.js"></script>
+        <script type="text/javascript">
+            					$(function(){
+									$('img.lazy').each(function(i){
+										 $(this).asynchImageLoader({
+							                	event: 'click', 
+							                	placeholder : 'img/loader.gif',
+							                	effect: 'fadeIn',
+							                	speed : '500'
+							             });
+									 });
+								});
+        </script>
+		<style>
+			.clickable {list-style:none;}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="content">
+					<p>Images loaded after you click on the loader</p>
+					<ul>
+						<li class="clickable">
+							<img class="lazy" name="img/sample1_th.jpg" src="img/blank.gif"/>
+							<noscript>
+							 	<img class="lazy" src="img/sample1_th.jpg"  width="200" height="150"/>
+							</noscript>
+						</li>
+						<li class="clickable">
+							<img class="lazy" name="img/sample2_th.jpg" src="img/blank.gif"/>
+							<noscript>
+							 	<img class="lazy" src="img/sample2_th.jpg"  width="200" height="150"/>
+							</noscript>
+						</li>
+						<li class="clickable">
+							<img class="lazy" name="img/sample3_th.jpg" src="img/blank.gif"/>
+							<noscript>
+							 	<img class="lazy" src="img/sample3_th.jpg"  width="200" height="150"/>
+							</noscript>
+						</li>
+						<li class="clickable">
+							<img class="lazy" name="img/sample5_th.jpg" src="img/blank.gif"/>
+							<noscript>
+								 <img class="lazy" src="img/sample5_th.jpg"  width="200" height="150"/>	
+							</noscript>
+						</li>
+					</ul>
+			</div>
+		</div>
+	</body>
+</html>
+
+ 
