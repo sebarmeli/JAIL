@@ -31,7 +31,8 @@
 /* JAIL helps loading images asynchronously and it can be used to make your page load faster.
 * Selected images will be downloaded after the document is ready not blocking the page 
 * to render other elements. Images can be loaded after an event is triggered (like clicking 
-* on a link, mouseovering on some elements, scrolling up/down) or after some delay.
+* on a link, mouseovering on some elements, scrolling up/down) or after some delay or simply the 
+* visible images will be loaded.
 *
 * First of all, this plugin requires you to make some HTML changes. 
 * E.g. 
@@ -56,7 +57,7 @@
 * - effect : effect that makes the images display (Eg "fadein") - Default: "show"
 * - speed : in case of fading in an image, you can set the speed - Default: 400
 * - selector : selector that you need to bind the trigger event - Default: ""
-* - event : event that triggers the image to load - Default: "load"
+* - event : event that triggers the image to load - Default: "load". You can choose "click", "mouseover", "scroll"
 * - callback : function that will be called after the images are loaded	- Default: ""
 * - placeholder: location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
 *
