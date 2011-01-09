@@ -97,7 +97,7 @@
 		// Event spupported at the moment are : click, mouseover, scroll.
 		// When the event is not specified the images will be loaded with a delay
         switch (options.event) {
-            case 'click' :
+			case 'click' :
 				$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
                 break;
 	        case 'mouseover' : 
