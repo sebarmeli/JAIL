@@ -74,8 +74,9 @@
 /*globals window,jQuery,setTimeout */
 (function($){
 	
-	$.fn.asynchImageLoader = function(options) {
-		// Configuration
+    $.fn.asynchImageLoader = function(options) {
+        
+        // Configuration
         options = $.extend({
                 timeout : 10,
                 effect : 'fadein',
@@ -89,25 +90,25 @@
         var images = this;
         
         if (options.placeholder !== false) {
-			images.each(function(){
-			    $(this).attr("src", options.placeholder);
-			});
+	    images.each(function(){
+	        $(this).attr("src", options.placeholder);
+	    });
         }
 
-		// Event spupported at the moment are : click, mouseover, scroll.
-		// When the event is not specified the images will be loaded with a delay
+	// Event spupported at the moment are : click, mouseover, scroll.
+	// When the event is not specified the images will be loaded with a delay
         switch (options.event) {
-			case 'click' :
-				$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
+	    case 'click' :
+		$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
                 break;
-	        case 'mouseover' : 
-				$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
-	            break;
-	        case 'scroll' :
-				$.asynchImageLoader.onScroll.apply(this, Array.prototype.slice.call(arguments));
-				break;
-	        default:
-				$.asynchImageLoader.later.apply(this, [options]);
+	    case 'mouseover' : 
+		$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
+	        break;
+	    case 'scroll' :
+	        $.asynchImageLoader.onScroll.apply(this, Array.prototype.slice.call(arguments));
+		break;
+	    default:
+		$.asynchImageLoader.later.apply(this, [options]);
 	    }
 
         return images.each(function () {
@@ -115,122 +116,122 @@
         });
     };
  
-	// Methods cointaing the logic
-	$.asynchImageLoader = {
+    // Methods cointaing the logic
+    $.asynchImageLoader = {
 			
-			// Images loaded triggered by en event
-			onEvent : function(options) {
-				var images = $(this);
+	// Images loaded triggered by en event
+	onEvent : function(options) {
+	    var images = $(this);
 							
-				// Check that "selector" parameter has passed
-				if ($(options.selector).length === 0) {
+	    // Check that "selector" parameter has passed
+	    if ($(options.selector).length === 0) {
 					
-					// Bind the event to the images
-					$(images).bind(options.event, function(e){
+		// Bind the event to the images
+		$(images).bind(options.event, function(e){
 						
-						// Load images
-						if ($.data(this, "loaded") !== "true") {
-							$.asynchImageLoader._loadImage(options, this);
-						}
+		    // Load images
+		    if ($.data(this, "loaded") !== "true") {
+			$.asynchImageLoader._loadImage(options, this);
+		    }
 						
-						if (!options.callback) {
-							return false;
-						}
+		    if (!options.callback) {
+			return false;
+		    }
 						
-						// Callback called in case it's been specified
-						return options.callback.call(this, options);
-					});
+		    // Callback called in case it's been specified
+		    return options.callback.call(this, options);
+		});
 					
-				} else {
+	    } else {
 				    
-				    // Bind the event to the selector specified in the config obj
-				    $(options.selector).bind(options.event, function(e){
+		// Bind the event to the selector specified in the config obj
+		$(options.selector).bind(options.event, function(e){
 						
-						// Each image is loaded when the event is triggered
-						$(images).each(function(){
+		    // Each image is loaded when the event is triggered
+		    $(images).each(function(){
 								
-							// Check that the image hasn't been loaded before
-							if ($.data(this, "loaded") !== "true") {
-								$.asynchImageLoader._loadImage(options, this);
+			// Check that the image hasn't been loaded before
+			if ($.data(this, "loaded") !== "true") {
+			    $.asynchImageLoader._loadImage(options, this);
 							}
-		                });
+		        });
 		
-		                if (!options.callback) {
-							return false;
-						}
-						
-						// Callback called in case it's been specified
-		                return options.callback.call(this, options, images);
-		            });
-				}
-	        },
-	        
-	        // Images loaded triggered with some delay
-	        later : function(options) {
-				var images = $(this);
-					
-				setTimeout(function() {
-					
-					// Images visible loaded onload
-					images.each(function(){
-						$.asynchImageLoader._checkTheImageInTheScreen(options, this);
-					});
-					
-					$(window).bind("scroll", function() {
-						images.each(function(){
-							if ($.data(this, "loaded") !== "true") {
-								$.asynchImageLoader._checkTheImageInTheScreen(options, this);
-							}
-						});
-					});
-				}, options.timeout);
-						
-				
-	        },
-	        
-			// Images loaded after the user scolls up/down
-			onScroll : function(options) {
-			
-				var images = $(this);
-			
-				// Load the images on  ce the user scolls up/down
-				$(window).bind("scroll", function() {
-					images.each(function(){
-						$.asynchImageLoader._checkTheImageInTheScreen(options, this);
-					});
-				});
-			},
-	
-			// Function that checks if the images have been loaded
-			_checkTheImageInTheScreen : function(options, image){	
-				
-					if ($.data(image, "loaded") === "true") {
-						return;
-					}
-					
-					if ($.asynchImageLoader._isInTheScreen(window, image)) {
-						$.asynchImageLoader._loadImage(options, image);
-					}
-			},
-	        
-			// Function that returns true if the image is visible inside the "window"
-			_isInTheScreen : function(windowEl, image) {
-				return ($(windowEl).scrollTop() <= $(image).offset().top) &&
-					(($(windowEl).scrollTop() + $(windowEl).height()) >= ($(image).offset().top) &&
-						($(windowEl).scrollLeft() <= $(image).offset().left) &&
-							(($(windowEl).scrollLeft() + $(windowEl).width()) >= $(image).offset().left));
-			},
-	        
-			// Main function --> Load the images copying the "name" attribute into the "src" attribute
-			_loadImage : function(options, image) {
-				
-				if (options.effect.match('/fadein/ig')) {
-				    $(image).attr("src", $(image).attr("name")).fadeIn(options.speed);
-				    $.data(image, "loaded","true");
-				} else {
-					$(image).attr("src", $(image).attr("name")).show();
-				    $.data(image, "loaded","true");
-				}
+		        if (!options.callback) {
+			    return false;
 			}
-		};
+						
+			// Callback called in case it's been specified
+		        return options.callback.call(this, options, images);
+		    });
+		}
+	    },
+	        
+	    // Images loaded triggered with some delay
+	    later : function(options) {
+		var images = $(this);
+					
+	        setTimeout(function() {
+					
+		    // Images visible loaded onload
+		    images.each(function(){
+			$.asynchImageLoader._checkTheImageInTheScreen(options, this);
+		    });
+					
+		    $(window).bind("scroll", function() {
+			images.each(function(){
+		            if ($.data(this, "loaded") !== "true") {
+				$.asynchImageLoader._checkTheImageInTheScreen(options, this);
+                            }
+			});
+	            });
+		}, options.timeout);
+						
+				
+	    },
+	        
+	    // Images loaded after the user scolls up/down
+	    onScroll : function(options) {
+			
+		var images = $(this);
+			
+		// Load the images on  ce the user scolls up/down
+		$(window).bind("scroll", function() {
+		    images.each(function(){
+			$.asynchImageLoader._checkTheImageInTheScreen(options, this);
+		    });
+		});
+	    },
+	
+	    // Function that checks if the images have been loaded
+	    _checkTheImageInTheScreen : function(options, image){	
+				
+		if ($.data(image, "loaded") === "true") {
+		    return;
+		}
+					
+		if ($.asynchImageLoader._isInTheScreen(window, image)) {
+		    $.asynchImageLoader._loadImage(options, image);
+		}
+	    },
+	        
+	    // Function that returns true if the image is visible inside the "window"
+	    _isInTheScreen : function(windowEl, image) {
+		return ($(windowEl).scrollTop() <= $(image).offset().top) &&
+		    (($(windowEl).scrollTop() + $(windowEl).height()) >= ($(image).offset().top) &&
+			($(windowEl).scrollLeft() <= $(image).offset().left) &&
+			    (($(windowEl).scrollLeft() + $(windowEl).width()) >= $(image).offset().left));
+		},
+	        
+	    // Main function --> Load the images copying the "name" attribute into the "src" attribute
+	    _loadImage : function(options, image) {
+				
+                if (options.effect.match('/fadein/ig')) {
+		    $(image).attr("src", $(image).attr("name")).fadeIn(options.speed);
+		    $.data(image, "loaded","true");
+		} else {
+		    $(image).attr("src", $(image).attr("name")).show();
+		$.data(image, "loaded","true");
+                }
+	    }
+    };
 }(jQuery));
