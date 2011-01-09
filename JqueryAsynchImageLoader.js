@@ -85,10 +85,10 @@
                 callback : false ,
                 placeholder : false
         }, options);
-		
-		var images = this;
-		
-		if (options.placeholder !== false) {
+        
+        var images = this;
+        
+        if (options.placeholder !== false) {
 			images.each(function(){
 			    $(this).attr("src", options.placeholder);
 			});
