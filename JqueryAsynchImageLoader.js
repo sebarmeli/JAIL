@@ -91,7 +91,7 @@
 		if (options.placeholder !== false) {
 			images.each(function(){
 			    $(this).attr("src", options.placeholder);
-            });
+			});
         }
 
 		// Event spupported at the moment are : click, mouseover, scroll.
@@ -111,7 +111,7 @@
 	    }
 
         return images.each(function () {
-          return this;
+            return this;
         });
     };
  
@@ -142,9 +142,9 @@
 					});
 					
 				} else {
-					
-					// Bind the event to the selector specified in the config obj
-                    $(options.selector).bind(options.event, function(e){
+				    
+				    // Bind the event to the selector specified in the config obj
+				    $(options.selector).bind(options.event, function(e){
 						
 						// Each image is loaded when the event is triggered
 						$(images).each(function(){
