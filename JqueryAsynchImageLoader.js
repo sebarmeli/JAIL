@@ -78,7 +78,7 @@
 		// Configuration
         options = $.extend({
                 timeout : 10,
-				effect : 'fadein',
+                effect : 'fadein',
                 speed : 400,
                 selector: "",
                 event : 'load',
@@ -90,14 +90,14 @@
 		
 		if (options.placeholder !== false) {
 			images.each(function(){
-                $(this).attr("src", options.placeholder);
+			    $(this).attr("src", options.placeholder);
             });
         }
 
 		// Event spupported at the moment are : click, mouseover, scroll.
 		// When the event is not specified the images will be loaded with a delay
         switch (options.event) {
-			case 'click' :
+            case 'click' :
 				$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
                 break;
 	        case 'mouseover' : 
