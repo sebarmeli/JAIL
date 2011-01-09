@@ -94,23 +94,12 @@
             });
         }
 
-		// Exclude IMG wrapped by NOSCRIPT
-		images.each(function(index){
-			var parents = $(this).parents();
-			
-			for (var i=0; i< parents.length; i++) {
-				if ($(parents).get(i).tagName.match(/noscript/ig)) {
-					Array.prototype.splice.apply(images, [index,1]);
-				}
-			}
-		});
-		
 		// Event spupported at the moment are : click, mouseover, scroll.
 		// When the event is not specified the images will be loaded with a delay
         switch (options.event) {
 			case 'click' :
 				$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
-	            break;
+                break;
 	        case 'mouseover' : 
 				$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
 	            break;
@@ -151,20 +140,19 @@
 						// Callback called in case it's been specified
 						return options.callback.call(this, options);
 					});
+					
 				} else {
 					
 					// Bind the event to the selector specified in the config obj
-		            $(options.selector).bind(options.event, function(e){
+                    $(options.selector).bind(options.event, function(e){
 						
 						// Each image is loaded when the event is triggered
 						$(images).each(function(){
-							if (!($(this).parent().get(0).tagName.match(/noscript/ig))) {
 								
-								// Check that the image hasn't been loaded before
-								if ($.data(this, "loaded") !== "true") {
-									$.asynchImageLoader._loadImage(options, this);
-								}
-		                    }
+							// Check that the image hasn't been loaded before
+							if ($.data(this, "loaded") !== "true") {
+								$.asynchImageLoader._loadImage(options, this);
+							}
 		                });
 		
 		                if (!options.callback) {
@@ -237,9 +225,11 @@
 			_loadImage : function(options, image) {
 				
 				if (options.effect.match('/fadein/ig')) {
-					$(image).attr("src", $(image).attr("name")).fadeIn(options.speed);
+				    $(image).attr("src", $(image).attr("name")).fadeIn(options.speed);
+				    $.data(image, "loaded","true");
 				} else {
 					$(image).attr("src", $(image).attr("name")).show();
+				    $.data(image, "loaded","true");
 				}
 			}
 		};
