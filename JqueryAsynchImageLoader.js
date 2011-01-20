@@ -222,7 +222,7 @@
 			    (($(windowEl).scrollLeft() + $(windowEl).width()) >= $(image).offset().left));
 		},
 	        
-	    // Main function --> Load the images copying the "name" attribute into the "src" attribute
+	    // Main function --> Load the images copying the "data-href" attribute into the "src" attribute
 	    _loadImage : function(options, image) {
 				
                 if (options.effect.match('/fadein/ig')) {
@@ -230,7 +230,7 @@
 		    $.data(image, "loaded","true");
 		} else {
 		    $(image).attr("src", $(image).attr("data-href")).show();
-			$.data(image, "loaded","true");
+		$.data(image, "loaded","true");
                 }
 	    }
     };
