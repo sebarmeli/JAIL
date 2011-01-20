@@ -83,7 +83,7 @@
 			speed : 400,
 			selector: null,
 			event : 'load',
-			callback : false ,
+			callback : jQuery.noop,
 			placeholder : false
 		}, options);
 
@@ -115,9 +115,21 @@
 
 		return this;
 	};
- 
+
 	// Methods cointaing the logic
 	$.asynchImageLoader = {
+		_loadOnEvent : function(e) {
+			var $img = $(this),
+			options = e.data.options;
+
+			// Load images
+			if ($img.data("loaded") !== true) {
+				$.asynchImageLoader._loadImage(options, $img);
+				// Image has been loaded so there is no need to listen anymore
+				$img.unbind( options.event, $.asynchImageLoader._loadOnEvent );
+			}
+			return options.callback.call(this, options);
+		},
 
 		// Images loaded triggered by en event
 		onEvent : function(options) {
@@ -129,30 +141,18 @@
 				images.data('container').bind(options.event, function(e){
 					// Each image is loaded when the event is triggered
 					images.filter('[data-href]').each(function(){
+						var $img = $(this)
 						// Check that the image hasn't been loaded before
-						if ($.data(this, "loaded") !== true) {
-							$.asynchImageLoader._loadImage(options, $(this));
+						if ($img.data("loaded") !== true) {
+							$.asynchImageLoader._loadImage(options, $img);
 						}
 					});
-					if (!options.callback) {
-						return false;
-					}
 					// Callback called in case it's been specified
 					return options.callback.call(this, options, images);
 				});
 			} else {
 				// Bind the event to the images
-				images.bind(options.event, function(e){
-					// Load images
-					if ($.data(this, "loaded") !== true) {
-						$.asynchImageLoader._loadImage(options, $(this));
-						if (!options.callback) {
-							return false;
-						}
-					}
-					// Callback called in case it's been specified
-					return options.callback.call(this, options);
-				});
+				images.bind(options.event, { options:options }, $.asynchImageLoader._loadOnEvent);
 			}
 		},
 
@@ -161,7 +161,6 @@
 			var images = this;
 
 			setTimeout(function() {
-
 				// Images visible loaded onload
 				images.filter('[data-href]').each(function(){
 					$.asynchImageLoader._checkTheImageInTheScreen(options, this);
