@@ -4,11 +4,11 @@ JAIL helps loading images asynchronously and it can be used to make your page lo
 
 Selected images will be downloaded after the document is ready not blocking the page to render elements in your page. Images can be loaded after an event is triggered (like clicking on a link, mouseovering on some elements, scrolling up/down) or after some delay.
 
-First of all, this plugin requires you to make some HTML changes. The "name" attribute should contain the location of the image, instead the "src" attribute should contain a really tiny image, like 1 pixel x 1 pixel. Also I'd suggest to add a noscript block so that in case the user doesn't have JS enabled, the images will be displayed (progressive enhancement).
+First of all, this plugin requires you to make some HTML changes. The "data-href" HTML5 data attribute should contain the location of the image, instead the "src" attribute should contain a really tiny image, like 1 pixel x 1 pixel. Also I'd suggest to add a noscript block so that in case the user doesn't have JS enabled, the images will be displayed (progressive enhancement).
 
 <pre>
 	<code>
-		&lt;img class="lazy" src="/img/blank.gif" name="/img/image1.jpg" &gt;
+		&lt;img class="lazy" src="/img/blank.gif" data-href="/img/image1.jpg" &gt;
 		&lt;noscript&gt;
 			&lt;img src="/img/image1.jpg" &gt;
 		&lt;noscript&gt;
@@ -63,4 +63,8 @@ This is another example:
 </pre>
 
 You can view the demos to have a better understanding of how the plugin works 
+
+#Update 20/01/2011:
+
+Version 0.2 released - HTML5 Data-attr used instead of "name" attribute
 
