@@ -73,6 +73,7 @@
 
 /*globals window,jQuery,setTimeout */
 (function($){
+	var $window = $(window);
 	$.fn.asynchImageLoader = function(options) {
 
 		// Configuration
@@ -89,7 +90,7 @@
 		var images = this;
 
 		if (options.placeholder !== false) {
-			images.each(function(){
+			images.filter('[data-href]').each(function(){
 				$(this).attr("src", options.placeholder);
 			});
 		}
@@ -118,16 +119,16 @@
 
 		// Images loaded triggered by en event
 		onEvent : function(options) {
-			var images = $(this);
+			var images = this;
 
 			// Check that "selector" parameter has passed
 			if ($(options.selector).length === 0) {
 
 				// Bind the event to the images
-				$(images).bind(options.event, function(e){
+				images.bind(options.event, function(e){
 					// Load images
-					if ($.data(this, "loaded") !== "true") {
-						$.asynchImageLoader._loadImage(options, this);
+					if ($.data(this, "loaded") !== true) {
+						$.asynchImageLoader._loadImage(options, $(this));
 						if (!options.callback) {
 							return false;
 						}
@@ -139,10 +140,10 @@
 				// Bind the event to the selector specified in the config obj
 				$(options.selector).bind(options.event, function(e){
 					// Each image is loaded when the event is triggered
-					$(images).each(function(){
+					images.filter('[data-href]').each(function(){
 						// Check that the image hasn't been loaded before
-						if ($.data(this, "loaded") !== "true") {
-							$.asynchImageLoader._loadImage(options, this);
+						if ($.data(this, "loaded") !== true) {
+							$.asynchImageLoader._loadImage(options, $(this));
 						}
 					});
 					if (!options.callback) {
@@ -156,18 +157,18 @@
 
 		// Images loaded triggered with some delay
 		later : function(options) {
-			var images = $(this);
+			var images = this;
 
 			setTimeout(function() {
 
 				// Images visible loaded onload
-				images.each(function(){
+				images.filter('[data-href]').each(function(){
 					$.asynchImageLoader._checkTheImageInTheScreen(options, this);
 				});
 
-				$(window).bind("scroll", function() {
-					images.each(function(){
-						if ($.data(this, "loaded") !== "true") {
+				$window.bind("scroll", function() {
+					images.filter('[data-href]').each(function(){
+						if ($.data(this, "loaded") !== true) {
 							$.asynchImageLoader._checkTheImageInTheScreen(options, this);
 						}
 					});
@@ -177,12 +178,11 @@
 
 		// Images loaded after the user scolls up/down
 		onScroll : function(options) {
-
-			var images = $(this);
+			var images = this;
 
 			// Load the images on  ce the user scolls up/down
-			$(window).bind("scroll", function() {
-				images.each(function(){
+			$window.bind("scroll", function() {
+				images.filter('[data-href]').each(function(){
 					$.asynchImageLoader._checkTheImageInTheScreen(options, this);
 				});
 			});
@@ -190,34 +190,33 @@
 
 		// Function that checks if the images have been loaded
 		_checkTheImageInTheScreen : function(options, image){	
-
-			if ($.data(image, "loaded") === "true") {
+			var $img = $(image);
+			if ($img.data("loaded") === true) {
 				return;
 			}
 
-			if ($.asynchImageLoader._isInTheScreen(window, image)) {
-				$.asynchImageLoader._loadImage(options, image);
+			if ($.asynchImageLoader._isInTheScreen( $window, $img)) {
+				$.asynchImageLoader._loadImage(options, $img);
 			}
 		},
 
 		// Function that returns true if the image is visible inside the "window"
-		_isInTheScreen : function(windowEl, image) {
-			return ($(windowEl).scrollTop() <= $(image).offset().top) &&
-				(($(windowEl).scrollTop() + $(windowEl).height()) >= ($(image).offset().top) &&
-					($(windowEl).scrollLeft() <= $(image).offset().left) &&
-						(($(windowEl).scrollLeft() + $(windowEl).width()) >= $(image).offset().left));
+		_isInTheScreen : function(windowEl, $img) {
+			return (windowEl.scrollTop() <= $img.offset().top) &&
+				((windowEl.scrollTop() + windowEl.height()) >= ($img.offset().top) &&
+					(windowEl.scrollLeft() <= $img.offset().left) &&
+						((windowEl.scrollLeft() + windowEl.width()) >= $img.offset().left));
 		},
 
 		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
-		_loadImage : function(options, image) {
-
+		_loadImage : function(options, $img) {
+			$img.attr("src", $img.attr("data-href"))
 			if (options.effect.match('/fadein/ig')) {
-				$(image).attr("src", $(image).attr("data-href")).fadeIn(options.speed);
-				$.data(image, "loaded","true");
+				$img.fadeIn(options.speed);
 			} else {
-				$(image).attr("src", $(image).attr("data-href")).show();
-				$.data(image, "loaded","true");
+				$img.show();
 			}
+			$img.data("loaded",true).removeAttr('data-href');
 		}
 	};
 }(jQuery));

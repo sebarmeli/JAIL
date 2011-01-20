@@ -30,6 +30,8 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 			//wait 10 milliseconds and then run this function
 		    this.wait(function(){
 		   		Y.Assert.areEqual($('img.lazy').attr("src"), "../sample1.jpg");
+					Y.Assert.isTrue( $('img.lazy').data('loaded'));
+					Y.Assert.isUndefined( $('img.lazy').attr('data-href'));
 		    }, 10);
 	    },
 	
