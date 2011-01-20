@@ -56,7 +56,7 @@
 * - timeout : number of msec after that the images will be loaded - Default: 10ms
 * - effect : effect that makes the images display (Eg "fadein") - Default: "show"
 * - speed : in case of fading in an image, you can set the speed - Default: 400
-* - selector : selector that you need to bind the trigger event - Default: ""
+* - selector : selector that you need to bind the trigger event - Default: NULL
 * - event : event that triggers the image to load - Default: "load". You can choose "click", "mouseover", "scroll"
 * - callback : function that will be called after the images are loaded	- Default: ""
 * - placeholder: location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
@@ -81,13 +81,15 @@
 			timeout : 10,
 			effect : 'fadein',
 			speed : 400,
-			selector: "",
+			selector: null,
 			event : 'load',
 			callback : false ,
 			placeholder : false
 		}, options);
 
 		var images = this;
+
+		this.data('container', options.selector ? $(options.selector) : $window);
 
 		if (options.placeholder !== false) {
 			images.filter('[data-href]').each(function(){
@@ -122,23 +124,10 @@
 			var images = this;
 
 			// Check that "selector" parameter has passed
-			if ($(options.selector).length === 0) {
+			if ( options.selector ) {
 
-				// Bind the event to the images
-				images.bind(options.event, function(e){
-					// Load images
-					if ($.data(this, "loaded") !== true) {
-						$.asynchImageLoader._loadImage(options, $(this));
-						if (!options.callback) {
-							return false;
-						}
-					}
-					// Callback called in case it's been specified
-					return options.callback.call(this, options);
-				});
-			} else {
 				// Bind the event to the selector specified in the config obj
-				$(options.selector).bind(options.event, function(e){
+				images.data('container').bind(options.event, function(e){
 					// Each image is loaded when the event is triggered
 					images.filter('[data-href]').each(function(){
 						// Check that the image hasn't been loaded before
@@ -151,6 +140,19 @@
 					}
 					// Callback called in case it's been specified
 					return options.callback.call(this, options, images);
+				});
+			} else {
+				// Bind the event to the images
+				images.bind(options.event, function(e){
+					// Load images
+					if ($.data(this, "loaded") !== true) {
+						$.asynchImageLoader._loadImage(options, $(this));
+						if (!options.callback) {
+							return false;
+						}
+					}
+					// Callback called in case it's been specified
+					return options.callback.call(this, options);
 				});
 			}
 		},
@@ -166,7 +168,7 @@
 					$.asynchImageLoader._checkTheImageInTheScreen(options, this);
 				});
 
-				$window.bind("scroll", function() {
+				images.data('container').bind("scroll", function() {
 					images.filter('[data-href]').each(function(){
 						if ($.data(this, "loaded") !== true) {
 							$.asynchImageLoader._checkTheImageInTheScreen(options, this);
@@ -181,7 +183,7 @@
 			var images = this;
 
 			// Load the images on  ce the user scolls up/down
-			$window.bind("scroll", function() {
+			images.data('container').bind("scroll", function() {
 				images.filter('[data-href]').each(function(){
 					$.asynchImageLoader._checkTheImageInTheScreen(options, this);
 				});
@@ -189,23 +191,31 @@
 		},
 
 		// Function that checks if the images have been loaded
-		_checkTheImageInTheScreen : function(options, image){	
+		_checkTheImageInTheScreen : function(options, image){
 			var $img = $(image);
 			if ($img.data("loaded") === true) {
 				return;
 			}
 
-			if ($.asynchImageLoader._isInTheScreen( $window, $img)) {
+			if ($.asynchImageLoader._isInTheScreen( $img.data('container'), $img)) {
 				$.asynchImageLoader._loadImage(options, $img);
 			}
 		},
 
-		// Function that returns true if the image is visible inside the "window"
-		_isInTheScreen : function(windowEl, $img) {
-			return (windowEl.scrollTop() <= $img.offset().top) &&
-				((windowEl.scrollTop() + windowEl.height()) >= ($img.offset().top) &&
-					(windowEl.scrollLeft() <= $img.offset().left) &&
-						((windowEl.scrollLeft() + windowEl.width()) >= $img.offset().left));
+		// Function that returns true if the image is visible inside the "window" (or specified container element)
+		_isInTheScreen : function($ct, $img) {
+			var	is_ct_window  = $ct[0] == window,
+					ct_offset  = $ct.offset() || { top:0, left:0 },
+					ct_top     = ct_offset.top + ( is_ct_window ? $ct.scrollTop() : 0),
+					ct_left    = ct_offset.left + ( is_ct_window ? $ct.scrollLeft() : 0),
+					ct_right   = ct_left + $ct.width(),
+					ct_bottom  = ct_top + $ct.height(),
+					img_offset = $img.offset();
+
+			return ct_top <= img_offset.top &&
+						ct_bottom >= img_offset.top &&
+							ct_left <= img_offset.left &&
+								ct_right >= img_offset.left;
 		},
 
 		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
