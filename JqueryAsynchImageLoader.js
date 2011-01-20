@@ -36,7 +36,7 @@
 *
 * First of all, this plugin requires you to make some HTML changes. 
 * E.g. 
-*	<img class="lazy" src="/img/blank.gif" name="/img/image1.jpg" width="x" height="y"/>
+*	<img class="lazy" src="/img/blank.gif" data-href="/img/image1.jpg" width="x" height="y"/>
 *
 * You can define a noscript block in order to respect the principles of progressive
 * enhancemnt
@@ -64,10 +64,10 @@
 *
 * Tested with jQuery 1.3.2+ on FF 2/3, Opera 10+, Safari 4+, Chrome on Mac and IE 6/7/8 on Win.
 *
-* @link http://github.com/sebarmeli/...
+* @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
 * @date 24/12/2010
-* @version 0.1 
+* @version 0.2
 *
 */
 
@@ -210,14 +210,14 @@
 						(($(windowEl).scrollLeft() + $(windowEl).width()) >= $(image).offset().left));
 		},
 
-		// Main function --> Load the images copying the "name" attribute into the "src" attribute
+		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
 		_loadImage : function(options, image) {
 
 			if (options.effect.match('/fadein/ig')) {
-				$(image).attr("src", $(image).attr("name")).fadeIn(options.speed);
+				$(image).attr("src", $(image).attr("data-href")).fadeIn(options.speed);
 				$.data(image, "loaded","true");
 			} else {
-				$(image).attr("src", $(image).attr("name")).show();
+				$(image).attr("src", $(image).attr("data-href")).show();
 				$.data(image, "loaded","true");
 			}
 		}

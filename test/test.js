@@ -7,7 +7,7 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 	    name: "TestCase Images loaded after timeout",
 	
 		setUp : function() {
-			$('#container').append('<img class="lazy" name="../sample1.jpg" src="../img/blank.jpg" width="200" height="200"/> ');
+			$('#container').append('<img class="lazy" data-href="../sample1.jpg" src="../img/blank.jpg" width="200" height="200"/> ');
 		},
 		
 		tearDown : function() {
@@ -53,8 +53,8 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 	    name: "TestCase Images loaded after a click",
 	
 		setUp : function() {
-			$('#container').append('<a class="link">Link</a><img id="img1" class="lazy" name="img1.jpg" src="blank.jpg" /><img class="lazy" name="img2.jpg" src="blank.jpg" /> ');
-			$('#container').append('<a class="link2">Link</a><img class="lazy" name="img3.jpg" src="blank.jpg" /><img class="lazy" name="img4.jpg" src="blank.jpg" 	/>');
+			$('#container').append('<a class="link">Link</a><img id="img1" class="lazy" data-href="img1.jpg" src="blank.jpg" /><img class="lazy" data-href="img2.jpg" src="blank.jpg" /> ');
+			$('#container').append('<a class="link2">Link</a><img class="lazy" data-href="img3.jpg" src="blank.jpg" /><img class="lazy" data-href="img4.jpg" src="blank.jpg" 	/>');
 		},
 		
 		tearDown : function() {
@@ -119,8 +119,8 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 	    name: "TestCase Images loaded after mousing over on a div",
 	
 		setUp : function() {
-			$('#container').append('<div id="tool" class="tool"></div><img id="img1" class="lazy" name="img1.jpg" src="blank.jpg" /><img class="lazy" name="img2.jpg" src="blank.jpg" /> ');
-			$('body').append('<div id="wrapper"><div class="container2"><a class="link2">Link</a><img class="lazy" name="img3.jpg" src="blank.jpg" /><img class="lazy" name="img4.jpg" src="blank.jpg" /></div></div>');
+			$('#container').append('<div id="tool" class="tool"></div><img id="img1" class="lazy" data-href="img1.jpg" src="blank.jpg" /><img class="lazy" data-href="img2.jpg" src="blank.jpg" /> ');
+			$('body').append('<div id="wrapper"><div class="container2"><a class="link2">Link</a><img class="lazy" data-href="img3.jpg" src="blank.jpg" /><img class="lazy" data-href="img4.jpg" src="blank.jpg" /></div></div>');
 		},
 		
 		tearDown : function() {
