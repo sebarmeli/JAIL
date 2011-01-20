@@ -54,8 +54,8 @@
 * You can also have different configurations:
 *
 * - timeout : number of msec after that the images will be loaded - Default: 10ms
-* - effect : effect that makes the images display (Eg "fadein") - Default: "show"
-* - speed : in case of fading in an image, you can set the speed - Default: 400
+* - effect : jQuery effect that makes the images display (Eg "fadeIn") - Default: "show"
+* - speed :  string or number determining how long the animation will run  - Default: 400
 * - selector : selector that you need to bind the trigger event - Default: NULL
 * - event : event that triggers the image to load - Default: "load". You can choose "click", "mouseover", "scroll"
 * - callback : function that will be called after the images are loaded	- Default: ""
@@ -79,7 +79,7 @@
 		// Configuration
 		options = $.extend({
 			timeout : 10,
-			effect : 'fadein',
+			effect : 'show',
 			speed : 400,
 			selector: null,
 			event : 'load',
@@ -125,7 +125,6 @@
 
 			// Check that "selector" parameter has passed
 			if ( options.selector ) {
-
 				// Bind the event to the selector specified in the config obj
 				images.data('container').bind(options.event, function(e){
 					// Each image is loaded when the event is triggered
@@ -220,13 +219,11 @@
 
 		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
 		_loadImage : function(options, $img) {
-			$img.attr("src", $img.attr("data-href"))
-			if (options.effect.match('/fadein/ig')) {
-				$img.fadeIn(options.speed);
-			} else {
-				$img.show();
-			}
-			$img.data("loaded",true).removeAttr('data-href');
+			$img
+				.attr("src", $img.attr("data-href"))
+				.data("loaded",true)
+				.removeAttr('data-href');
+			$img[options.effect](options.speed);
 		}
 	};
 }(jQuery));
