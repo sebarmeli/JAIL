@@ -86,9 +86,9 @@
 			placeholder : false
 		}, options);
 
-	        var images = this;
+		var images = this;
 
-	        if (options.placeholder !== false) {
+		if (options.placeholder !== false) {
 			images.each(function(){
 				$(this).attr("src", options.placeholder);
 			});
@@ -99,10 +99,10 @@
 	        switch (options.event) {
 			case 'click' :
 				$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
-	                	break;
+				break;
 			case 'mouseover' : 
 				$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
-		        	break;
+				break;
 			case 'scroll' :
 				$.asynchImageLoader.onScroll.apply(this, Array.prototype.slice.call(arguments));
 				break;
