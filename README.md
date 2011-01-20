@@ -15,12 +15,12 @@ First of all, this plugin requires you to make some HTML changes. The "data-href
 	</code>
 </pre>
 
-In a basic scenario, you just need to import jquery, jquery-asynchImageLoder.js and call the function on the images you want to lazy load. 
+In a basic scenario, you just need to import jquery, jquery-asynchImageLoader.js and call the function on the images you want to lazy load. 
 
 <pre>
 	<code>
 		&lt;script src="/js/jquery.js"&gt;&lt;/script&gt;
-		&lt;script src="/js/jquery-asynchImageLoder.js"&gt;&lt;/script&gt;
+		&lt;script src="/js/jquery-asynchImageLoader.js"&gt;&lt;/script&gt;
 	</code>
 </pre>
 <pre>
