@@ -60,15 +60,15 @@
 * - event : event that triggers the image to load - Default: "load". You can choose "click", "mouseover", "scroll"
 * - callback : function that will be called after the images are loaded	- Default: ""
 * - placeholder : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
-* - delay : number of milliseconds to wait after the trigger event before loading images. Makes scrolling more performant - Default: 500
+* - delay : number of milliseconds to wait after the trigger event before loading images. Makes scrolling more performant - Default: 500 for 'scroll' events, 0 for everything else
 *
 *
 * Tested with jQuery 1.3.2+ on FF 2/3, Opera 10+, Safari 4+, Chrome on Mac and IE 6/7/8 on Win.
 *
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
-* @date 24/12/2010
-* @version 0.2
+* @date 21/1/2011
+* @version 0.3
 *
 */
 
@@ -86,12 +86,16 @@
 			event : 'load',
 			callback : jQuery.noop,
 			placeholder : false,
-			delay : 500
+			delay : 0
 		}, options);
 
-		var images = this;
+		if(options.event == 'scroll') {
+			$.extend({ delay:500 });
+		}
 
-		this.data('container', options.selector ? $(options.selector) : $window);
+		this.data('triggerEl', (options.selector) ? $(options.selector) : $window);
+
+		var images = this;
 
 		if (options.placeholder !== false) {
 			images.filter('[data-href]').each(function(){
@@ -99,20 +103,11 @@
 			});
 		}
 
-		// Event spupported at the moment are : click, mouseover, scroll.
 		// When the event is not specified the images will be loaded with a delay
-		switch (options.event) {
-			case 'click' :
-				$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
-				break;
-			case 'mouseover' : 
-				$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
-				break;
-			case 'scroll' :
-				$.asynchImageLoader.onScroll.apply(this, Array.prototype.slice.call(arguments));
-				break;
-			default:
-				$.asynchImageLoader.later.apply(this, [options]);
+		if(options.event && options.event != 'load') {
+			$.asynchImageLoader.onEvent.call(this, options, images);
+		} else {
+			$.asynchImageLoader.later.call(this, options);
 		}
 
 		return this;
@@ -130,27 +125,28 @@
 				// Image has been loaded so there is no need to listen anymore
 				$img.unbind( options.event, $.asynchImageLoader._loadOnEvent );
 			}
-			return options.callback.call(this, options);
+
+			options.callback.call(this, options);
 		},
 
 		// Images loaded triggered by en event
-		onEvent : function(options) {
-			var images = this;
+		onEvent : function(options, images) {
+			images = images || this;
 
 			// Check that "selector" parameter has passed
 			if ( options.selector ) {
 				// Bind the event to the selector specified in the config obj
-				images.data('container').bind(options.event, function(e){
-					// Each image is loaded when the event is triggered
-					images.filter('[data-href]').each(function(){
-						var $img = $(this)
-						// Check that the image hasn't been loaded before
-						if ($img.data("loaded") !== true) {
-							$.asynchImageLoader._loadImage(options, $img);
-						}
-					});
-					// Callback called in case it's been specified
-					return options.callback.call(this, options, images);
+				var triggerEl = images.data('triggerEl')
+
+				triggerEl.bind(options.event, function _bufferedEventListener() {
+					clearTimeout(images.data('poller'));
+					images.data('poller', setTimeout(function() {
+						images.filter('[data-href]').each(function _imageLoader(){
+							$.asynchImageLoader._loadImageIfVisible(options, this, triggerEl);
+						});
+
+						options.callback.call(this, options, images);
+				  }, options.delay));
 				});
 			} else {
 				// Bind the event to the images
@@ -165,36 +161,24 @@
 			setTimeout(function() {
 				// Images visible loaded onload
 				images.filter('[data-href]').each(function(){
-					$.asynchImageLoader._loadImageIfVisible(options, this);
+					$.asynchImageLoader._loadImageIfVisible(options, this, images.data('triggerEl'));
 				});
 
-				$.asynchImageLoader.onScroll( options, images );
+				$.asynchImageLoader.onEvent( options, images );
 
 			}, options.timeout);
 		},
 
-		// Images loaded after the user scolls up/down
-		onScroll : function(options, images) {
-			images = images || this;
-
-			images.data('container').bind("scroll", function() {
-				clearTimeout(images.data('poller'));
-				images.data('poller', setTimeout(function() {
-					images.filter('[data-href]').each(function(){
-						$.asynchImageLoader._loadImageIfVisible(options, this);
-					});
-			  }, options.delay));
-			});
-		},
-
 		// Function that checks if the images have been loaded
-		_loadImageIfVisible : function(options, image){
-			var $img = $(image);
+		_loadImageIfVisible : function(options, image, triggerEl) {
+			var $img = $(image),
+			container = (options.event == 'scroll' ? triggerEl : $window);
+
 			if ($img.data("loaded") === true) {
 				return;
 			}
 
-			if ($.asynchImageLoader._isInTheScreen( $img.data('container'), $img)) {
+			if ($.asynchImageLoader._isInTheScreen( container, $img)) {
 				$.asynchImageLoader._loadImage(options, $img);
 			}
 		},
