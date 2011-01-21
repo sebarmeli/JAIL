@@ -54,7 +54,7 @@
 * You can also have different configurations:
 *
 * - timeout : number of msec after that the images will be loaded - Default: 10ms
-* - effect : any jQuery effect that makes the images display (Eg "fadeIn") - Default: "show"
+* - effect : any jQuery effect that makes the images display (e.g. "fadeIn"). If you are loading a large number of images, it is best to NOT use this setting. Effect calls are very expensive - Default: NULL
 * - speed :  string or number determining how long the animation will run  - Default: 400
 * - selector : selector that you need to bind the trigger event - Default: NULL
 * - event : event that triggers the image to load. You can choose "load", "load+scroll", "click", "mouseover", or "scroll". Default: "load+scroll"
@@ -81,7 +81,7 @@
 		// Configuration
 		options = $.extend({
 			timeout : 10,
-			effect : 'show',
+			effect : false,
 			speed : 400,
 			selector: null,
 			event : 'load+scroll',
@@ -194,13 +194,15 @@
 
 			// After [timeout] has elapsed, load the remaining images if they are visible OR (if no event is specified)
 			setTimeout(function() {
-				images.each(function(){
-					if(options.event == 'load') {
+				if(options.event == 'load') {
+					images.each(function(){
 						$.asynchImageLoader._loadImage(options, $(this));
-					} else {
+					});
+				} else {
+					images.each(function(){
 						$.asynchImageLoader._loadImageIfVisible(options, this, images.data('triggerEl'));
-					}
-				});
+					});
+				};
 
 				$.asynchImageLoader._purgeStack( images );
 
@@ -239,10 +241,11 @@
 
 		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
 		_loadImage : function(options, $img) {
-			$img
-				.attr("src", $img.attr("data-href"))
-				.removeAttr('data-href');
-			$img[options.effect](options.speed);
+			$img.attr("src", $img.attr("data-href"))
+			$img.removeAttr('data-href');
+			if(options.effect) {
+				$img[options.effect](options.speed);
+			}
 		}
 	};
 }(jQuery));
