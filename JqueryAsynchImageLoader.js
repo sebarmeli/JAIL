@@ -95,7 +95,7 @@
 		var images = this;
 
 		if (options.placeholder !== false) {
-			images.filter('[data-href]').each(function(){
+			images.each(function(){
 				$(this).attr("src", options.placeholder);
 			});
 		}
@@ -112,42 +112,71 @@
 
 	// Methods cointaing the logic
 	$.asynchImageLoader = {
+		// Remove any elements that have been loaded from the jQuery stack.
+		// This should speed up subsequent calls by not having to iterate over the loaded elements.
+		_purgeStack : function(stack) {
+			var i = 0;
+
+			while(true) {
+				if(i == stack.length) {
+					break;
+				} else {
+					if(stack[i].getAttribute('data-href')) {
+						i++;
+					} else {
+						stack.splice(i, 1);
+					}
+				}
+			}
+		},
 		_loadOnEvent : function(e) {
 			var $img = $(this),
-			options = e.data.options;
+			options = e.data.options,
+			images = e.data.images;
 
 			// Load images
-			if ($img.data("loaded") !== true) {
-				$.asynchImageLoader._loadImage(options, $img);
-				// Image has been loaded so there is no need to listen anymore
-				$img.unbind( options.event, $.asynchImageLoader._loadOnEvent );
-			}
+			$.asynchImageLoader._loadImage(options, $img);
+			// Image has been loaded so there is no need to listen anymore
+			$img.unbind( options.event, $.asynchImageLoader._loadOnEvent );
 
 			options.callback.call(this, options);
+
+			$.asynchImageLoader._purgeStack( images );
+		},
+
+		_bufferedEventListener : function(e) {
+			var images = e.data.images,
+			options = e.data.options,
+			triggerEl = images.data('triggerEl');
+
+			clearTimeout(images.data('poller'));
+			images.data('poller', setTimeout(function() {
+				images.each(function _imageLoader(){
+					$.asynchImageLoader._loadImageIfVisible(options, this, triggerEl);
+				});
+
+				$.asynchImageLoader._purgeStack( images );
+
+				options.callback.call(this, options, images);
+		  }, options.delay));
 		},
 
 		// Images loaded triggered by en event
 		onEvent : function(options, images) {
 			images = images || this;
 
-			// Check that "selector" parameter has passed
-			if ( options.selector ) {
-				// Bind the event to the selector specified in the config obj
+			if( options.selector ) {
 				var triggerEl = images.data('triggerEl');
-
-				triggerEl.bind(options.event, function _bufferedEventListener() {
-					clearTimeout(images.data('poller'));
-					images.data('poller', setTimeout(function() {
-						images.filter('[data-href]').each(function _imageLoader(){
-							$.asynchImageLoader._loadImageIfVisible(options, this, triggerEl);
-						});
-
-						options.callback.call(this, options, images);
-				  }, options.delay));
-				});
+				if(images.length > 0) {
+					// Bind the event to the selector specified in the config obj
+					triggerEl.bind( options.event, { images:images, options:options }, $.asynchImageLoader._bufferedEventListener );
+				} else {
+					// Bind the event to the selector specified in the config obj since there is nothing left to do
+					triggerEl.unbind( options.event, $.asynchImageLoader._bufferedEventListener );
+				}
 			} else {
 				// Bind the event to the images
-				images.bind(options.event, { options:options }, $.asynchImageLoader._loadOnEvent);
+				images.bind(options.event, { options:options, images:images }, $.asynchImageLoader._loadOnEvent);
 			}
 		},
 
@@ -157,9 +186,11 @@
 
 			setTimeout(function() {
 				// Images visible loaded onload
-				images.filter('[data-href]').each(function(){
+				images.each(function(){
 					$.asynchImageLoader._loadImageIfVisible(options, this, images.data('triggerEl'));
 				});
+
+				$.asynchImageLoader._purgeStack( images );
 
 				options.event = 'scroll';
 
@@ -172,10 +203,6 @@
 		_loadImageIfVisible : function(options, image, triggerEl) {
 			var $img = $(image),
 			container = (options.event == 'scroll' ? triggerEl : $window);
-
-			if ($img.data("loaded") === true) {
-				return;
-			}
 
 			if ($.asynchImageLoader._isInTheScreen( container, $img)) {
 				$.asynchImageLoader._loadImage(options, $img);
@@ -202,7 +229,6 @@
 		_loadImage : function(options, $img) {
 			$img
 				.attr("src", $img.attr("data-href"))
-				.data("loaded",true)
 				.removeAttr('data-href');
 			$img[options.effect](options.speed);
 		}
