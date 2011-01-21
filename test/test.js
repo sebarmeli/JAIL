@@ -17,7 +17,7 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 
 				this.wait(function(){
 					Y.Assert.areEqual($('img.lazy').attr("src"), "../sample1.jpg");
-					Y.Assert.isTrue( $('img.lazy').data('loaded'));
+					Y.Assert.isTrue( $('img.lazy').data('loaded') );
 					Y.Assert.isUndefined( $('img.lazy').attr('data-href'));
 				}, 10);
 			},
@@ -172,4 +172,3 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 	$(window).scrollTop(0);
 	$('body').css('overflow','hidden'); // Prevent the scrolling of the test window to prevent false test failures
 3});
-
