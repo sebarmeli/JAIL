@@ -59,7 +59,8 @@
 * - selector : selector that you need to bind the trigger event - Default: NULL
 * - event : event that triggers the image to load - Default: "load". You can choose "click", "mouseover", "scroll"
 * - callback : function that will be called after the images are loaded	- Default: ""
-* - placeholder: location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
+* - placeholder : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
+* - delay : number of milliseconds to wait after the trigger event before loading images. Makes scrolling more performant - Default: 500
 *
 *
 * Tested with jQuery 1.3.2+ on FF 2/3, Opera 10+, Safari 4+, Chrome on Mac and IE 6/7/8 on Win.
@@ -84,7 +85,8 @@
 			selector: null,
 			event : 'load',
 			callback : jQuery.noop,
-			placeholder : false
+			placeholder : false,
+			delay : 500
 		}, options);
 
 		var images = this;
@@ -163,33 +165,30 @@
 			setTimeout(function() {
 				// Images visible loaded onload
 				images.filter('[data-href]').each(function(){
-					$.asynchImageLoader._checkTheImageInTheScreen(options, this);
+					$.asynchImageLoader._loadImageIfVisible(options, this);
 				});
 
-				images.data('container').bind("scroll", function() {
-					images.filter('[data-href]').each(function(){
-						if ($.data(this, "loaded") !== true) {
-							$.asynchImageLoader._checkTheImageInTheScreen(options, this);
-						}
-					});
-				});
+				$.asynchImageLoader.onScroll( options, images );
+
 			}, options.timeout);
 		},
 
 		// Images loaded after the user scolls up/down
-		onScroll : function(options) {
-			var images = this;
+		onScroll : function(options, images) {
+			images = images || this;
 
-			// Load the images on  ce the user scolls up/down
 			images.data('container').bind("scroll", function() {
-				images.filter('[data-href]').each(function(){
-					$.asynchImageLoader._checkTheImageInTheScreen(options, this);
-				});
+				clearTimeout(images.data('poller'));
+				images.data('poller', setTimeout(function() {
+					images.filter('[data-href]').each(function(){
+						$.asynchImageLoader._loadImageIfVisible(options, this);
+					});
+			  }, options.delay));
 			});
 		},
 
 		// Function that checks if the images have been loaded
-		_checkTheImageInTheScreen : function(options, image){
+		_loadImageIfVisible : function(options, image){
 			var $img = $(image);
 			if ($img.data("loaded") === true) {
 				return;
