@@ -18,7 +18,7 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 				$('img.lazy').asynchImageLoader();
 
 				this.wait(function(){
-					Y.Assert.areEqual($('img.lazy').attr("src"), "../sample1.jpg");
+					Y.Assert.areEqual("../sample1.jpg", $('img.lazy').attr("src"));
 					Y.Assert.isUndefined( $('img.lazy').attr('data-href'));
 				}, 10);
 			},
@@ -27,10 +27,10 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 				// Call to the method with timeout
 				$('img.lazy').asynchImageLoader({timeout : 1000 });
 
-				Y.Assert.areEqual($('img.lazy').attr("src"), "../img/blank.jpg");
+				Y.Assert.areEqual("../img/blank.jpg", $('img.lazy').attr("src"));
 
 				this.wait(function(){
-					Y.Assert.areEqual($('img.lazy').attr("src"), "../sample1.jpg");
+					Y.Assert.areEqual("../sample1.jpg", $('img.lazy').attr("src"));
 				}, 1000);
 			},
 
@@ -67,10 +67,10 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 				Y.one("a.link").simulate("click");
 
 				this.wait(function() {
-					Y.Assert.areEqual($('img.lazy').eq(0).attr("src"), "img1.jpg");
-					Y.Assert.areEqual($('img.lazy').eq(1).attr("src"), "img2.jpg");
-					Y.Assert.areEqual($('img.lazy').eq(2).attr("src"), "img3.jpg");
-					Y.Assert.areEqual($('img.lazy').eq(3).attr("src"), "img4.jpg");
+					Y.Assert.areEqual("img1.jpg", $('img.lazy').eq(0).attr("src"));
+					Y.Assert.areEqual("img2.jpg", $('img.lazy').eq(1).attr("src"));
+					Y.Assert.areEqual("img3.jpg", $('img.lazy').eq(2).attr("src"));
+					Y.Assert.areEqual("img4.jpg", $('img.lazy').eq(3).attr("src"));
 				}, 1);
 			},
 
@@ -79,10 +79,10 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 
 				Y.one("#img1").simulate("click");
 
-				Y.Assert.areEqual($('img.lazy').eq(0).attr("src"), "img1.jpg");
-				Y.Assert.areEqual($('img.lazy').eq(1).attr("src"), "img/loader");
-				Y.Assert.areEqual($('img.lazy').eq(2).attr("src"), "img/loader");
-				Y.Assert.areEqual($('img.lazy').eq(3).attr("src"), "img/loader");
+				Y.Assert.areEqual("img1.jpg", $('img.lazy').eq(0).attr("src"));
+				Y.Assert.areEqual("img/loader", $('img.lazy').eq(1).attr("src"));
+				Y.Assert.areEqual("img/loader", $('img.lazy').eq(2).attr("src"));
+				Y.Assert.areEqual("img/loader", $('img.lazy').eq(3).attr("src"));
 			},
 
 			"test Images loaded after a click on a link and callback associated" : function () {
@@ -93,12 +93,12 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 				Y.one("a.link").simulate("click");
 
 				this.wait(function() {
-					Y.Assert.areEqual($('img.lazy').eq(0).attr("src"), "img1.jpg");
-					Y.Assert.areEqual($('img.lazy').eq(1).attr("src"), "img2.jpg");
-					Y.Assert.areEqual($('img.lazy').eq(2).attr("src"), "img3.jpg");
-					Y.Assert.areEqual($('img.lazy').eq(3).attr("src"), "img4.jpg");
+					Y.Assert.areEqual("img1.jpg", $('img.lazy').eq(0).attr("src"));
+					Y.Assert.areEqual("img2.jpg", $('img.lazy').eq(1).attr("src"));
+					Y.Assert.areEqual("img3.jpg", $('img.lazy').eq(2).attr("src"));
+					Y.Assert.areEqual("img4.jpg", $('img.lazy').eq(3).attr("src"));
 
-					Y.Assert.areEqual(value, "20");
+					Y.Assert.areEqual("20", value);
 				}, 1);
 			}
 		});
@@ -124,10 +124,10 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 				Y.one("#tool").simulate("mouseover");
 
 				this.wait(function() {
-					Y.Assert.areEqual($('img.lazy').eq(0).attr("src"), "img1.jpg");
-					Y.Assert.areEqual($('img.lazy').eq(1).attr("src"), "img2.jpg");
-					Y.Assert.areEqual($('img.lazy').eq(2).attr("src"), "img3.jpg");
-					Y.Assert.areEqual($('img.lazy').eq(3).attr("src"), "img4.jpg");
+					Y.Assert.areEqual("img1.jpg", $('img.lazy').eq(0).attr("src"));
+					Y.Assert.areEqual("img2.jpg", $('img.lazy').eq(1).attr("src"));
+					Y.Assert.areEqual("img3.jpg", $('img.lazy').eq(2).attr("src"));
+					Y.Assert.areEqual("img4.jpg", $('img.lazy').eq(3).attr("src"));
 
 					testCaseMouseOverAsynch.tearDown();
 				}, 1);
@@ -140,10 +140,10 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 
 				Y.one("#img1").simulate("mouseover");
 
-				Y.Assert.areEqual($('img.lazy').eq(0).attr("src"), "img1.jpg");
-				Y.Assert.areEqual($('img.lazy').eq(1).attr("src"), "blank.jpg");
-				Y.Assert.areEqual($('img.lazy').eq(2).attr("src"), "blank.jpg");
-				Y.Assert.areEqual($('img.lazy').eq(3).attr("src"), "blank.jpg");
+				Y.Assert.areEqual("img1.jpg", $('img.lazy').eq(0).attr("src"));
+				Y.Assert.areEqual("blank.jpg", $('img.lazy').eq(1).attr("src"));
+				Y.Assert.areEqual("blank.jpg", $('img.lazy').eq(2).attr("src"));
+				Y.Assert.areEqual("blank.jpg", $('img.lazy').eq(3).attr("src"));
 
 				testCaseMouseOverAsynch.tearDown();
 			},
@@ -155,10 +155,10 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 				Y.one(".tool").simulate("mouseover");
 
 				this.wait(function() {
-					Y.Assert.areEqual($('.container2 img.lazy').eq(0).attr("src"), "img3.jpg");
-					Y.Assert.areEqual($('.container2 img.lazy').eq(1).attr("src"), "img4.jpg");
+					Y.Assert.areEqual("img3.jpg", $('.container2 img.lazy').eq(0).attr("src"));
+					Y.Assert.areEqual("img4.jpg", $('.container2 img.lazy').eq(1).attr("src"));
 
-					Y.Assert.areEqual(value2, "20");
+					Y.Assert.areEqual("20", value2);
 
 					testCaseMouseOverAsynch.tearDown();
 				}, 1);
