@@ -76,6 +76,7 @@
 (function($){
 	var $window = $(window);
 	$.fn.asynchImageLoader = function(options) {
+		options = options || {};
 
 		// Configuration
 		options = $.extend({
@@ -86,12 +87,8 @@
 			event : 'load',
 			callback : jQuery.noop,
 			placeholder : false,
-			delay : 0
+			delay : options.event == 'scroll' ? 500 : 0
 		}, options);
-
-		if(options.event == 'scroll') {
-			$.extend({ delay:500 });
-		}
 
 		this.data('triggerEl', (options.selector) ? $(options.selector) : $window);
 
