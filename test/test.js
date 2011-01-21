@@ -5,7 +5,9 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 		var testCaseAsynch = new Y.Test.Case({
 			name: "TestCase Images loaded after timeout",
 			setUp : function() {
-				$('#container').append('<img class="lazy" data-href="../sample1.jpg" src="../img/blank.jpg" width="200" height="200"/> ');
+				$('#container')
+					.append('<img class="lazy" data-href="../sample1.jpg" src="../img/blank.jpg" width="200" height="200"/> ')
+					.append('<img class="lazy" data-href="../sample2.jpg" src="../img/blank.jpg" width="200" height="200" style="position:absolute; left:-1000px;"/> ')
 			},
 			tearDown : function() {
 				$('.lazy').remove();
@@ -24,12 +26,23 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 			"test Images Loaded Asynchronously with 1 seconds Delay" : function () {
 				// Call to the method with timeout
 				$('img.lazy').asynchImageLoader({timeout : 1000 });
-				
+
 				Y.Assert.areEqual($('img.lazy').attr("src"), "../img/blank.jpg");
 
 				this.wait(function(){
 					Y.Assert.areEqual($('img.lazy').attr("src"), "../sample1.jpg");
 				}, 1000);
+			},
+
+			"Visible images should load immediately and hidden images on a delay" : function () {
+				$('img.lazy').asynchImageLoader({ event:'load', timeout : 1000 });
+
+				Y.Assert.areEqual( "../sample1.jpg", $('img.lazy:first').attr("src") );
+				Y.Assert.areEqual( "../img/blank.jpg", $('img.lazy:last').attr("src") );
+
+				this.wait(function(){
+					Y.Assert.areEqual( "../sample2.jpg", $('img.lazy:last').attr("src") );
+				}, 1001);
 			}
 		});
 	

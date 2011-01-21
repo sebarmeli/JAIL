@@ -57,7 +57,7 @@
 * - effect : any jQuery effect that makes the images display (Eg "fadeIn") - Default: "show"
 * - speed :  string or number determining how long the animation will run  - Default: 400
 * - selector : selector that you need to bind the trigger event - Default: NULL
-* - event : event that triggers the image to load - Default: "load". You can choose "click", "mouseover", "scroll"
+* - event : event that triggers the image to load. You can choose "load", "load+scroll", "click", "mouseover", or "scroll". Default: "load+scroll"
 * - callback : function that will be called after the images are loaded	- Default: ""
 * - placeholder : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
 * - delay : number of milliseconds to wait after the trigger event before loading images. Makes scrolling more performant - Default: 500 for 'scroll' events, 0 for everything else
@@ -84,7 +84,7 @@
 			effect : 'show',
 			speed : 400,
 			selector: null,
-			event : 'load',
+			event : 'load+scroll',
 			callback : jQuery.noop,
 			placeholder : false,
 			delay : options.event == 'scroll' ? 500 : 0
@@ -101,10 +101,10 @@
 		}
 
 		// When the event is not specified the images will be loaded with a delay
-		if(options.event && options.event != 'load') {
-			$.asynchImageLoader.onEvent.call(this, options, images);
-		} else {
+		if(/^load/.test(options.event)) {
 			$.asynchImageLoader.later.call(this, options);
+		} else {
+			$.asynchImageLoader.onEvent.call(this, options, images);
 		}
 
 		return this;
@@ -184,18 +184,30 @@
 		later : function(options) {
 			var images = this;
 
-			setTimeout(function() {
-				// Images visible loaded onload
+			// If the 'load' event is specified, immediately load all the visible images and remove them from the stack
+			if(options.event == 'load') {
 				images.each(function(){
 					$.asynchImageLoader._loadImageIfVisible(options, this, images.data('triggerEl'));
+				});
+			}
+			$.asynchImageLoader._purgeStack( images );
+
+			// After [timeout] has elapsed, load the remaining images if they are visible OR (if no event is specified)
+			setTimeout(function() {
+				images.each(function(){
+					if(options.event == 'load') {
+						$.asynchImageLoader._loadImage(options, $(this));
+					} else {
+						$.asynchImageLoader._loadImageIfVisible(options, this, images.data('triggerEl'));
+					}
 				});
 
 				$.asynchImageLoader._purgeStack( images );
 
-				options.event = 'scroll';
-
-				$.asynchImageLoader.onEvent( options, images );
-
+				if(options.event == 'load+scroll') {
+					options.event = 'scroll';
+					$.asynchImageLoader.onEvent( options, images );
+				}
 			}, options.timeout);
 		},
 
@@ -227,7 +239,7 @@
 
 		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
 		_loadImage : function(options, $img) {
-			$img
+			var x = $img
 				.attr("src", $img.attr("data-href"))
 				.removeAttr('data-href');
 			$img[options.effect](options.speed);

@@ -33,14 +33,14 @@ If you inspect the HTTP requests, you'll see how the images are loaded after the
 
 You can add additional configuration options when you initially call the `asynchImageLoader` function:
 
-* timeout     : number of msec after that the images will be loaded - Default: 10ms
-* effect      : any jQuery effect that makes the images display (Eg "fadeIn") - Default: "show"
-* speed       : string or number determining how long the animation will run  - Default: 400
-* selector    : selector that you need to bind the trigger event - Default: `NULL`
-* event       : event that triggers the image to load - Default: "load"
-* callback    : function that will be called after the images are loaded - Default: ""
-* placeholder : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
-* delay       : number of milliseconds to wait after the trigger event before loading images. Makes scrolling more performant - Default: 500 for 'scroll' events, 0 for everything else
+* `timeout`     : number of msec after that the images will be loaded - Default: `10`
+* `effect`      : any jQuery effect that makes the images display (Eg "fadeIn") - Default: `show`
+* `speed`       : string or number determining how long the animation will run  - Default: `400`
+* `selector`    : selector that you need to bind the trigger event - Default: `NULL`
+* `event`       : event : event that triggers the image to load. You can choose `load`, `load+scroll`, `click`, `mouseover`, or `scroll`. Default: `load+scroll`
+* `callback`    : function that will be called after the images are loaded - Default: ""
+* `placeholder` : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
+* `delay`       : number of milliseconds to wait after the trigger event before loading images. Makes scrolling more performant - Default: 500 for `scroll` events, 0 for everything else
 
 ## More Examples
 
@@ -72,12 +72,14 @@ Here are some examples in order to have a better understanding of how the plugin
 		&lt;script&gt;
 			$(function(){
 				$('img.lazy').asynchImageLoader({
-					selector:'#my_container'
+					selector : '#my_container'
 				});
 			});
 		&lt;/script&gt;
 	</code>
 </pre>
+
+The above example showcases the default `event` behavior (`load+scroll`)
 
 ### Once the `#my_container` element has been scrolled, load the newly visible images
 
@@ -88,6 +90,21 @@ Here are some examples in order to have a better understanding of how the plugin
 				$('img.lazy').asynchImageLoader({
 					selector:'#my_container',
 					event: 'scroll'
+				});
+			});
+		&lt;/script&gt;
+	</code>
+</pre>
+
+### Immediately load the visible images and then, after 1 second has passed, load the hidden images
+
+<pre>
+	<code>
+		&lt;script&gt;
+			$(function(){
+				$('img.lazy').asynchImageLoader({
+					timeout : 1000,
+					event: 'load'
 				});
 			});
 		&lt;/script&gt;
