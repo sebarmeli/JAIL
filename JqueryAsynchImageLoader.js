@@ -68,7 +68,7 @@
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
 * @date 21/1/2011
-* @version 0.3
+* @version 0.4
 *
 */
 

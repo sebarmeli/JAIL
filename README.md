@@ -121,4 +121,4 @@ Version 0.2 released - HTML5 data attribute `data-href` used instead of `name` a
 
 # Update 21/01/2011:
 
-Version 0.3 released - Added ability to detect scroll on containing elements instead of just `window`. Plus, lots of refactoring.
+Version 0.4 released - Added ability to detect scroll on containing elements instead of just `window`. Plus, lots of refactoring.
