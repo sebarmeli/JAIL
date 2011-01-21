@@ -54,7 +54,7 @@
 * You can also have different configurations:
 *
 * - timeout : number of msec after that the images will be loaded - Default: 10ms
-* - effect : jQuery effect that makes the images display (Eg "fadeIn") - Default: "show"
+* - effect : any jQuery effect that makes the images display (Eg "fadeIn") - Default: "show"
 * - speed :  string or number determining how long the animation will run  - Default: 400
 * - selector : selector that you need to bind the trigger event - Default: NULL
 * - event : event that triggers the image to load - Default: "load". You can choose "click", "mouseover", "scroll"

@@ -34,7 +34,7 @@ If you inspect the HTTP requests, you'll see how the images are loaded after the
 You can add additional configuration options when you initially call the `asynchImageLoader` function:
 
 * timeout     : number of msec after that the images will be loaded - Default: 10ms
-* effect      : effect that makes the images display (Eg "fadein") - Default: "show"
+* effect      : any jQuery effect that makes the images display (Eg "fadeIn") - Default: "show"
 * speed       : in case of selecting "fadein" effect, you can set the speed of fading - Default: 400
 * selector    : selector that you need to bind the trigger event - Default: `NULL`
 * event       : event that triggers the image to load - Default: "load"
