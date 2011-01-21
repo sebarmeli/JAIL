@@ -6,7 +6,7 @@
 *
 * Licensed under MIT
 */
-/* Copyright (c) 2010 Sebastiano Armeli-Battana (http://sebarmeli.com)
+/* Copyright (c) 2011 Sebastiano Armeli-Battana (http://sebarmeli.com)
 
 	Permission is hereby granted, free of charge, to any person obtaining
 	a copy of this software and associated documentation files (the
@@ -67,7 +67,7 @@
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
 * @date 24/12/2010
-* @version 0.2 
+* @version 0.3 
 *
 */
 
@@ -168,7 +168,7 @@
 	        
 	    // Images loaded triggered with some delay
 	    later : function(options) {
-		var images = $(this);
+			var images = $(this);
 					
 	        setTimeout(function() {
 					
@@ -176,14 +176,24 @@
 		    images.each(function(){
 			$.asynchImageLoader._checkTheImageInTheScreen(options, this);
 		    });
-					
-		    $(window).bind("scroll", function() {
-			images.each(function(){
-		            if ($.data(this, "loaded") !== "true") {
-				$.asynchImageLoader._checkTheImageInTheScreen(options, this);
-                            }
+		
+			didScroll = false;
+
+			$(window).scroll(function() {
+    			didScroll = true;
 			});
-	            });
+
+			setInterval(function() {
+    			if ( didScroll ) {
+        			didScroll = false;
+        			
+					images.each(function(){
+		            	if ($.data(this, "loaded") !== "true") {
+							$.asynchImageLoader._checkTheImageInTheScreen(options, this);
+                    	}
+					});
+    			}
+			}, 250);
 		}, options.timeout);
 						
 				
@@ -192,15 +202,24 @@
 	    // Images loaded after the user scolls up/down
 	    onScroll : function(options) {
 			
-		var images = $(this);
-			
-		// Load the images on  ce the user scolls up/down
-		$(window).bind("scroll", function() {
-		    images.each(function(){
-			$.asynchImageLoader._checkTheImageInTheScreen(options, this);
-		    });
-		});
-	    },
+			var images = $(this);
+		
+			didScroll = false;
+
+			$(window).scroll(function() {
+    			didScroll = true;
+			});
+
+			setInterval(function() {
+    			if ( didScroll ) {
+        			didScroll = false;
+        			
+					images.each(function(){
+						$.asynchImageLoader._checkTheImageInTheScreen(options, this);
+		    		});
+    			}
+			}, 250);
+		},
 	
 	    // Function that checks if the images have been loaded
 	    _checkTheImageInTheScreen : function(options, image){	
