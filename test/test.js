@@ -86,7 +86,7 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 	
 		"test Image Fades in after a click on the image placeholder" : function () {
 			
-		    $('img.lazy').asynchImageLoader({event: "click", effect : "fadein", placeholder: "img/loader" });
+		    $('img.lazy').asynchImageLoader({event: "click", effect : "fadeIn", placeholder: "img/loader" });
 
 			Y.one("#img1").simulate("click");
 			
