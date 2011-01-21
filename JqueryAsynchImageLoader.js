@@ -184,40 +184,35 @@
 			});
 
 			setInterval(function() {
-    			if ( didScroll ) {
+    			    if ( didScroll ) {
         			didScroll = false;
-        			
-					images.each(function(){
-		            	if ($.data(this, "loaded") !== "true") {
-							$.asynchImageLoader._checkTheImageInTheScreen(options, this);
-                    	}
-					});
-    			}
+        		        images.each(function(){
+		            	     if ($.data(this, "loaded") !== "true") {
+					$.asynchImageLoader._checkTheImageInTheScreen(options, this);
+                    	             }
+			        });
+    			    }
 			}, 250);
 		}, options.timeout);
-						
-				
 	    },
 	        
 	    // Images loaded after the user scolls up/down
 	    onScroll : function(options) {
 			
-			var images = $(this);
-		
+			var images = $(this)
 			didScroll = false;
 
 			$(window).scroll(function() {
-    			didScroll = true;
+    			    didScroll = true;
 			});
 
 			setInterval(function() {
-    			if ( didScroll ) {
+    			    if ( didScroll ) {
         			didScroll = false;
-        			
-					images.each(function(){
-						$.asynchImageLoader._checkTheImageInTheScreen(options, this);
+        		        images.each(function(){
+					$.asynchImageLoader._checkTheImageInTheScreen(options, this);
 		    		});
-    			}
+    		            }
 			}, 250);
 		},
 	
