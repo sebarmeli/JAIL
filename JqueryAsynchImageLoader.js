@@ -133,7 +133,7 @@
 			// Check that "selector" parameter has passed
 			if ( options.selector ) {
 				// Bind the event to the selector specified in the config obj
-				var triggerEl = images.data('triggerEl')
+				var triggerEl = images.data('triggerEl');
 
 				triggerEl.bind(options.event, function _bufferedEventListener() {
 					clearTimeout(images.data('poller'));
@@ -160,6 +160,8 @@
 				images.filter('[data-href]').each(function(){
 					$.asynchImageLoader._loadImageIfVisible(options, this, images.data('triggerEl'));
 				});
+
+				options.event = 'scroll';
 
 				$.asynchImageLoader.onEvent( options, images );
 
