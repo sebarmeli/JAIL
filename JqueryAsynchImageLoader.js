@@ -239,7 +239,7 @@
 
 		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
 		_loadImage : function(options, $img) {
-			var x = $img
+			$img
 				.attr("src", $img.attr("data-href"))
 				.removeAttr('data-href');
 			$img[options.effect](options.speed);
