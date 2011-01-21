@@ -35,7 +35,7 @@ You can add additional configuration options when you initially call the `asynch
 
 * timeout     : number of msec after that the images will be loaded - Default: 10ms
 * effect      : any jQuery effect that makes the images display (Eg "fadeIn") - Default: "show"
-* speed       : in case of selecting "fadein" effect, you can set the speed of fading - Default: 400
+* speed       : string or number determining how long the animation will run  - Default: 400
 * selector    : selector that you need to bind the trigger event - Default: `NULL`
 * event       : event that triggers the image to load - Default: "load"
 * callback    : function that will be called after the images are loaded - Default: ""
