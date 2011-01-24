@@ -165,13 +165,13 @@
 		onEvent : function(options, images) {
 			images = images || this;
 
-			if( options.selector ) {
+			if( options.event == 'scroll' || options.selector ) {
 				var triggerEl = images.data('triggerEl');
 				if(images.length > 0) {
 					// Bind the event to the selector specified in the config obj
 					triggerEl.bind( options.event, { images:images, options:options }, $.asynchImageLoader._bufferedEventListener );
 				} else {
-					// Bind the event to the selector specified in the config obj since there is nothing left to do
+					// Unbind the event to the selector specified in the config obj since there is nothing left to do
 					triggerEl.unbind( options.event, $.asynchImageLoader._bufferedEventListener );
 				}
 			} else {
