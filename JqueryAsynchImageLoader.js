@@ -54,10 +54,10 @@
 * You can also have different configurations:
 *
 * - timeout : number of msec after that the images will be loaded - Default: 10ms
-* - effect : effect that makes the images display (Eg "fadein") - Default: "show"
-* - speed : in case of fading in an image, you can set the speed - Default: 400
-* - selector : selector that you need to bind the trigger event - Default: ""
-* - event : event that triggers the image to load - Default: "load". You can choose "click", "mouseover", "scroll"
+* - effect : any jQuery effect that makes the images display (e.g. "fadeIn"). If you are loading a large number of images, it is best to NOT use this setting. Effect calls are very expensive - Default: NULL
+* - speed :  string or number determining how long the animation will run  - Default: 400
+* - selector : selector that you need to bind the trigger event - Default: NULL
+* - event : event that triggers the image to load. You can choose "load", "load+scroll", "click", "mouseover", or "scroll". Default: "load+scroll"
 * - callback : function that will be called after the images are loaded	- Default: ""
 * - placeholder: location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
 *
@@ -66,191 +66,197 @@
 *
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
-* @date 24/12/2010
-* @version 0.3 
+* @date 26/1/2011
+* @version 0.5 
 *
 */
 
-/*globals window,jQuery,setTimeout */
+/*globals window,jQuery,setTimeout,clearTimeout */
 (function($){
-	
-    $.fn.asynchImageLoader = function(options) {
-        
-        // Configuration
-        options = $.extend({
-                timeout : 10,
-                effect : 'fadein',
-                speed : 400,
-                selector: "",
-                event : 'load',
-                callback : false ,
-                placeholder : false
-        }, options);
-        
-        var images = this;
-        
-        if (options.placeholder !== false) {
-	    images.each(function(){
-	        $(this).attr("src", options.placeholder);
-	    });
-        }
+	var $window = $(window);
 
-	// Event spupported at the moment are : click, mouseover, scroll.
-	// When the event is not specified the images will be loaded with a delay
-        switch (options.event) {
-	    case 'click' :
-		$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
-                break;
-	    case 'mouseover' : 
-		$.asynchImageLoader.onEvent.apply(this, Array.prototype.slice.call(arguments));
-	        break;
-	    case 'scroll' :
-	        $.asynchImageLoader.onScroll.apply(this, Array.prototype.slice.call(arguments));
-		break;
-	    default:
-		$.asynchImageLoader.later.apply(this, [options]);
-	    }
+	$.fn.asynchImageLoader = function(options) {
 
-        return images.each(function () {
-            return this;
-        });
-    };
- 
-    // Methods cointaing the logic
-    $.asynchImageLoader = {
-			
-	// Images loaded triggered by en event
-	onEvent : function(options) {
-	    var images = $(this);
-							
-	    // Check that "selector" parameter has passed
-	    if ($(options.selector).length === 0) {
-					
-		// Bind the event to the images
-		$(images).bind(options.event, function(e){
-						
-		    // Load images
-		    if ($.data(this, "loaded") !== "true") {
-			$.asynchImageLoader._loadImage(options, this);
-		    }
-						
-		    if (!options.callback) {
-			return false;
-		    }
-						
-		    // Callback called in case it's been specified
-		    return options.callback.call(this, options);
-		});
-					
-	    } else {
-				    
-		// Bind the event to the selector specified in the config obj
-		$(options.selector).bind(options.event, function(e){
-						
-		    // Each image is loaded when the event is triggered
-		    $(images).each(function(){
-								
-			// Check that the image hasn't been loaded before
-			if ($.data(this, "loaded") !== "true") {
-			    $.asynchImageLoader._loadImage(options, this);
-							}
-		        });
+		// Configuration
+		options = $.extend({
+			timeout : 10,
+			effect : false,
+			speed : 400,
+			selector: null,
+			event : 'load+scroll',
+			callback : jQuery.noop,
+			placeholder : false
+		}, options);
+
+		var images = this;
+
+		// Store the selector into 'triggerEl' data for the images selected
+		this.data('triggerEl', (options.selector) ? $(options.selector) : $window);
 		
-		        if (!options.callback) {
-			    return false;
-			}
-						
-			// Callback called in case it's been specified
-		        return options.callback.call(this, options, images);
-		    });
-		}
-	    },
-	        
-	    // Images loaded triggered with some delay
-	    later : function(options) {
-			var images = $(this);
-					
-	        setTimeout(function() {
-					
-		    // Images visible loaded onload
-		    images.each(function(){
-			$.asynchImageLoader._checkTheImageInTheScreen(options, this);
-		    });
-		
-			didScroll = false;
-
-			$(window).scroll(function() {
-    			didScroll = true;
+		// Use a placeholder in case it is specified
+		if (options.placeholder !== false) {
+			images.each(function(){
+				$(this).attr("src", options.placeholder);
 			});
-
-			setInterval(function() {
-    			if ( didScroll ) {
-        			didScroll = false;
-        			
-					images.each(function(){
-		            	if ($.data(this, "loaded") !== "true") {
-							$.asynchImageLoader._checkTheImageInTheScreen(options, this);
-                    	}
-					});
-    			}
-			}, 250);
-		}, options.timeout);
-						
-				
-	    },
-	        
-	    // Images loaded after the user scolls up/down
-	    onScroll : function(options) {
-			
-			var images = $(this);
-		
-			didScroll = false;
-
-			$(window).scroll(function() {
-    			didScroll = true;
-			});
-
-			setInterval(function() {
-    			if ( didScroll ) {
-        			didScroll = false;
-        			
-					images.each(function(){
-						$.asynchImageLoader._checkTheImageInTheScreen(options, this);
-		    		});
-    			}
-			}, 250);
-		},
-	
-	    // Function that checks if the images have been loaded
-	    _checkTheImageInTheScreen : function(options, image){	
-				
-		if ($.data(image, "loaded") === "true") {
-		    return;
 		}
-					
-		if ($.asynchImageLoader._isInTheScreen(window, image)) {
-		    $.asynchImageLoader._loadImage(options, image);
-		}
-	    },
-	        
-	    // Function that returns true if the image is visible inside the "window"
-	    _isInTheScreen : function(windowEl, image) {
-		return ($(windowEl).scrollTop() <= $(image).offset().top) &&
-		    (($(windowEl).scrollTop() + $(windowEl).height()) >= ($(image).offset().top) &&
-			($(windowEl).scrollLeft() <= $(image).offset().left) &&
-			    (($(windowEl).scrollLeft() + $(windowEl).width()) >= $(image).offset().left));
-		},
-	        
-	    // Main function --> Load the images copying the "data-href" attribute into the "src" attribute
-	    _loadImage : function(options, image) {
-				
-                if (options.effect.match('/fadein/ig')) {
-		    $(image).attr("src", $(image).attr("data-href")).fadeIn(options.speed);
-		    $.data(image, "loaded","true");
+
+		// When the event is not specified the images will be loaded with a delay
+		if(/^load/.test(options.event)) {
+			$.asynchImageLoader.later.call(this, options);
 		} else {
-		    $(image).attr("src", $(image).attr("data-href")).show();
-		$.data(image, "loaded","true");
-                }
-	    }
-    };
+			$.asynchImageLoader.onEvent.call(this, options, images);
+		}
+
+		return this;
+	};
+
+	// Methods cointaing the logic
+	$.asynchImageLoader = {
+	
+		// Remove any elements that have been loaded from the jQuery stack.
+		// This should speed up subsequent calls by not having to iterate over the loaded elements.
+		_purgeStack : function(stack) {
+			var i = 0;
+
+			while(true) {
+				if(i === stack.length) {
+					break;
+				} else {
+					if(stack[i].getAttribute('data-href')) {
+						i++;
+					} else {
+						stack.splice(i, 1);
+					}
+				}
+			}
+		},
+
+		// Load the image - after the event is triggered on the image itself - no need
+		// to check for visibility
+		_loadOnEvent : function(e) {
+			var $img = $(this),
+			options = e.data.options,
+			images = e.data.images;
+
+			// Load images
+			$.asynchImageLoader._loadImage(options, $img);
+			// Image has been loaded so there is no need to listen anymore
+			$img.unbind( options.event, $.asynchImageLoader._loadOnEvent );
+
+			options.callback.call(this, options);
+
+			$.asynchImageLoader._purgeStack( images );
+		},
+
+		// Load the image - after the event is triggered by a DOM element different
+		// from the images (options.selector value) or the event is "scroll" - 
+		// visibility of the images is checked
+		_bufferedEventListener : function(e) {
+			var images = e.data.images,
+			options = e.data.options,
+			triggerEl = images.data('triggerEl');
+
+			clearTimeout(images.data('poller'));
+			images.data('poller', setTimeout(function() {
+				images.each(function _imageLoader(){
+					$.asynchImageLoader._loadImageIfVisible(options, this, triggerEl);
+				});
+
+				$.asynchImageLoader._purgeStack( images );
+
+				options.callback.call(this, options, images);
+		  }, options.timeout));
+		},
+
+		// Images loaded triggered by en event
+		onEvent : function(options, images) {
+			images = images || this;
+
+			if (options.event === 'scroll' || options.selector) {
+				var triggerEl = images.data('triggerEl');
+				if(images.length > 0) {
+					// Bind the event to the selector specified in the config obj
+					triggerEl.bind( options.event, { images:images, options:options }, $.asynchImageLoader._bufferedEventListener );
+				} else {
+					// Unbind the event to the selector specified in the config obj since there is nothing left to do
+					var initalTriggerEl = (options.selector) ? $(options.selector) : $window;
+					initalTriggerEl.unbind( options.event, $.asynchImageLoader._bufferedEventListener );
+				}
+			} else {
+				// Bind the event to the images
+				images.bind(options.event, { options:options, images:images }, $.asynchImageLoader._loadOnEvent);
+			}
+		},
+
+		// Images loaded triggered with some delay
+		later : function(options) {
+			var images = this;
+
+			// If the 'load' event is specified, immediately load all the visible images and remove them from the stack
+			if (options.event === 'load') {
+				images.each(function(){
+					$.asynchImageLoader._loadImageIfVisible(options, this, images.data('triggerEl'));
+				});
+			}
+			$.asynchImageLoader._purgeStack( images );
+
+			// After [timeout] has elapsed, load the remaining images if they are visible OR (if no event is specified)
+			setTimeout(function() {
+				if (options.event === 'load') {
+					images.each(function(){
+						$.asynchImageLoader._loadImage(options, $(this));
+					});
+				} else {
+					images.each(function(){
+						$.asynchImageLoader._loadImageIfVisible(options, this, images.data('triggerEl'));
+					});
+				}
+
+				$.asynchImageLoader._purgeStack( images );
+
+				if (options.event === 'load+scroll') {
+					options.event = 'scroll';
+					$.asynchImageLoader.onEvent( options, images );
+				}
+			}, options.timeout);
+		},
+
+		// Function that checks if the images have been loaded
+		_loadImageIfVisible : function(options, image, triggerEl) {
+			var $img = $(image),
+			container = (options.event === 'scroll' ? triggerEl : $window);
+
+			if ($.asynchImageLoader._isInTheScreen( container, $img)) {
+				$.asynchImageLoader._loadImage(options, $img);
+			}
+		},
+
+		// Function that returns true if the image is visible inside the "window" (or specified container element)
+		_isInTheScreen : function($ct, $img) {
+			var	is_ct_window  = $ct[0] === window,
+					ct_offset  = $ct.offset() || { top:0, left:0 },
+					ct_top     = ct_offset.top + ( is_ct_window ? $ct.scrollTop() : 0),
+					ct_left    = ct_offset.left + ( is_ct_window ? $ct.scrollLeft() : 0),
+					ct_right   = ct_left + $ct.width(),
+					ct_bottom  = ct_top + $ct.height(),
+					img_offset = $img.offset();
+
+			return ct_top <= img_offset.top &&
+						ct_bottom >= img_offset.top &&
+							ct_left <= img_offset.left &&
+								ct_right >= img_offset.left;
+		},
+
+		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
+		_loadImage : function(options, $img) {
+
+			$img.attr("src", $img.attr("data-href"));
+			$img.removeAttr('data-href');
+
+			// Images loaded with some effect if existing
+			if(options.effect) {
+				$img[options.effect](options.speed);
+			}
+		}
+	};
 }(jQuery));

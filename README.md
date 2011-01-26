@@ -1,10 +1,10 @@
-# JAIL aka Jquery Asynchronous Image Loader
+# jQuery Asynchronous Image Loader (JAIL)
 
 JAIL helps loading images asynchronously and it can be used to make your page load faster. 
 
-Selected images will be downloaded after the document is ready not blocking the page to render elements in your page. Images can be loaded after an event is triggered (like clicking on a link, mouseovering on some elements, scrolling up/down) or after some delay.
+Selected images will be downloaded after the document is ready not blocking the page to render elements in your page. Images can be loaded after an event is triggered (like `click`, `mouseover`, and `scroll`) or after a specified delay.
 
-First of all, this plugin requires you to make some HTML changes. The "data-href" HTML5 data attribute should contain the location of the image, instead the "src" attribute should contain a really tiny image, like 1 pixel x 1 pixel. Also I'd suggest to add a noscript block so that in case the user doesn't have JS enabled, the images will be displayed (progressive enhancement).
+First of all, this plugin requires you to make some HTML changes. The `data-href` HTML5 data attribute should contain the location of the image, instead the `src` attribute should contain a really tiny image, like 1 pixel x 1 pixel. Also, I'd suggest to add a `noscript` block so that in case the user doesn't have Javascript enabled, the images will be displayed (progressive enhancement).
 
 <pre>
 	<code>
@@ -15,16 +15,12 @@ First of all, this plugin requires you to make some HTML changes. The "data-href
 	</code>
 </pre>
 
-In a basic scenario, you just need to import jquery, jquery-asynchImageLoder.js and call the function on the images you want to lazy load. 
+In a basic scenario, you just need to import `jquery`, `jquery-asynchImageLoader.js` and call the function on the images you want to lazy load.
 
 <pre>
 	<code>
 		&lt;script src="/js/jquery.js"&gt;&lt;/script&gt;
-		&lt;script src="/js/jquery-asynchImageLoder.js"&gt;&lt;/script&gt;
-	</code>
-</pre>
-<pre>
-	<code>
+		&lt;script src="/js/jquery-asynchImageLoader.js"&gt;&lt;/script&gt;
 		&lt;script&gt;
 			 $(function(){
 			 	$('img.lazy').asynchImageLoader();
@@ -33,38 +29,99 @@ In a basic scenario, you just need to import jquery, jquery-asynchImageLoder.js 
 	</code>
 </pre>
 
-If you inspect the HTTP Requests you'll see how the images are loaded after the DOM is ready.
+If you inspect the HTTP requests, you'll see how the images are loaded after the DOM is ready.
 
-You can add more configurations when you call the asynchImageLoader function:
-- timeout	 : number of msec after that the images will be loaded  - Default: 10ms
-- effect 	 : effect that makes the images display (Eg "fadein")   - Default: "show"
-- speed  	 : in case of selecting "fadein" effect, you can set the speed of fading.	- Default: 400
-- selector   : selector that you need to bind the trigger event     - Default: ""
-- event 	 : event that triggers the image to load	- Default: "load"
-- callback 	 : function that will be called after the images are loaded		- Default: ""
-- placeholder: location of an image (such a loader) you want to display while waiting for the images to be loaded 	- Default: ""
+You can add additional configuration options when you initially call the `asynchImageLoader` function:
 
-This is another example:
+* `timeout`     : number of msec after that the images will be loaded - Default: `10`
+* `effect`      : any jQuery effect that makes the images display (e.g. "fadeIn") - Default: `NULL`
+
+  **NOTE:** If you are loading a large number of images, it is best to NOT use this setting. Effects calls are very expensive. Even a simple `show()` can have a major impact on the browser's responsiveness.
+
+* `speed`       : string or number determining how long the animation will run  - Default: `400`
+* `selector`    : selector that you need to bind the trigger event - Default: `NULL`
+* `event`       : event : event that triggers the image to load. You can choose `load`, `load+scroll`, `click`, `mouseover`, or `scroll`. Default: `load+scroll`
+* `callback`    : function that will be called after the images are loaded - Default: ""
+* `placeholder` : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
+* `delay`       : number of milliseconds to wait after the trigger event before loading images. Makes scrolling more performant - Default: 500 for `scroll` events, 0 for everything else
+
+## More Examples
+
+Here are some examples in order to have a better understanding of how the plugin works
+
+### Load images on click, fade them in, and execute the `SA.setActive` callback
+
 <pre>
 	<code>
 		&lt;script&gt;
-			 $(function(){
-			 	$('img.lazy').asynchImageLoader({
+			$(function(){
+				$('img.lazy').asynchImageLoader({
 					selector:'a#link',
-                	event: 'click', 
-                	effect: 'fadeIn',
-                	speed : '500',
+					event: 'click',
+					effect: 'fadeIn',
+					speed : '500',
 					placeholder : 'img/loader.gif'
-                	callback : SA.setActive
+					callback : SA.setActive
 				});
-		     });
+			});
 		&lt;/script&gt;
 	</code>
 </pre>
 
-You can view the demos to have a better understanding of how the plugin works 
+### Initially load the visible images within `#my_container`. Then, as `#my_container` is scrolled, load the images that become visible
 
-#Update 20/01/2011:
+<pre>
+	<code>
+		&lt;script&gt;
+			$(function(){
+				$('img.lazy').asynchImageLoader({
+					selector : '#my_container'
+				});
+			});
+		&lt;/script&gt;
+	</code>
+</pre>
 
-Version 0.2 released - HTML5 Data-attr used instead of "name" attribute
+The above example showcases the default `event` behavior (`load+scroll`)
 
+### Once the `#my_container` element has been scrolled, load the newly visible images
+
+<pre>
+	<code>
+		&lt;script&gt;
+			$(function(){
+				$('img.lazy').asynchImageLoader({
+					selector:'#my_container',
+					event: 'scroll'
+				});
+			});
+		&lt;/script&gt;
+	</code>
+</pre>
+
+### Immediately load the visible images and then, after 1 second has passed, load the hidden images
+
+<pre>
+	<code>
+		&lt;script&gt;
+			$(function(){
+				$('img.lazy').asynchImageLoader({
+					timeout : 1000,
+					event: 'load'
+				});
+			});
+		&lt;/script&gt;
+	</code>
+</pre>
+
+## Tests
+
+You can run tests by pointing your web browser at `[location of JAIL]/test/test.html`
+
+# Update 20/01/2011:
+
+Version 0.2 released - HTML5 data attribute `data-href` used instead of `name` attribute
+
+# Update 21/01/2011:
+
+Version 0.4 released - Added ability to detect scroll on containing elements instead of just `window`. Plus, lots of refactoring.
