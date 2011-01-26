@@ -43,7 +43,6 @@ You can add additional configuration options when you initially call the `asynch
 * `event`       : event : event that triggers the image to load. You can choose `load`, `load+scroll`, `click`, `mouseover`, or `scroll`. Default: `load+scroll`
 * `callback`    : function that will be called after the images are loaded - Default: ""
 * `placeholder` : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
-* `delay`       : number of milliseconds to wait after the trigger event before loading images. Makes scrolling more performant - Default: 500 for `scroll` events, 0 for everything else
 
 ## More Examples
 
@@ -124,4 +123,9 @@ Version 0.2 released - HTML5 data attribute `data-href` used instead of `name` a
 
 # Update 21/01/2011:
 
-Version 0.4 released - Added ability to detect scroll on containing elements instead of just `window`. Plus, lots of refactoring.
+Version 0.4 released - Added ability to detect scroll on containing elements instead of just `window`. Plus, lots of refactoring. (Contributor : Derek Lindahl - dlindahl)
+
+# Update 27/01/2011:
+
+Version 0.5 released - 'Delay' configuration removed, critical fix on unbind method, refactoring to pass JSLint without warnings.
+

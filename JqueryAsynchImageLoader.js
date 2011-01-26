@@ -64,11 +64,11 @@
 *
 * Tested with jQuery 1.3.2+ on FF 2/3, Opera 10+, Safari 4+, Chrome on Mac and IE 6/7/8 on Win.
 *
+* Contributor : Derek Lindahl - dlindahl
 *
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
-* @collaborator  Derek Lindahl - dlindahl
-* @date 26/1/2011
+* @date 27/1/2011
 * @version 0.5 
 *
 */
