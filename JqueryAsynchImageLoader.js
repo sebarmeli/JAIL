@@ -64,8 +64,10 @@
 *
 * Tested with jQuery 1.3.2+ on FF 2/3, Opera 10+, Safari 4+, Chrome on Mac and IE 6/7/8 on Win.
 *
+*
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
+* @collaborator  Derek Lindahl - dlindahl
 * @date 26/1/2011
 * @version 0.5 
 *
@@ -174,10 +176,13 @@
 
 			if (options.event === 'scroll' || options.selector) {
 				var triggerEl = images.data('triggerEl');
+
 				if(images.length > 0) {
+
 					// Bind the event to the selector specified in the config obj
 					triggerEl.bind( options.event, { images:images, options:options }, $.asynchImageLoader._bufferedEventListener );
 				} else {
+
 					// Unbind the event to the selector specified in the config obj since there is nothing left to do
 					var initalTriggerEl = (options.selector) ? $(options.selector) : $window;
 					initalTriggerEl.unbind( options.event, $.asynchImageLoader._bufferedEventListener );
@@ -202,6 +207,7 @@
 
 			// After [timeout] has elapsed, load the remaining images if they are visible OR (if no event is specified)
 			setTimeout(function() {
+
 				if (options.event === 'load') {
 					images.each(function(){
 						$.asynchImageLoader._loadImage(options, $(this));
