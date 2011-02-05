@@ -7,39 +7,38 @@
 		<link href="css/style.css" rel="stylesheets" />
 		<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
 		<script type="text/javascript" src="../JqueryAsynchImageLoader.js"></script>
-        <script type="text/javascript">
-            								$(function(){
-													if (!window.SA){window.SA = {};}
+		<script type="text/javascript">
+			$(function(){
+				if (!window.SA){window.SA = {};}
 
-													//Callback for the tabs (not related with the plugin)
-													 SA.setActive = function (options, imgs) {
+				//Callback for the tabs (not related with the plugin)
+				SA.setActive = function (options, imgs) {
 
-														 if (!$(this).hasClass('active')) {
-															 $(this).removeClass('inactive');
-															 $(this).addClass('active');
-															 return false;
-														 };
+					if (!$(this).hasClass('active')) {
+						$(this).removeClass('inactive');
+						$(this).addClass('active');
+						return false;
+					};
 
-														 if ($(this).hasClass('active')) {
-															 $(this).removeClass('active');
-															 $(this).addClass('inactive');
-															 $(imgs).hide();
-															 return false;
-														 } 
+					if ($(this).hasClass('active')) {
+						$(this).removeClass('active');
+						$(this).addClass('inactive');
+						$(imgs).hide();
+						return false;
+					} 
 
-													 };
+				};
 
-													 $('img.lazy').each(function(i){
-														 $(this).asynchImageLoader({
-											                	selector:'a#link' + (i + 1), 
-											                	event: 'click', 
-											                	effect: 'fadeIn',
-											                	speed : '500',
-											                	callback : SA.setActive
-											             });
-													 });
-
-												});
+				$('img.lazy').each(function(i){
+					$(this).asynchImageLoader({
+						selector:'a#link' + (i + 1), 
+						event: 'click', 
+						effect: 'fadeIn',
+						speed : '500',
+						callback : SA.setActive
+					});
+				});
+			});
         </script>
 	</head>
 	<body>

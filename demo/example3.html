@@ -7,18 +7,18 @@
 		<link href="css/style.css" rel="stylesheets" />
 		<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
 		<script type="text/javascript" src="../JqueryAsynchImageLoader.js"></script>
-        <script type="text/javascript">
-            					$(function(){
-									$('img.lazy').each(function(i){
-										 $(this).asynchImageLoader({
-							                	event: 'click', 
-							                	placeholder : 'img/loader.gif',
-							                	effect: 'fadeIn',
-							                	speed : '500'
-							             });
-									 });
-								});
-        </script>
+ 		<script type="text/javascript">
+			$(function(){
+				$('img.lazy').each(function(i){
+					$(this).asynchImageLoader({
+						event: 'click', 
+						placeholder : 'img/loader.gif',
+						effect: 'fadeIn',
+						speed : '600'
+					});
+				});
+			});
+		</script>
 		<style>
 			.clickable {list-style:none;}
 		</style>
