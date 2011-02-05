@@ -38,7 +38,7 @@ You can add additional configuration options when you initially call the `asynch
 
   **NOTE:** If you are loading a large number of images, it is best to NOT use this setting. Effects calls are very expensive. Even a simple `show()` can have a major impact on the browser's responsiveness.
 
-* `speed`       : string or number determining how long the animation will run  - Default: `400`
+* `speed`       : string or number determining how long the animation will run  - Default: 400
 * `selector`    : selector that you need to bind the trigger event - Default: `NULL`
 * `event`       : event : event that triggers the image to load. You can choose `load`, `load+scroll`, `click`, `mouseover`, or `scroll`. Default: `load+scroll`
 * `callback`    : function that will be called after the images are loaded - Default: ""
@@ -58,7 +58,7 @@ Here are some examples in order to have a better understanding of how the plugin
 					selector:'a#link',
 					event: 'click',
 					effect: 'fadeIn',
-					speed : '500',
+					speed : 500,
 					placeholder : 'img/loader.gif'
 					callback : SA.setActive
 				});
@@ -128,4 +128,8 @@ Version 0.4 released - Added ability to detect scroll on containing elements ins
 # Update 27/01/2011:
 
 Version 0.5 released - 'Delay' configuration removed, critical fix on unbind method, refactoring to pass JSLint without warnings.
+
+# Update 05/02/2011:
+
+Version 0.6 released - Fixed a critical issue on "effect" configuration
 

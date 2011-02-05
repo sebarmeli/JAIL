@@ -68,8 +68,8 @@
 *
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
-* @date 27/1/2011
-* @version 0.5 
+* @date 05/02/2011
+* @version 0.6 
 *
 */
 
@@ -263,7 +263,7 @@
 			// Images loaded with some effect if existing
 			if(options.effect) {
 				if (options.speed) {
-					$img[options.effect](parseInt(options.speed, 10));
+					$img[options.effect](options.speed);
 				} else {
 					$img[options.effect]();
 				}
