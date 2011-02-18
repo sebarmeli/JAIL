@@ -43,6 +43,7 @@ You can add additional configuration options when you initially call the `asynch
 * `event`       : event : event that triggers the image to load. You can choose `load`, `load+scroll`, `click`, `mouseover`, or `scroll`. Default: `load+scroll`
 * `callback`    : function that will be called after the images are loaded - Default: ""
 * `placeholder` : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
+* 'offset'      : an offset of "500" would cause any images that are less than 500px below the bottom of the window or 500px above the top of the window to load. - Default: 0
 
 ## More Examples
 
@@ -113,6 +114,20 @@ The above example showcases the default `event` behavior (`load+scroll`)
 	</code>
 </pre>
 
+### Load the images that are up to 300px below the window or up the window
+
+<pre>
+	<code>
+		&lt;script&gt;
+			$(function(){
+				$('img.lazy').asynchImageLoader({
+					offset : 300
+				});
+			});
+		&lt;/script&gt;
+	</code>
+</pre>
+
 ## Tests
 
 You can run tests by pointing your web browser at `[location of JAIL]/test/test.html`
@@ -132,4 +147,8 @@ Version 0.5 released - 'Delay' configuration removed, critical fix on unbind met
 # Update 05/02/2011:
 
 Version 0.6 released - Fixed a critical issue on "effect" configuration
+
+# Update 19/02/2011:
+
+Version 0.7 released - Added "offset" configuration
 

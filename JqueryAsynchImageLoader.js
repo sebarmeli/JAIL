@@ -2,7 +2,7 @@
 *  JqueryAsynchImageLoader (JAIL) : plugin for jQuery
 *
 * Developed by
-* Sebastiano Armeli-Battana (@sebarmeli) - http://sebarmeli.com | http://blog.sebarmeli.com
+* Sebastiano Armeli-Battana (@sebarmeli) - http://www.sebastianoarmelibattana.com | http://blog.sebarmeli.com
 *
 * Licensed under MIT
 */
@@ -58,7 +58,8 @@
 * - speed :  string or number determining how long the animation will run  - Default: 400
 * - selector : selector that you need to bind the trigger event - Default: NULL
 * - event : event that triggers the image to load. You can choose "load", "load+scroll", "click", "mouseover", or "scroll". Default: "load+scroll"
-* - callback : function that will be called after the images are loaded	- Default: ""
+* - offset : an offset of "500" would cause any images that are less than 500px below the bottom of the window or 500px above the top of the window to load. - Default: 0
+* - callback : function that will be called after the images are loaded - Default: ""
 * - placeholder: location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
 *
 *
@@ -69,7 +70,7 @@
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
 * @date 05/02/2011
-* @version 0.6 
+* @version 0.7
 *
 */
 
@@ -78,7 +79,7 @@
 	var $window = $(window);
 
 	$.fn.asynchImageLoader = function(options) {
-
+		
 		// Configuration
 		options = $.extend({
 			timeout : 10,
@@ -87,6 +88,7 @@
 			selector: null,
 			event : 'load+scroll',
 			callback : jQuery.noop,
+			offset : 0,
 			placeholder : false
 		}, options);
 
@@ -220,8 +222,8 @@
 
 				$.asynchImageLoader._purgeStack( images );
 
-				if (options.event === 'load+scroll') {
-					options.event = 'scroll';
+				if (/^load\+/.test(options.event)) {
+					options.event = options.event.substring (options.event.indexOf("+") + 1, options.event.length);
 					$.asynchImageLoader.onEvent( options, images );
 				}
 			}, options.timeout);
@@ -232,25 +234,25 @@
 			var $img = $(image),
 			container = (options.event === 'scroll' ? triggerEl : $window);
 
-			if ($.asynchImageLoader._isInTheScreen( container, $img)) {
+			if ($.asynchImageLoader._isInTheScreen( container, $img, options.offset)) {
 				$.asynchImageLoader._loadImage(options, $img);
 			}
 		},
 
 		// Function that returns true if the image is visible inside the "window" (or specified container element)
-		_isInTheScreen : function($ct, $img) {
-			var	is_ct_window  = $ct[0] === window,
-					ct_offset  = $ct.offset() || { top:0, left:0 },
-					ct_top     = ct_offset.top + ( is_ct_window ? $ct.scrollTop() : 0),
-					ct_left    = ct_offset.left + ( is_ct_window ? $ct.scrollLeft() : 0),
-					ct_right   = ct_left + $ct.width(),
-					ct_bottom  = ct_top + $ct.height(),
-					img_offset = $img.offset();
+		_isInTheScreen : function($ct, $img, optionOffset) {
+			var is_ct_window  = $ct[0] === window,
+				ct_offset  = $ct.offset() || { top:0, left:0 },
+				ct_top     = ct_offset.top + ( is_ct_window ? $ct.scrollTop() : 0),
+				ct_left    = ct_offset.left + ( is_ct_window ? $ct.scrollLeft() : 0),
+				ct_right   = ct_left + $ct.width(),
+				ct_bottom  = ct_top + $ct.height(),
+				img_offset = $img.offset();
 
-			return ct_top <= img_offset.top &&
-						ct_bottom >= img_offset.top &&
-							ct_left <= img_offset.left &&
-								ct_right >= img_offset.left;
+			return (ct_top - optionOffset) <= img_offset.top &&
+						(ct_bottom + optionOffset) >= img_offset.top &&
+							(ct_left - optionOffset)<= img_offset.left &&
+								(ct_right + optionOffset) >= img_offset.left;
 		},
 
 		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
