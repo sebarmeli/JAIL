@@ -72,7 +72,7 @@
 (function($){
 	var $window = $(window);
 
-	$.fn.asynchImageLoader = function(options) {
+	$.fn.asynchImageLoader = $.fn.jail = function(options) {
 
 		// Configuration
 		options = $.extend({
@@ -138,9 +138,11 @@
 
 			// Load images
 			$.asynchImageLoader._loadImage(options, $img);
+
 			// Image has been loaded so there is no need to listen anymore
 			$img.unbind( options.event, $.asynchImageLoader._loadOnEvent );
 
+			//Callback call
 			options.callback.call(this, options);
 
 			$.asynchImageLoader._purgeStack( images );
@@ -166,7 +168,7 @@
 		  }, options.timeout));
 		},
 
-		// Images loaded triggered by en event
+		// Images loaded triggered by en event (event different from "load" or "load+scroll")
 		onEvent : function(options, images) {
 			images = images || this;
 
@@ -177,6 +179,10 @@
 
 					// Bind the event to the selector specified in the config obj
 					triggerEl.bind( options.event, { images:images, options:options }, $.asynchImageLoader._bufferedEventListener );
+					
+					if (options.event === 'scroll' || !options.selector) {
+						$window.resize({ images:images, options:options }, $.asynchImageLoader._bufferedEventListener );
+					}
 				} else {
 
 					// Unbind the event to the selector specified in the config obj since there is nothing left to do
@@ -189,7 +195,7 @@
 			}
 		},
 
-		// Images loaded triggered with some delay
+		// Method called when event : "load" or "load+scroll" (default)
 		later : function(options) {
 			var images = this;
 
@@ -209,6 +215,7 @@
 						$.asynchImageLoader._loadImage(options, $(this));
 					});
 				} else {
+					// Method : "load+scroll"
 					images.each(function(){
 						$.asynchImageLoader._loadImageIfVisible(options, this, images.data('triggerEl'));
 					});
