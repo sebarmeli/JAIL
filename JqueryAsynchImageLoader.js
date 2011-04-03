@@ -2,30 +2,24 @@
 *  JqueryAsynchImageLoader (JAIL) : plugin for jQuery
 *
 * Developed by
-* Sebastiano Armeli-Battana (@sebarmeli) - http://sebarmeli.com | http://blog.sebarmeli.com
-*
-* Licensed under MIT
+* Sebastiano Armeli-Battana (@sebarmeli) - http://www.sebastianoarmelibattana.com
+* Dual licensed under the MIT or GPL Version 3 licenses.
 */
-/* Copyright (c) 2011 Sebastiano Armeli-Battana (http://sebarmeli.com)
+/*
+	Copyright (c) 2011 Sebastiano Armeli-Battana (http://www.sebastianoarmelibattana.com)
 
-	Permission is hereby granted, free of charge, to any person obtaining
-	a copy of this software and associated documentation files (the
-	"Software"), to deal in the Software without restriction, including
-	without limitation the rights to use, copy, modify, merge, publish,
-	distribute, sublicense, and/or sell copies of the Software, and to
-	permit persons to whom the Software is furnished to do so, subject to
-	the following conditions:
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-	The above copyright notice and this permission notice shall be 
-	included in all copies or substantial portions of the Software.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-	NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-	OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /* JAIL helps loading images asynchronously and it can be used to make your page load faster.
@@ -58,7 +52,8 @@
 * - speed :  string or number determining how long the animation will run  - Default: 400
 * - selector : selector that you need to bind the trigger event - Default: NULL
 * - event : event that triggers the image to load. You can choose "load", "load+scroll", "click", "mouseover", or "scroll". Default: "load+scroll"
-* - callback : function that will be called after the images are loaded	- Default: ""
+* - offset : an offset of "500" would cause any images that are less than 500px below the bottom of the window or 500px above the top of the window to load. - Default: 0
+* - callback : function that will be called after the images are loaded - Default: ""
 * - placeholder: location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
 *
 *
@@ -68,8 +63,8 @@
 *
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
-* @date 05/02/2011
-* @version 0.6 
+* @date 03/04/2011
+* @version 0.8 
 *
 */
 
@@ -85,6 +80,7 @@
 			effect : false,
 			speed : 400,
 			selector: null,
+			offset : 0,
 			event : 'load+scroll',
 			callback : jQuery.noop,
 			placeholder : false
