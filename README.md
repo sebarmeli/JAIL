@@ -23,7 +23,7 @@ In a basic scenario, you just need to import `jquery`, `jquery-asynchImageLoader
 		&lt;script src="/js/jquery-asynchImageLoader.js"&gt;&lt;/script&gt;
 		&lt;script&gt;
 			 $(function(){
-			 	$('img.lazy').asynchImageLoader();
+			 	$('img.lazy').jail();
 		     });
 		&lt;/script&gt;
 	</code>
@@ -31,7 +31,7 @@ In a basic scenario, you just need to import `jquery`, `jquery-asynchImageLoader
 
 If you inspect the HTTP requests, you'll see how the images are loaded after the DOM is ready.
 
-You can add additional configuration options when you initially call the `asynchImageLoader` function:
+You can add additional configuration options when you initially call the `asynchImageLoader` function (or 'jail' function):
 
 * `timeout`     : number of msec after that the images will be loaded - Default: `10`
 * `effect`      : any jQuery effect that makes the images display (e.g. "fadeIn") - Default: `NULL`
@@ -74,7 +74,7 @@ Here are some examples in order to have a better understanding of how the plugin
 	<code>
 		&lt;script&gt;
 			$(function(){
-				$('img.lazy').asynchImageLoader({
+				$('img.lazy').jail({
 					selector : '#my_container'
 				});
 			});
@@ -105,7 +105,7 @@ The above example showcases the default `event` behavior (`load+scroll`)
 	<code>
 		&lt;script&gt;
 			$(function(){
-				$('img.lazy').asynchImageLoader({
+				$('img.lazy').jail({
 					timeout : 1000,
 					event: 'load'
 				});
