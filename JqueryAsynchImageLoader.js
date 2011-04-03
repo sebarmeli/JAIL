@@ -228,25 +228,25 @@
 			var $img = $(image),
 			container = (options.event === 'scroll' ? triggerEl : $window);
 
-			if ($.asynchImageLoader._isInTheScreen( container, $img)) {
+			if ($.asynchImageLoader._isInTheScreen (container, $img, options.offset)) {
 				$.asynchImageLoader._loadImage(options, $img);
 			}
 		},
 
 		// Function that returns true if the image is visible inside the "window" (or specified container element)
-		_isInTheScreen : function($ct, $img) {
-			var	is_ct_window  = $ct[0] === window,
-					ct_offset  = $ct.offset() || { top:0, left:0 },
-					ct_top     = ct_offset.top + ( is_ct_window ? $ct.scrollTop() : 0),
-					ct_left    = ct_offset.left + ( is_ct_window ? $ct.scrollLeft() : 0),
-					ct_right   = ct_left + $ct.width(),
-					ct_bottom  = ct_top + $ct.height(),
-					img_offset = $img.offset();
-
-			return ct_top <= img_offset.top &&
-						ct_bottom >= img_offset.top &&
-							ct_left <= img_offset.left &&
-								ct_right >= img_offset.left;
+		_isInTheScreen : function($ct, $img, optionOffset) {
+			var is_ct_window  = $ct[0] === window,
+				ct_offset  = $ct.offset() || { top:0, left:0 },
+				ct_top     = ct_offset.top + ( is_ct_window ? $ct.scrollTop() : 0),
+				ct_left    = ct_offset.left + ( is_ct_window ? $ct.scrollLeft() : 0),
+				ct_right   = ct_left + $ct.width(),
+				ct_bottom  = ct_top + $ct.height(),
+				img_offset = $img.offset();
+			
+			return (ct_top - optionOffset) <= img_offset.top &&
+				(ct_bottom + optionOffset) >= img_offset.top &&
+					(ct_left - optionOffset)<= img_offset.left &&
+						(ct_right + optionOffset) >= img_offset.left;
 		},
 
 		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
