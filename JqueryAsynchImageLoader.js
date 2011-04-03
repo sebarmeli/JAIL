@@ -44,7 +44,10 @@
 *	$(function(){
 *		$('img.lazy').asynchImageLoader();
 *	});
-* 
+* or
+*	$(function(){
+*		$('img.lazy').jail();
+*	});
 * You can also have different configurations:
 *
 * - timeout : number of msec after that the images will be loaded - Default: 10ms
@@ -248,11 +251,13 @@
 				ct_left    = ct_offset.left + ( is_ct_window ? $ct.scrollLeft() : 0),
 				ct_right   = ct_left + $ct.width(),
 				ct_bottom  = ct_top + $ct.height(),
-				img_offset = $img.offset();
+				img_offset = $img.offset(),
+				img_width = $img.width(),
+				img_height = $img.height();
 			
-			return (ct_top - optionOffset) <= img_offset.top &&
+			return (ct_top - optionOffset) <= (img_offset.top + img_height) &&
 				(ct_bottom + optionOffset) >= img_offset.top &&
-					(ct_left - optionOffset)<= img_offset.left &&
+					(ct_left - optionOffset)<= (img_offset.left + img_width) &&
 						(ct_right + optionOffset) >= img_offset.left;
 		},
 
