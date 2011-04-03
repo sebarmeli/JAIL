@@ -5,6 +5,12 @@
 		<meta charset="utf-8">
 		<title>jQuery Asynch Image Loader - Example 1</title>
 		<link href="css/style.css" rel="stylesheets" />
+		<script>
+			(function(){
+				var dd = document.documentElement;
+				dd.className += ((dd.className == "") ? "js" : " nojs");
+			}());
+		</script>
 		<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
 		<script type="text/javascript" src="../JqueryAsynchImageLoader.js"></script>
 		<script type="text/javascript">
@@ -39,7 +45,11 @@
 					});
 				});
 			});
-        </script>
+		</script>
+		<style>
+			.lazy {display:none;}
+			.js .nolazy {display:none;}
+		</style>
 	</head>
 	<body>
 		<div id="wrapper">
