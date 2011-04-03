@@ -4,8 +4,6 @@
 * Developed by
 * Sebastiano Armeli-Battana (@sebarmeli) - http://www.sebastianoarmelibattana.com
 * Dual licensed under the MIT or GPL Version 3 licenses.
-<<<<<<< HEAD
-=======
 */
 /*
 	Copyright (c) 2011 Sebastiano Armeli-Battana (http://www.sebastianoarmelibattana.com)
@@ -19,26 +17,6 @@
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
->>>>>>> v0.8
-*/
-/*
-	Copyright (c) 2011 Sebastiano Armeli-Battana (http://www.sebastianoarmelibattana.com)
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* JAIL helps loading images asynchronously and it can be used to make your page load faster.
 * Selected images will be downloaded after the document is ready not blocking the page 
@@ -82,12 +60,7 @@
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
 * @date 03/04/2011
-<<<<<<< HEAD
-* @version 0.8
-=======
 * @version 0.8 
->>>>>>> v0.8
-*
 */
 
 /*globals window,jQuery,setTimeout,clearTimeout */
@@ -239,8 +212,8 @@
 
 				$.asynchImageLoader._purgeStack( images );
 
-				if (/^load\+/.test(options.event)) {
-					options.event = options.event.substring (options.event.indexOf("+") + 1, options.event.length);
+				if (options.event === 'load+scroll') {
+					options.event = 'scroll';
 					$.asynchImageLoader.onEvent( options, images );
 				}
 			}, options.timeout);
@@ -251,11 +224,7 @@
 			var $img = $(image),
 			container = (options.event === 'scroll' ? triggerEl : $window);
 
-<<<<<<< HEAD
-			if ($.asynchImageLoader._isInTheScreen( container, $img, options.offset)) {
-=======
 			if ($.asynchImageLoader._isInTheScreen (container, $img, options.offset)) {
->>>>>>> v0.8
 				$.asynchImageLoader._loadImage(options, $img);
 			}
 		},
@@ -269,20 +238,12 @@
 				ct_right   = ct_left + $ct.width(),
 				ct_bottom  = ct_top + $ct.height(),
 				img_offset = $img.offset();
-<<<<<<< HEAD
-				alert($img.offset().top);
 
 			return (ct_top - optionOffset) <= img_offset.top &&
 						(ct_bottom + optionOffset) >= img_offset.top &&
 							(ct_left - optionOffset)<= img_offset.left &&
 								(ct_right + optionOffset) >= img_offset.left;
-=======
-			
-			return (ct_top - optionOffset) <= img_offset.top &&
-				(ct_bottom + optionOffset) >= img_offset.top &&
-					(ct_left - optionOffset)<= img_offset.left &&
-						(ct_right + optionOffset) >= img_offset.left;
->>>>>>> v0.8
+
 		},
 
 		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
