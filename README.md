@@ -152,3 +152,7 @@ Version 0.6 released - Fixed a critical issue on "effect" configuration
 
 Version 0.7 released - Added "offset" configuration
 
+# Update 03/04/2011:
+
+Version 0.8 released - jail() function, fixed critical issue on v0.7, resizing function, scrolling fixes
+

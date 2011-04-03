@@ -5,29 +5,15 @@
 		<meta charset="utf-8">
 		<title>jQuery Asynch Image Loader - Example 7</title>
 		<link href="css/style.css" rel="stylesheets" />
-		<script>
-			(function(){
-				var dd = document.documentElement;
-				dd.className += ((dd.className == "") ? "js" : " nojs");
-			}());
-		</script>
 		<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
 		<script type="text/javascript" src="../JqueryAsynchImageLoader.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
-<<<<<<< HEAD
-				$('img.lazy').asynchImageLoader({
-=======
 				$('img.lazy').jail({
->>>>>>> v0.8
 					offset : 200
 				});
 			});
 		</script>
-		<style>
-			.lazy {display:none;}
-			.js .nolazy {display:none;}
-		</style>
 	</head>
 	<body>
 		<div id="wrapper">
