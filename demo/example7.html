@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>jQuery Asynch Image Loader - Example 7</title>
+		<link href="css/style.css" rel="stylesheets" />
+		<script>
+			(function(){
+				var dd = document.documentElement;
+				dd.className += ((dd.className == "") ? "js" : " nojs");
+			}());
+		</script>
+		<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
+		<script type="text/javascript" src="../JqueryAsynchImageLoader.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('img.lazy').jail({
+					offset : 200
+				});
+			});
+		</script>
+		<style>
+			.lazy {display:none;}
+			.js .nolazy {display:none;}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="content">
+				<p> Images loaded after DOM is ready</p>
+				<div>
+					<img class="lazy" data-href="img/sample1.jpg" src="img/blank.gif" width="420" height="320"/>
+					<img class="nolazy" src="img/sample1.jpg" width="420" height="320"/>
+				</div>
+				<div>
+					<img class="lazy" data-href="img/sample2.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<img class="nolazy" src="img/sample2.jpg" width="420" height="320"/>
+				</div>
+				<div>
+					<img class="lazy" data-href="img/sample3.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<img class="nolazy" src="img/sample3.jpg" width="420" height="320"/>
+				</div>
+				<div>
+					<img class="lazy" data-href="img/sample5.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<img class="nolazy" src="img/sample5.jpg" width="420" height="320"/>
+				</div>
+			
+			</div>
+		</div>
+	</body>
+</html>
+
+ 
