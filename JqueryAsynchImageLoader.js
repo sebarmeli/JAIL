@@ -17,7 +17,11 @@
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /* JAIL helps loading images asynchronously and it can be used to make your page load faster.
 * Selected images will be downloaded after the document is ready not blocking the page 
 * to render other elements. Images can be loaded after an event is triggered (like clicking 
@@ -61,6 +65,7 @@
 * @author Sebastiano Armeli-Battana
 * @date 03/04/2011
 * @version 0.8 
+*
 */
 
 /*globals window,jQuery,setTimeout,clearTimeout */
@@ -68,7 +73,7 @@
 	var $window = $(window);
 
 	$.fn.asynchImageLoader = $.fn.jail = function(options) {
-		
+
 		// Configuration
 		options = $.extend({
 			timeout : 10,
@@ -78,7 +83,6 @@
 			offset : 0,
 			event : 'load+scroll',
 			callback : jQuery.noop,
-			offset : 0,
 			placeholder : false
 		}, options);
 
@@ -134,9 +138,11 @@
 
 			// Load images
 			$.asynchImageLoader._loadImage(options, $img);
+
 			// Image has been loaded so there is no need to listen anymore
 			$img.unbind( options.event, $.asynchImageLoader._loadOnEvent );
 
+			//Callback call
 			options.callback.call(this, options);
 
 			$.asynchImageLoader._purgeStack( images );
@@ -162,7 +168,7 @@
 		  }, options.timeout));
 		},
 
-		// Images loaded triggered by en event
+		// Images loaded triggered by en event (event different from "load" or "load+scroll")
 		onEvent : function(options, images) {
 			images = images || this;
 
@@ -173,6 +179,10 @@
 
 					// Bind the event to the selector specified in the config obj
 					triggerEl.bind( options.event, { images:images, options:options }, $.asynchImageLoader._bufferedEventListener );
+					
+					if (options.event === 'scroll' || !options.selector) {
+						$window.resize({ images:images, options:options }, $.asynchImageLoader._bufferedEventListener );
+					}
 				} else {
 
 					// Unbind the event to the selector specified in the config obj since there is nothing left to do
@@ -185,7 +195,7 @@
 			}
 		},
 
-		// Images loaded triggered with some delay
+		// Method called when event : "load" or "load+scroll" (default)
 		later : function(options) {
 			var images = this;
 
@@ -205,6 +215,7 @@
 						$.asynchImageLoader._loadImage(options, $(this));
 					});
 				} else {
+					// Method : "load+scroll"
 					images.each(function(){
 						$.asynchImageLoader._loadImageIfVisible(options, this, images.data('triggerEl'));
 					});
@@ -238,12 +249,11 @@
 				ct_right   = ct_left + $ct.width(),
 				ct_bottom  = ct_top + $ct.height(),
 				img_offset = $img.offset();
-
+			
 			return (ct_top - optionOffset) <= img_offset.top &&
-						(ct_bottom + optionOffset) >= img_offset.top &&
-							(ct_left - optionOffset)<= img_offset.left &&
-								(ct_right + optionOffset) >= img_offset.left;
-
+				(ct_bottom + optionOffset) >= img_offset.top &&
+					(ct_left - optionOffset)<= img_offset.left &&
+						(ct_right + optionOffset) >= img_offset.left;
 		},
 
 		// Main function --> Load the images copying the "data-href" attribute into the "src" attribute
