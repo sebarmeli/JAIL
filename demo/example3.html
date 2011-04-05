@@ -5,12 +5,6 @@
 		<meta charset="utf-8">
 		<title>jQuery Asynch Image Loader - Example 1</title>
 		<link href="css/style.css" rel="stylesheets" />
-		<script>
-			(function(){
-				var dd = document.documentElement;
-				dd.className += ((dd.className == "") ? "js" : " nojs");
-			}());
-		</script>
 		<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
 		<script type="text/javascript" src="../JqueryAsynchImageLoader.js"></script>
  		<script type="text/javascript">
@@ -25,11 +19,6 @@
 				});
 			});
 		</script>
-		<style>
-			.clickable {list-style:none;}
-			.lazy {display:none;}
-			.js .nolazy {display:none;}
-		</style>
 	</head>
 	<body>
 		<div id="wrapper">
@@ -38,19 +27,15 @@
 					<ul>
 						<li class="clickable">
 							<img class="lazy" data-href="img/sample1_th.jpg" src="img/blank.gif"/>
-							<img class="nolazy" src="img/sample1_th.jpg"  width="200" height="150"/>
 						</li>
 						<li class="clickable">
 							<img class="lazy" data-href="img/sample2_th.jpg" src="img/blank.gif"/>
-						 	<img class="nolazy" src="img/sample2_th.jpg"  width="200" height="150"/>
 						</li>
 						<li class="clickable">
 							<img class="lazy" data-href="img/sample3_th.jpg" src="img/blank.gif"/>
-						 	<img class="nolazy" src="img/sample3_th.jpg"  width="200" height="150"/>
 						</li>
 						<li class="clickable">
-							<img class="lazy" data-href="img/sample5_th.jpg" src="img/blank.gif"/>
-							 <img class="nolazy" src="img/sample5_th.jpg"  width="200" height="150"/>	
+							<img class="lazy" data-href="img/sample5_th.jpg" src="img/blank.gif"/>	
 						</li>
 					</ul>
 			</div>
