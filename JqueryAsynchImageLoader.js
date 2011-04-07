@@ -67,7 +67,7 @@
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
 * @date 08/04/2011
-* @version 0.8.1 
+* @version 0.8.2 
 *
 */
 
@@ -243,6 +243,10 @@
 			if ($.asynchImageLoader._isInTheScreen (container, $img, options.offset)) {
 				$.asynchImageLoader._loadImage(options, $img);
 			}
+			
+			//Callback call
+			options.callback.call(this, options);
+
 		},
 
 		// Function that returns true if the image is visible inside the "window" (or specified container element)
