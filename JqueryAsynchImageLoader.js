@@ -66,8 +66,8 @@
 *
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
-* @date 03/04/2011
-* @version 0.8 
+* @date 08/04/2011
+* @version 0.8.1 
 *
 */
 
@@ -168,7 +168,9 @@
 				$.asynchImageLoader._purgeStack( images );
 
 				options.callback.call(this, options, images);
-		  }, options.timeout));
+			}, options.timeout));
+			
+			return false;
 		},
 
 		// Images loaded triggered by en event (event different from "load" or "load+scroll")
