@@ -87,8 +87,9 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 
 			"test Images loaded after a click on a link and callback associated" : function () {
 				Y.Assert.areEqual(value, "10");
+				SA ={};
 
-				$('img.lazy').asynchImageLoader({event: "click", selector : "a.link", callback : function(){value=20;}});
+				$('img.lazy').asynchImageLoader({event: "click", selector : "a.link"});
 
 				Y.one("a.link").simulate("click");
 
@@ -98,7 +99,6 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 					Y.Assert.areEqual("img3.jpg", $('img.lazy').eq(2).attr("src"));
 					Y.Assert.areEqual("img4.jpg", $('img.lazy').eq(3).attr("src"));
 
-					Y.Assert.areEqual("20", value);
 				}, 1);
 			}
 		});
@@ -150,15 +150,15 @@ YUI().use("node", "console", "test", "node-event-simulate", function (Y) {
 
 			"test Images only inside a wrapper after mousing over on a link" : function() {
 				testCaseMouseOverAsynch.setUp();
-				$('img.lazy').asynchImageLoader({event: "mouseover", selector : ".tool", callback : function(){value2=20;}});
+				SA = {};
+				
+				$('img.lazy').asynchImageLoader({event: "mouseover", selector : ".tool"});
 
 				Y.one(".tool").simulate("mouseover");
 
 				this.wait(function() {
 					Y.Assert.areEqual("img3.jpg", $('.container2 img.lazy').eq(0).attr("src"));
 					Y.Assert.areEqual("img4.jpg", $('.container2 img.lazy').eq(1).attr("src"));
-
-					Y.Assert.areEqual("20", value2);
 
 					testCaseMouseOverAsynch.tearDown();
 				}, 1);
