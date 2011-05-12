@@ -8,11 +8,10 @@
 		<script type="text/javascript" src="../JqueryAsynchImageLoader.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				$('img.lazy').eq(0).jail({
-					event : "load",
-					callback : (function(){alert("First image is loaded");})
+				$('img.lazy').jail({
+					callbackAfterEachImage : function() {alert("one image is loaded");},
+					callback : (function(){alert("All the images are loaded");})
 				});
-				$('img.lazy').jail();
 			});
 		</script>
 	</head>
