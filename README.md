@@ -41,7 +41,8 @@ You can add additional configuration options when you initially call the `asynch
 * `speed`       : string or number determining how long the animation will run  - Default: 400
 * `selector`    : selector that you need to bind the trigger event - Default: `NULL`
 * `event`       : event : event that triggers the image to load. You can choose `load`, `load+scroll`, `click`, `mouseover`, or `scroll`. Default: `load+scroll`
-* `callback`    : function that will be called after the images are loaded - Default: ""
+* `callback`    : function that will be called after all the images are loaded - Default: ""
+* `callbackAfterEachImage`    : function that will be called after each image is loaded - Default: ""
 * `placeholder` : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
 * 'offset'      : an offset of "500" would cause any images that are less than 500px below the bottom of the window or 500px above the top of the window to load. - Default: 0
 
@@ -128,6 +129,22 @@ The above example showcases the default `event` behavior (`load+scroll`)
 	</code>
 </pre>
 
+### Alert saying "all the images are loaded" is called after all the images are loaded, alert saying "one image is loaded" after one image is loaded 
+
+<pre>
+	<code>
+		&lt;script&gt;
+			$(function(){
+				$('img.lazy').asynchImageLoader({
+					callback : (function(){alert("All the images are loaded");}),
+					callbackAfterEachImage : function() {alert("one image is loaded");}
+				});
+			});
+		&lt;/script&gt;
+	</code>
+</pre>
+
+
 ## Tests
 
 You can run tests by pointing your web browser at `[location of JAIL]/test/test.html`
@@ -156,3 +173,6 @@ Version 0.7 released - Added "offset" configuration
 
 Version 0.8 released - jail() function, fixed critical issue on v0.7, resizing function, scrolling fixes
 
+# Update 13/05/2011:
+
+Version 0.9 released - callback fixes + support for callbackAfterEachImage parameter
