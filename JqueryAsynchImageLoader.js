@@ -56,7 +56,8 @@
 * - selector : selector that you need to bind the trigger event - Default: NULL
 * - event : event that triggers the image to load. You can choose "load", "load+scroll", "click", "mouseover", or "scroll". Default: "load+scroll"
 * - offset : an offset of "500" would cause any images that are less than 500px below the bottom of the window or 500px above the top of the window to load. - Default: 0
-* - callback : function that will be called after the images are loaded - Default: ""
+* - callback : function that will be called after all the images are loaded - Default: ""
+* - callbackAfterEachImage : function that will be called after an image is loaded - Default: ""
 * - placeholder: location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
 *
 *
@@ -66,8 +67,8 @@
 *
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
-* @date 08/04/2011
-* @version 0.8.2 
+* @date 13/05/2011
+* @version 0.9 
 *
 */
 
@@ -86,10 +87,13 @@
 			offset : 0,
 			event : 'load+scroll',
 			callback : jQuery.noop,
+			callbackAfterEachImage : jQuery.noop,
 			placeholder : false
 		}, options);
 
 		var images = this;
+		
+		$.jail.initialStack = this;
 
 		// Store the selector into 'triggerEl' data for the images selected
 		this.data('triggerEl', (options.selector) ? $(options.selector) : $window);
@@ -112,11 +116,12 @@
 	};
 
 	// Methods cointaing the logic
-	$.asynchImageLoader = {
+	$.asynchImageLoader = $.jail = {
 	
 		// Remove any elements that have been loaded from the jQuery stack.
 		// This should speed up subsequent calls by not having to iterate over the loaded elements.
 		_purgeStack : function(stack) {
+			// number of images not loaded
 			var i = 0;
 
 			while(true) {
@@ -145,10 +150,12 @@
 			// Image has been loaded so there is no need to listen anymore
 			$img.unbind( options.event, $.asynchImageLoader._loadOnEvent );
 
-			//Callback call
-			options.callback.call(this, options);
-
 			$.asynchImageLoader._purgeStack( images );
+			
+			if (!!options.callback) {
+				$.asynchImageLoader._purgeStack( $.jail.initialStack );
+				$.asynchImageLoader._launchCallback($.jail.initialStack, options);
+			}
 		},
 
 		// Load the image - after the event is triggered by a DOM element different
@@ -166,11 +173,14 @@
 				});
 
 				$.asynchImageLoader._purgeStack( images );
-
-				options.callback.call(this, options, images);
+				
+				if (!!options.callback) {
+					$.asynchImageLoader._purgeStack( $.jail.initialStack );
+					$.asynchImageLoader._launchCallback($.jail.initialStack, options);
+				}
+				
 			}, options.timeout));
 			
-			return false;
 		},
 
 		// Images loaded triggered by en event (event different from "load" or "load+scroll")
@@ -188,11 +198,11 @@
 					if (options.event === 'scroll' || !options.selector) {
 						$window.resize({ images:images, options:options }, $.asynchImageLoader._bufferedEventListener );
 					}
+					return;
 				} else {
-
-					// Unbind the event to the selector specified in the config obj since there is nothing left to do
-					var initalTriggerEl = (options.selector) ? $(options.selector) : $window;
-					initalTriggerEl.unbind( options.event, $.asynchImageLoader._bufferedEventListener );
+					if (!!triggerEl) {
+						triggerEl.unbind( options.event, $.asynchImageLoader._bufferedEventListener );
+					}
 				}
 			} else {
 				// Bind the event to the images
@@ -210,8 +220,10 @@
 					$.asynchImageLoader._loadImageIfVisible(options, this, images.data('triggerEl'));
 				});
 			}
-			$.asynchImageLoader._purgeStack( images );
-
+			$.asynchImageLoader._purgeStack(images);
+			
+			$.asynchImageLoader._launchCallback(images, options);
+			
 			// After [timeout] has elapsed, load the remaining images if they are visible OR (if no event is specified)
 			setTimeout(function() {
 
@@ -227,12 +239,22 @@
 				}
 
 				$.asynchImageLoader._purgeStack( images );
+				
+				$.asynchImageLoader._launchCallback(images, options);
 
 				if (options.event === 'load+scroll') {
 					options.event = 'scroll';
 					$.asynchImageLoader.onEvent( options, images );
 				}
 			}, options.timeout);
+		},
+		
+		_launchCallback : function(images, options) {
+			if (images.length === 0 && !$.jail.isCallback) {
+					//Callback call
+					options.callback.call(this, options);
+					$.jail.isCallback = true;
+			}
 		},
 
 		// Function that checks if the images have been loaded
@@ -244,15 +266,12 @@
 				$.asynchImageLoader._loadImage(options, $img);
 			}
 			
-			//Callback call
-			options.callback.call(this, options);
-
 		},
 
 		// Function that returns true if the image is visible inside the "window" (or specified container element)
 		_isInTheScreen : function($ct, $img, optionOffset) {
 			var is_ct_window  = $ct[0] === window,
-				ct_offset  = $ct.offset() || { top:0, left:0 },
+				ct_offset  = (is_ct_window ? { top:0, left:0 } : $ct.offset()),
 				ct_top     = ct_offset.top + ( is_ct_window ? $ct.scrollTop() : 0),
 				ct_left    = ct_offset.left + ( is_ct_window ? $ct.scrollLeft() : 0),
 				ct_right   = ct_left + $ct.width(),
@@ -285,6 +304,8 @@
 				$img.show();
 			}
 			
+			// Callback after each image is loaded
+			options.callbackAfterEachImage.call(this, options);
 		}
 	};
 }(jQuery));
