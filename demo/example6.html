@@ -3,11 +3,10 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
-		<title>jQuery Asynch Image Loader - Example 6</title>
+		<title>jQuery Asynch Image Loader - Example 6 - Images loaded only when you focus on it</title>
 		<link href="css/style.css" rel="stylesheets" />
-
 		<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
-		<script type="text/javascript" src="../JqueryAsynchImageLoader.js"></script>
+		<script type="text/javascript" src="../jail.js"></script>
 		<script type="text/javascript">
 			$(function(){
 				$('img.lazy').jail({offset : 200}).asynchImageLoader({
@@ -28,6 +27,7 @@
 	<body>
 		<div id="wrapper">
 			<div class="content">
+				<p>Images loaded only when you focus on them</p>
 				<div>
 					<ul class="nav">
 						<li><a href="#img1">img1</a></li>

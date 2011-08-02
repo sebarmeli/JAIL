@@ -3,10 +3,10 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
-		<title>jQuery Asynch Image Loader - Example 4</title>
+		<title>jQuery Asynch Image Loader - Example 4 - Images loaded after mouseover and callback</title>
 		<link href="css/style.css" rel="stylesheets" />
 		<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
-		<script type="text/javascript" src="../JqueryAsynchImageLoader.js"></script>
+		<script type="text/javascript" src="../jail.js"></script>
 		<script type="text/javascript">
 			$(function(){
 				$('img.lazy').each(function(i){
@@ -25,33 +25,33 @@
 	<body>
 		<div id="wrapper">
 			<div class="content">
-											<ul>
-												<li class="mouseoverable">
-													<img class="lazy" data-href="img/sample1_th.jpg" src="img/blank.gif"/>
-													<noscript>
-													 	<img class="lazy" src="img/sample1_th.jpg"  width="200" height="150"/>
-													</noscript>
-												</li>
-												<li class="mouseoverable">
-													<img class="lazy" data-href="img/sample2_th.jpg" src="img/blank.gif" />
-													<noscript>
-													 	<img class="lazy" src="img/sample2_th.jpg" width="200" height="150"/>
-													</noscript>
-												</li>
-												<li class="mouseoverable">
-													<img class="lazy" data-href="img/sample3_th.jpg" src="img/blank.gif" />
-													<noscript>
-													 	<img class="lazy" src="img/sample3_th.jpg" width="200" height="150"/>
-													</noscript>
-												</li>
-												<li class="mouseoverable">
-													<img class="lazy" data-href="img/sample5_th.jpg" src="img/blank.gif" />
-													<noscript>
-													 	<img class="lazy" src="img/sample5_th.jpg" width="200" height="150"/>
-													</noscript>
-												</li>
-											</ul>
-				
+				<p>Images loaded after you mouseover on the image. Callback called after</p>
+				<ul>
+					<li class="mouseoverable">
+						<img class="lazy" data-href="img/sample1_th.jpg" src="img/blank.gif"/>
+						<noscript>
+						 	<img class="lazy" src="img/sample1_th.jpg"  width="200" height="150"/>
+						</noscript>
+					</li>
+					<li class="mouseoverable">
+						<img class="lazy" data-href="img/sample2_th.jpg" src="img/blank.gif" />
+						<noscript>
+						 	<img class="lazy" src="img/sample2_th.jpg" width="200" height="150"/>
+						</noscript>
+					</li>
+					<li class="mouseoverable">
+						<img class="lazy" data-href="img/sample3_th.jpg" src="img/blank.gif" />
+						<noscript>
+						 	<img class="lazy" src="img/sample3_th.jpg" width="200" height="150"/>
+						</noscript>
+					</li>
+					<li class="mouseoverable">
+						<img class="lazy" data-href="img/sample5_th.jpg" src="img/blank.gif" />
+						<noscript>
+						 	<img class="lazy" src="img/sample5_th.jpg" width="200" height="150"/>
+						</noscript>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</body>

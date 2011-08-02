@@ -2,9 +2,9 @@
 
 JAIL helps loading images asynchronously and it can be used to make your page load faster. 
 
-Selected images will be downloaded after the document is ready not blocking the page to render elements in your page. Images can be loaded after an event is triggered (like `click`, `mouseover`, and `scroll`) or after a specified delay.
+Selected images will be downloaded if they are visible and when they are visible inside the viewport (rectangular viewing region). Images can be loaded after an event is triggered (such as `click`, `mouseover`, and `scroll`) or after a specified delay.  It's advisable to call jail() after the DOM has been constructed (document ready).
 
-First of all, this plugin requires you to make some HTML changes. The `data-href` HTML5 data attribute should contain the location of the image, instead the `src` attribute should contain a really tiny image, like 1 pixel x 1 pixel. Also, I'd suggest to add a `noscript` block so that in case the user doesn't have Javascript enabled, the images will be displayed (progressive enhancement).
+First of all, this plugin requires you to make some HTML changes. The `data-href` attribute (HTML5 data attribute) should contain the location of the image, instead the `src` attribute should contain a placeholder such as really tiny image (E.g. 1 px x 1 px). Also, I would suggest to add a `noscript` block so that in case the user doesn't have Javascript enabled, the images will be displayed (progressive enhancement).
 
 <pre>
 	<code>
@@ -15,12 +15,12 @@ First of all, this plugin requires you to make some HTML changes. The `data-href
 	</code>
 </pre>
 
-In a basic scenario, you just need to import `jquery`, `jquery-asynchImageLoader.js` and call the function on the images you want to lazy load.
+In a basic scenario, you just need to import `jquery`, `jail.js` and call the function on the images you want to lazy load.
 
 <pre>
 	<code>
 		&lt;script src="/js/jquery.js"&gt;&lt;/script&gt;
-		&lt;script src="/js/jquery-asynchImageLoader.js"&gt;&lt;/script&gt;
+		&lt;script src="/js/jail.js"&gt;&lt;/script&gt;
 		&lt;script&gt;
 			 $(function(){
 			 	$('img.lazy').jail();
@@ -28,10 +28,10 @@ In a basic scenario, you just need to import `jquery`, `jquery-asynchImageLoader
 		&lt;/script&gt;
 	</code>
 </pre>
-
-If you inspect the HTTP requests, you'll see how the images are loaded after the DOM is ready.
 
-You can add additional configuration options when you initially call the `asynchImageLoader` function (or 'jail' function):
+You will verify how only the visible images are loaded after the DOM is ready.
+
+You can add additional configuration options when you initially call jail():
 
 * `timeout`     : number of msec after that the images will be loaded - Default: `10`
 * `effect`      : any jQuery effect that makes the images display (e.g. "fadeIn") - Default: `NULL`
@@ -50,18 +50,18 @@ You can add additional configuration options when you initially call the `asynch
 
 Here are some examples in order to have a better understanding of how the plugin works
 
-### Load images on click, fade them in, and execute the `SA.setActive` callback
+### Load images after clicking on anchor with id 'link'. The images will fade in with speed 500. Placeholder specified.
 
 <pre>
 	<code>
 		&lt;script&gt;
 			$(function(){
-				$('img.lazy').asynchImageLoader({
+				$('img.lazy').jail({
 					selector:'a#link',
 					event: 'click',
 					effect: 'fadeIn',
 					speed : 500,
-					placeholder : 'img/loader.gif'
+					placeholder : 'img/loader.gif',
 					callback : SA.setActive
 				});
 			});
@@ -91,7 +91,7 @@ The above example showcases the default `event` behavior (`load+scroll`)
 	<code>
 		&lt;script&gt;
 			$(function(){
-				$('img.lazy').asynchImageLoader({
+				$('img.lazy').jail({
 					selector:'#my_container',
 					event: 'scroll'
 				});
@@ -115,13 +115,28 @@ The above example showcases the default `event` behavior (`load+scroll`)
 	</code>
 </pre>
 
+### Load image after mouse-overing on the placeholder
+
+<pre>
+	<code>
+		&lt;script&gt;
+			$(function(){
+				$('img.lazy').jail({
+					event: 'mouseover',
+					placeholder : 'img/loader.gif'
+				});
+			});
+		&lt;/script&gt;
+	</code>
+</pre>
+
 ### Load the images that are up to 300px below the window or up the window
 
 <pre>
 	<code>
 		&lt;script&gt;
 			$(function(){
-				$('img.lazy').asynchImageLoader({
+				$('img.lazy').jail({
 					offset : 300
 				});
 			});
@@ -135,7 +150,7 @@ The above example showcases the default `event` behavior (`load+scroll`)
 	<code>
 		&lt;script&gt;
 			$(function(){
-				$('img.lazy').asynchImageLoader({
+				$('img.lazy').jail({
 					callback : (function(){alert("All the images are loaded");}),
 					callbackAfterEachImage : function() {alert("one image is loaded");}
 				});
@@ -176,3 +191,7 @@ Version 0.8 released - jail() function, fixed critical issue on v0.7, resizing f
 # Update 13/05/2011:
 
 Version 0.9 released - callback fixes + support for callbackAfterEachImage parameter
+
+# Update 2/08/2011:
+
+Version 0.9.5 released - Issues around images visible inside a container or inside an iframe been fixed. JS filename changed into jail.js.

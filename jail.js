@@ -67,13 +67,13 @@
 *
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
-* @date 13/05/2011
-* @version 0.9 
+* @date 01/08/2011
+* @version 0.9.5 
 *
 */
 
 /*globals window,jQuery,setTimeout,clearTimeout */
-(function($){
+;(function($){
 	var $window = $(window);
 
 	$.fn.asynchImageLoader = $.fn.jail = function(options) {
@@ -88,7 +88,8 @@
 			event : 'load+scroll',
 			callback : jQuery.noop,
 			callbackAfterEachImage : jQuery.noop,
-			placeholder : false
+			placeholder : false,
+			container : window
 		}, options);
 
 		var images = this;
@@ -260,7 +261,7 @@
 		// Function that checks if the images have been loaded
 		_loadImageIfVisible : function(options, image, triggerEl) {
 			var $img = $(image),
-			container = (options.event === 'scroll' ? triggerEl : $window);
+			container = (/scroll/i.test(options.event)) ? triggerEl : $window;
 
 			if ($.asynchImageLoader._isInTheScreen (container, $img, options.offset)) {
 				$.asynchImageLoader._loadImage(options, $img);

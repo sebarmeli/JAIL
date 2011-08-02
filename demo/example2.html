@@ -3,38 +3,12 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
-		<title>jQuery Asynch Image Loader - Example 1</title>
+		<title>jQuery Asynch Image Loader - Example 2 - Images loaded after click on a link</title>
 		<link href="css/style.css" rel="stylesheets" />
-		<script>
-			(function(){
-				var dd = document.documentElement;
-				dd.className += ((dd.className == "") ? "js" : " nojs");
-			}());
-		</script>
 		<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
-		<script type="text/javascript" src="../JqueryAsynchImageLoader.js"></script>
+		<script type="text/javascript" src="../jail.js"></script>
 		<script type="text/javascript">
 			$(function(){
-				if (!window.SA){window.SA = {};}
-
-				//Callback for the tabs (not related with the plugin)
-				SA.setActive = function (options, imgs) {
-
-					if (!$(this).hasClass('active')) {
-						$(this).removeClass('inactive');
-						$(this).addClass('active');
-						return false;
-					};
-
-					if ($(this).hasClass('active')) {
-						$(this).removeClass('active');
-						$(this).addClass('inactive');
-						$(imgs).hide();
-						return false;
-					} 
-
-				};
-
 				$('img.lazy').each(function(i){
 					$(this).jail({
 						selector:'a#link' + (i + 1), 
@@ -53,7 +27,7 @@
 	<body>
 		<div id="wrapper">
 			<div class="content">
-				<p> Images loaded after click on the link</p>
+				<p> Image loaded after click on the link</p>
 				<ul>
 					<li class="group">
 						<a class="link" id="link1" href="#div1">Link1 </a>
