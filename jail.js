@@ -306,7 +306,7 @@
 			}
 			
 			// Callback after each image is loaded
-			options.callbackAfterEachImage.call(this, options);
+			options.callbackAfterEachImage.call(this, $img, options);
 		}
 	};
 }(jQuery));
