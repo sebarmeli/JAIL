@@ -192,6 +192,6 @@ Version 0.8 released - jail() function, fixed critical issue on v0.7, resizing f
 
 Version 0.9 released - callback fixes + support for callbackAfterEachImage parameter
 
-# Update 2/08/2011:
+# Update 3/08/2011:
 
 Version 0.9.5 released - Issues around images visible inside a container or inside an iframe been fixed. JS filename changed into jail.js.
