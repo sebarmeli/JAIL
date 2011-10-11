@@ -45,6 +45,7 @@ You can add additional configuration options when you initially call jail():
 * `callbackAfterEachImage`    : function that will be called after each image is loaded - Default: ""
 * `placeholder` : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
 * 'offset'      : an offset of "500" would cause any images that are less than 500px below the bottom of the window or 500px above the top of the window to load. - Default: 0
+* 'ignoreHiddenImages' : boolean to ignore hidden images to be loaded - Default: false (so hidden images are loaded)
 
 ## More Examples
 
@@ -159,6 +160,18 @@ The above example showcases the default `event` behavior (`load+scroll`)
 	</code>
 </pre>
 
+## Ignore hidden images to be loaded (images with or under a "display:none" or with hidden "visibility" or not visible inside a "overflow:hidden" element)
+<pre>
+	<code>
+		&lt;script&gt;
+			$(function(){
+				$('img.lazy').jail({
+					ignoreHiddenImages : true
+				});
+			});
+		&lt;/script&gt;
+	</code>
+</pre>
 
 ## Tests
 
@@ -195,3 +208,7 @@ Version 0.9 released - callback fixes + support for callbackAfterEachImage param
 # Update 3/08/2011:
 
 Version 0.9.5 released - Issues around images visible inside a container or inside an iframe been fixed. JS filename changed into jail.js.
+
+# Update 12/10/2011:
+
+Version 0.9.7 released - Issue 16 fixed, "ignoreHiddenImages" parameter added and "container" parameter removed.

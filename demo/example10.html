@@ -3,14 +3,15 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
-		<title>jQuery Asynch Image Loader - Example 10 - Images loaded after scolling inside container</title>
+		<title>jQuery Asynch Image Loader - Example 10 - Images loaded after scrolling inside container</title>
 		<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
 		<script type="text/javascript" src="../jail.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				$('img.lazy').jail({
 					selector : $('div.content'),
-					event : 'load+scroll'
+					event : 'load+scroll',
+					timeout : 100
 				});
 			});
 		</script>

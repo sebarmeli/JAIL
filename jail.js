@@ -59,6 +59,7 @@
 * - callback : function that will be called after all the images are loaded - Default: ""
 * - callbackAfterEachImage : function that will be called after an image is loaded - Default: ""
 * - placeholder: location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
+* - ignoreHiddenImages: boolean to ignore hidden images to be loaded - Default: false (so hidden images are loaded)
 *
 *
 * Tested with jQuery 1.3.2+ on FF 2/3, Opera 10+, Safari 4+, Chrome on Mac and IE 6/7/8 on Win.
@@ -67,8 +68,8 @@
 *
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
-* @date 03/08/2011
-* @version 0.9.5 
+* @date 12/10/2011
+* @version 0.9.7 
 *
 */
 
@@ -89,7 +90,7 @@
 			callback : jQuery.noop,
 			callbackAfterEachImage : jQuery.noop,
 			placeholder : false,
-			container : window
+			ignoreHiddenImages : false
 		}, options);
 
 		var images = this;
@@ -146,7 +147,7 @@
 			images = e.data.images;
 
 			// Load images
-			$.asynchImageLoader._loadImage(options, $img);
+			$.asynchImageLoader._loadImageIfVisible(options, $img);
 
 			// Image has been loaded so there is no need to listen anymore
 			$img.unbind( options.event, $.asynchImageLoader._loadOnEvent );
@@ -252,18 +253,23 @@
 		
 		_launchCallback : function(images, options) {
 			if (images.length === 0 && !$.jail.isCallback) {
-					//Callback call
-					options.callback.call(this, options);
-					$.jail.isCallback = true;
+				//Callback call
+				options.callback.call(this, options);
+				$.jail.isCallback = true;
 			}
 		},
 
 		// Function that checks if the images have been loaded
 		_loadImageIfVisible : function(options, image, triggerEl) {
 			var $img = $(image),
-			container = (/scroll/i.test(options.event)) ? triggerEl : $window;
-
-			if ($.asynchImageLoader._isInTheScreen (container, $img, options.offset)) {
+				container = (/scroll/i.test(options.event)) ? triggerEl : $window,
+				isVisible = true;
+				
+			if (options.ignoreHiddenImages) {
+				isVisible = $.jail._isVisibleInOverflownContainer($img, options) && $img.is(":visible");
+			}
+				
+			if(isVisible && $.asynchImageLoader._isInTheScreen (container, $img, options.offset)) {
 				$.asynchImageLoader._loadImage(options, $img);
 			}
 			
@@ -307,6 +313,27 @@
 			
 			// Callback after each image is loaded
 			options.callbackAfterEachImage.call(this, $img, options);
+		},
+		
+		_isVisibleInOverflownContainer : function($img, options){
+			
+			var parent = $img.parent(),
+				isVisible = true;
+			while (parent.get(0).tagName !== "BODY") {
+				if (parent.css("overflow") === "hidden") {
+					if (!$.jail._isInTheScreen(parent, $img, options.offset)) {
+						isVisible = false;
+						break;
+					}
+				}
+				
+				if (parent.css("visibility") === "hidden" || $img.css("visibility") === "hidden") {
+					isVisible = false;
+					break;
+				}
+				parent = parent.parent();
+			}
+			return isVisible;
 		}
 	};
 }(jQuery));
