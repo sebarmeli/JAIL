@@ -1,0 +1,35 @@
+{
+	"name": "jail",
+	"version": "0.9.8",
+	"title": "JAIL - Jquery Asynchronous Image Loader",
+	"author": {
+		"name": "Sebastiano Armeli-Battana",
+		"url": "https://www.sebastianoarmelibattana.com"
+	},
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "https://github.com/sebarmeli/JAIL/blob/master/MIT-LICENSE.txt"
+		}
+	],
+	"dependencies": {
+		"jquery": "1"
+	},
+	"description": "The main purpose of this plugin to animate color properties on elements using jQuery's .animate()",
+	"keywords": [
+		"asynchronous",
+		"images",
+		"loader"
+	],
+	"homepage": "https://github.com/sebarmeli/JAIL",
+	"contributors": [
+		{
+			"name": "Derek Lindahl",
+			"url": "https://github.com/dlindahl"
+		}
+	],
+	"files": [
+		"jail.js",
+		"jail.min.js"
+	]
+}
