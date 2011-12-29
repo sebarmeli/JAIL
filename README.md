@@ -44,10 +44,10 @@ You can add additional configuration options when you initially call jail():
 * `callback`    : function that will be called after all the images are loaded - Default: ""
 * `callbackAfterEachImage`    : function that will be called after each image is loaded - Default: ""
 * `placeholder` : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
-* 'offset'      : an offset of "500" would cause any images that are less than 500px below the bottom of the window or 500px above the top of the window to load. - Default: 0
-* 'loadHiddenImages' : boolean to load hidden images - Default: false (so hidden images are not loaded)
+* `offset`      : an offset of "500" would cause any images that are less than 500px below the bottom of the window or 500px above the top of the window to load. - Default: 0
+* `loadHiddenImages` : boolean to load hidden images - Default: false (so hidden images are not loaded)
 
-## More Examples
+## Examples
 
 Here are some examples in order to have a better understanding of how the plugin works
 
@@ -160,7 +160,7 @@ The above example showcases the default `event` behavior (`load+scroll`)
 	</code>
 </pre>
 
-## Ignore hidden images to be loaded (images with or under a "display:none" or with hidden "visibility" or not visible inside a "overflow:hidden" element)
+### Ignore hidden images to be loaded (images with or under a "display:none" or with hidden "visibility" or not visible inside a "overflow:hidden" element)
 <pre>
 	<code>
 		&lt;script&gt;
@@ -176,3 +176,15 @@ The above example showcases the default `event` behavior (`load+scroll`)
 ## Tests
 
 You can run tests by pointing your web browser at `[location of JAIL]/test/test.html`
+
+## AMD
+
+Plugin supports AMD through define() method. You can call the plugin using RequireJS for example, see 'example14' and 'example15' in the 'demo' folder.
+
+## package.json
+
+Json file defining the plugin that will be used by plugins.jquery.com
+
+## Licence
+
+MIT License - see MIT-LICENSE.txt
