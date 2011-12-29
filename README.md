@@ -1,14 +1,14 @@
-# jQuery Asynchronous Image Loader (JAIL)
+# Jquery Asynchronous Image Loader (JAIL)
 
 JAIL helps loading images asynchronously and it can be used to make your page load faster. 
 
 Selected images will be downloaded if they are visible and when they are visible inside the viewport (rectangular viewing region). Images can be loaded after an event is triggered (such as `click`, `mouseover`, and `scroll`) or after a specified delay.  It's advisable to call jail() after the DOM has been constructed (document ready).
 
-First of all, this plugin requires you to make some HTML changes. The `data-href` attribute (HTML5 data attribute) should contain the location of the image, instead the `src` attribute should contain a placeholder such as really tiny image (E.g. 1 px x 1 px). Also, I would suggest to add a `noscript` block so that in case the user doesn't have Javascript enabled, the images will be displayed (progressive enhancement).
+First of all, this plugin requires you to make some HTML changes. The `data-src` ('data-href' until version 0.9.8) attribute (HTML5 data attribute) should contain the location of the image, instead the `src` attribute should contain a placeholder such as really tiny image (E.g. 1 px x 1 px). Also, I would suggest to add a `noscript` block so that in case the user doesn't have Javascript enabled, the images will be displayed (progressive enhancement).
 
 <pre>
 	<code>
-		&lt;img class="lazy" src="/img/blank.gif" data-href="/img/image1.jpg" &gt;
+		&lt;img class="lazy" src="/img/blank.gif" data-src="/img/image1.jpg" &gt;
 		&lt;noscript&gt;
 			&lt;img src="/img/image1.jpg" &gt;
 		&lt;noscript&gt;
@@ -29,7 +29,7 @@ In a basic scenario, you just need to import `jquery`, `jail.js` and call the fu
 	</code>
 </pre>
 
-You will verify how only the visible images are loaded after the DOM is ready.
+You will verify how only the visible images are loaded after the DOM is ready. As soon other images become available in the viewport, they are lazy loaded.
 
 You can add additional configuration options when you initially call jail():
 
@@ -39,13 +39,13 @@ You can add additional configuration options when you initially call jail():
   **NOTE:** If you are loading a large number of images, it is best to NOT use this setting. Effects calls are very expensive. Even a simple `show()` can have a major impact on the browser's responsiveness.
 
 * `speed`       : string or number determining how long the animation will run  - Default: 400
-* `selector`    : selector that you need to bind the trigger event - Default: `NULL`
-* `event`       : event : event that triggers the image to load. You can choose `load`, `load+scroll`, `click`, `mouseover`, or `scroll`. Default: `load+scroll`
+* `triggerElement`    : selector that you need to bind the trigger event - Default: `NULL`
+* `event`       : event : event that triggers the image to load. You can choose `load`, `click`, `mouseover`, `scroll`,.... Default: `load`
 * `callback`    : function that will be called after all the images are loaded - Default: ""
 * `callbackAfterEachImage`    : function that will be called after each image is loaded - Default: ""
 * `placeholder` : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
 * 'offset'      : an offset of "500" would cause any images that are less than 500px below the bottom of the window or 500px above the top of the window to load. - Default: 0
-* 'ignoreHiddenImages' : boolean to ignore hidden images to be loaded - Default: false (so hidden images are loaded)
+* 'loadHiddenImages' : boolean to load hidden images - Default: false (so hidden images are not loaded)
 
 ## More Examples
 
@@ -58,7 +58,7 @@ Here are some examples in order to have a better understanding of how the plugin
 		&lt;script&gt;
 			$(function(){
 				$('img.lazy').jail({
-					selector:'a#link',
+					triggerElement:'a#link',
 					event: 'click',
 					effect: 'fadeIn',
 					speed : 500,
@@ -77,7 +77,7 @@ Here are some examples in order to have a better understanding of how the plugin
 		&lt;script&gt;
 			$(function(){
 				$('img.lazy').jail({
-					selector : '#my_container'
+					triggerElement : '#my_container'
 				});
 			});
 		&lt;/script&gt;
@@ -93,7 +93,7 @@ The above example showcases the default `event` behavior (`load+scroll`)
 		&lt;script&gt;
 			$(function(){
 				$('img.lazy').jail({
-					selector:'#my_container',
+					triggerElement:'#my_container',
 					event: 'scroll'
 				});
 			});
@@ -166,7 +166,7 @@ The above example showcases the default `event` behavior (`load+scroll`)
 		&lt;script&gt;
 			$(function(){
 				$('img.lazy').jail({
-					ignoreHiddenImages : true
+					loadHiddenImages : true
 				});
 			});
 		&lt;/script&gt;
@@ -176,39 +176,3 @@ The above example showcases the default `event` behavior (`load+scroll`)
 ## Tests
 
 You can run tests by pointing your web browser at `[location of JAIL]/test/test.html`
-
-# Update 20/01/2011:
-
-Version 0.2 released - HTML5 data attribute `data-href` used instead of `name` attribute
-
-# Update 21/01/2011:
-
-Version 0.4 released - Added ability to detect scroll on containing elements instead of just `window`. Plus, lots of refactoring. (Contributor : Derek Lindahl - dlindahl)
-
-# Update 27/01/2011:
-
-Version 0.5 released - 'Delay' configuration removed, critical fix on unbind method, refactoring to pass JSLint without warnings.
-
-# Update 05/02/2011:
-
-Version 0.6 released - Fixed a critical issue on "effect" configuration
-
-# Update 19/02/2011:
-
-Version 0.7 released - Added "offset" configuration
-
-# Update 03/04/2011:
-
-Version 0.8 released - jail() function, fixed critical issue on v0.7, resizing function, scrolling fixes
-
-# Update 13/05/2011:
-
-Version 0.9 released - callback fixes + support for callbackAfterEachImage parameter
-
-# Update 3/08/2011:
-
-Version 0.9.5 released - Issues around images visible inside a container or inside an iframe been fixed. JS filename changed into jail.js.
-
-# Update 12/10/2011:
-
-Version 0.9.7 released - Issue 16 fixed, "ignoreHiddenImages" parameter added and "container" parameter removed.
