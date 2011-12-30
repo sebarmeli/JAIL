@@ -4,7 +4,7 @@ JAIL helps loading images asynchronously and it can be used to make your page lo
 
 Selected images will be downloaded if they are visible and when they are visible inside the viewport (rectangular viewing region). Images can be loaded after an event is triggered (such as `click`, `mouseover`, and `scroll`) or after a specified delay.  It's advisable to call jail() after the DOM has been constructed (document ready).
 
-First of all, this plugin requires you to make some HTML changes. The `data-src` ('data-href' until version 0.9.8) attribute (HTML5 data attribute) should contain the location of the image, instead the `src` attribute should contain a placeholder such as really tiny image (E.g. 1 px x 1 px). Also, I would suggest to add a `noscript` block so that in case the user doesn't have Javascript enabled, the images will be displayed (progressive enhancement).
+First of all, this plugin requires you to make some HTML changes. The `data-src` ('data-href' prior version 0.9.8) attribute (HTML5 data attribute) should contain the location of the image, instead the `src` attribute should contain a placeholder such as a really tiny image (E.g. 1 px x 1 px). Also, I would suggest to add a `noscript` block so that in case the user doesn't have Javascript enabled, the images will be displayed (progressive enhancement).
 
 <pre>
 	<code>
@@ -29,7 +29,7 @@ In a basic scenario, you just need to import `jquery`, `jail.js` and call the fu
 	</code>
 </pre>
 
-You will verify how only the visible images are loaded after the DOM is ready. As soon other images become available in the viewport, they are lazy loaded.
+You will verify how only the visible images are loaded after the DOM is ready. As soon other images become available in the viewport (for instance scrolling down), they are lazy loaded.
 
 You can add additional configuration options when you initially call jail():
 
@@ -40,7 +40,7 @@ You can add additional configuration options when you initially call jail():
 
 * `speed`       : string or number determining how long the animation will run  - Default: 400
 * `triggerElement`    : selector that you need to bind the trigger event - Default: `NULL`
-* `event`       : event : event that triggers the image to load. You can choose `load`, `click`, `mouseover`, `scroll`,.... Default: `load`
+* `event`       : event : event that triggers the image to load. You can choose among `load`, `click`, `mouseover`, 'scroll', etc. Default: `load`
 * `callback`    : function that will be called after all the images are loaded - Default: ""
 * `callbackAfterEachImage`    : function that will be called after each image is loaded - Default: ""
 * `placeholder` : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""
@@ -70,23 +70,8 @@ Here are some examples in order to have a better understanding of how the plugin
 	</code>
 </pre>
 
-### Initially load the visible images within `#my_container`. Then, as `#my_container` is scrolled, load the images that become visible
 
-<pre>
-	<code>
-		&lt;script&gt;
-			$(function(){
-				$('img.lazy').jail({
-					triggerElement : '#my_container'
-				});
-			});
-		&lt;/script&gt;
-	</code>
-</pre>
-
-The above example showcases the default `event` behavior (`load+scroll`)
-
-### Once the `#my_container` element has been scrolled, load the newly visible images
+### Initially load the visible images within `#my_container`. Then, as `#my_container` is scrolled (let's say it has scrolling bars), load the images that become visible
 
 <pre>
 	<code>
@@ -101,22 +86,21 @@ The above example showcases the default `event` behavior (`load+scroll`)
 	</code>
 </pre>
 
-### Immediately load the visible images and then, after 1 second has passed, load the hidden images
+### After 1 second the hidden images are loaded
 
 <pre>
 	<code>
 		&lt;script&gt;
 			$(function(){
 				$('img.lazy').jail({
-					timeout : 1000,
-					event: 'load'
+					timeout : 1000
 				});
 			});
 		&lt;/script&gt;
 	</code>
 </pre>
 
-### Load image after mouse-overing on the placeholder
+### Load images after mouse-overing on the placeholder for the image
 
 <pre>
 	<code>
