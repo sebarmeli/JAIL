@@ -2,6 +2,7 @@ JAIL 0.9.9 (30/12/2011)
 -----------------------	-
 - fixed issue with callback
 - fixed issue with the use of '$' (AMD case)
+- 'scroll' event managed in a better way
 
 JAIL 0.9.8 (29/12/2011) 
 -----------------------	-
