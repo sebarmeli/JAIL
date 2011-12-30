@@ -14,12 +14,12 @@
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
 * @date 30/12/2011
-* @version 0.9.8
+* @version 0.9.9
 *
 */
 (function ( name, definition ){
 	// jquery plugin pattern - AMD + CommonJS - by Addy Osmani (https://github.com/addyosmani/jquery-plugin-patterns/blob/master/amd+commonjs/pluginCore.js)
-	var theModule = definition(),
+	var theModule = definition(jQuery),
 		hasDefine = typeof define === 'function' && define.amd;
 
 	if ( hasDefine ){  
@@ -30,9 +30,7 @@
 		( this.jQuery || this.$ || this )[name] = theModule;
 	}
 }( 'jail', function ($) {
-	var $ = window.jQuery,
-	
-		$window = $( window ),
+	var $window = $( window ),
 		
 		// Defaults parameters
 		defaults = {
@@ -48,8 +46,8 @@
 			loadHiddenImages : false
 		},
 		
-		// current stack of images	
-		currentStack = {},
+		// current stack of images
+		currentStack = [],
 		
 		// true if 'callback' fn is called
 		isCallbackDone = false;
@@ -64,12 +62,12 @@
 
 		var elements = elements || {},
 			options = $.extend( {}, defaults, options );
-		
+	
 		// Initialize plugin
-		$.jail.prototype.init(elements, options);
+		$.jail.prototype.init( elements, options );
 		
 		// When the event is not specified the images will be loaded with a delay
-		if(/^load/.test( options.event )) {
+		if(/^(load|scroll)/.test( options.event )) {
 			// 'load' event
 			$.jail.prototype.later.call( elements, options );
 		} else {
@@ -84,9 +82,6 @@
 	*/
 	$.jail.prototype.init = function( elements, options ) {
 		
-		// Store the current images into the currentStack object
-		currentStack = $.extend( {},elements );
-		
 		// Store the selector triggering jail into 'triggerEl' data for the images selected 
 		elements.data("triggerEl", ( options.triggerElement ) ? $( options.triggerElement ) : $window );
 		
@@ -100,22 +95,40 @@
 	
 		
 	/* 
-	* Function called when 'event' is different from "load"
+	* Function called when 'event' is different from "load". Two scenarios:
+	* a) Element triggering the images to be loaded (events available on the element: "click", "mouseover", "scroll")
+	* b) Event on the image itself triggering the image to be loaded
 	*
 	* @param options : configurations object
 	*/
 	$.jail.prototype.onEvent = function( options ) {
+		var images = this;
 		
 		if (!!options.triggerElement) {
-			_bindEvent( options, this );
+			
+			// Event on the 'triggerElement' obj
+			_bindEvent( options, images );
 		} else {
-			// Bind the event to the images
-			this.bind( options.event, {options:options}, _loadOnEvent );
+			
+			// Event on the image itself
+			images.bind( options.event, {options: options, images: images}, function(e){
+				var $img = $(this),
+					options = e.data.options,
+					images = e.data.images;
+				
+				currentStack = $.extend( {}, images );
+				
+				// Load the image
+				_loadImage( options, $img );
+
+				// Image has been loaded so there is no need to listen anymore
+				$(e.currentTarget).unbind( e.type );
+			});
 		}
 	};
 	
 	/* 
-	* Method called when "event" is equals to "load" (default). The visible image will be loaded
+	* Method called when "event" is equals to "load" (default). The visible images will be loaded
 	* after a specified timeout (or after 1 ms). The scroll method will be bound to the window to load 
 	* the images not visible onload.
 	*
@@ -126,35 +139,40 @@
 
 		// After [timeout] has elapsed, load the visible images
 		setTimeout(function() {
+			
+			currentStack = $.extend( {}, images );
+			
+			//Load the visible ones
 			images.each(function(){
-				_loadImageIfVisible( options, this, images.data("triggerEl") );
+				_loadImageIfVisible( options, this, images );
 			});
 			
-			options.event = "scroll"
-			_bindEvent( options, currentStack );
+			// When images become available (scrolling or resizing), they will be loaded 
+			options.event = "scroll";
+			_bindEvent( options, images );
+			
 		}, options.timeout);
 	};
 		
 	/* 
-	* Bind event to the element stored in the "triggerEl" data: the window object or the element 
-	* defined in the "triggerElement" parameter
+	* Bind _bufferedEventListener() to the event on window/triggerElement. The handler is bound to resizing the 
+	* window as well
 	*
-	* @param eventType : event name
 	* @param options : configurations object
 	* @param images : images in the current stack
 	*/
 	function _bindEvent ( options, images ) {
 		if (!!images) {
-			var triggerEl = $(images).data("triggerEl");
+			var triggerEl = images.data("triggerEl");
 		}
 		
 		// Check if there are images to load
-		if (!!triggerEl) {
-			triggerEl.bind( options.event, {options:options, images : currentStack}, _bufferedEventListener );
-			$window.resize( {options:options}, _bufferedEventListener );
+		if (!!triggerEl && typeof triggerEl.bind === "function") {
+			triggerEl.bind( options.event, {options:options, images : images}, _bufferedEventListener );
+			$window.resize( {options:options, images : images}, _bufferedEventListener );
 		}
 	}
-		
+
 	/* 
 	* Remove any elements that have been loaded from the jQuery stack.
 	* This should speed up subsequent calls by not having to iterate over the loaded elements.
@@ -165,56 +183,74 @@
 		// number of images not loaded
 		var i = 0;
 
-		while(true) {
-			if(i === stack.length) {
-				break;
-			} else {
-				if(stack[i].getAttribute('data-src')) {
-					i++;
+		if (stack.length > 0) {
+			while(true) {
+				if(i ===  stack.length) {
+					break;
 				} else {
-					stack.splice( i, 1 );
+					if(stack[i].getAttribute('data-src')) {
+						i++;
+					} else {
+						stack.splice( i, 1 );
+					}
 				}
 			}
 		}
 	}
 
 	/* 
-	* Load the image - after the event is triggered on the image itself 
-	*
-	* @param e : event
-	*/
-	function _loadOnEvent (e) {
-		var $img = $(this),
-			options = e.data.options;
-
-		// Load the image
-		_loadImageIfVisible( options, $img );
-		
-		// Image has been loaded so there is no need to listen anymore
-		$img.unbind( e.type );
-	}
-
-	/* 
-	* Event handler for remaining images - load visible images
+	* Event handler for the images to be loaded. Function called when 
+	* there is a triggerElement or when there are images to be loaded after scrolling 
+	* or resizing window/container 
 	*
 	* @param e : event
 	*/
 	function _bufferedEventListener (e) {
 		var images = e.data.images,
 			options = e.data.options;
-		
-		if (currentStack.length === 0) {
-			$(this).unbind( e.type );
-			return;
-		}
-		
-		$(images).each( function(){
-			// Fix to block window inside this loop
-			if ( this === window ) {
+
+		images.data('poller', setTimeout(function() {
+			currentStack = $.extend( {}, images );
+			_purgeStack(currentStack);
+			
+			// Load only the images left
+			$(currentStack).each(function (){
+				_loadImageIfVisible(options, this, currentStack);
+			});
+			
+			//Unbind when there are no images
+			if ( _isAllImagesLoaded (currentStack) ) {
+				$(e.currentTarget).unbind( e.type );
 				return;
+			} 
+			// When images are not in the viewport, let's load them when they become available
+			else if (options.event !== "scroll"){
+			
+				// When images become available (scrolling or resizing), they will be loaded 
+				var container = (/scroll/i.test(options.event)) ? images.data("triggerEl") : $window;
+			
+				options.event = "scroll";
+				images.data("triggerEl", container);
+				_bindEvent( options, $(currentStack) );
 			}
-			_loadImageIfVisible( options, this, $(this).data("triggerEl") );
+		}, options.timeout));
+	}
+	
+	/* 
+	* Check if the images are loaded
+	*
+	* @param images : images under analysis
+	* @return boolean
+	*/
+	function _isAllImagesLoaded ( images ) {
+		var bool = true;
+		
+		$(images).each(function(){
+			if ( !!$(this).attr("data-src") ) {
+				bool = false;
+			}
 		});
+		return bool;
 	}
 
 	/* 
@@ -222,24 +258,25 @@
 	*
 	* @param options : configurations object
 	* @param image : image under analysis
-	* @param triggerEl : element triggering jail or '$window'
+	* @param images : list of images to load
 	*/
-	function _loadImageIfVisible ( options, image, triggerEl ) {
+	function _loadImageIfVisible ( options, image, images ) {
 		var $img = $(image),
-			container = (/scroll/i.test(options.event)) ? triggerEl : $window,
+			// if scroll event grab the 'triggerEl' data
+			container = (/scroll/i.test(options.event)) ? images.data("triggerEl") : $window,
 			isVisible = true;
-		
+
 		// If the hidden images are not loaded ...
 		if ( !options.loadHiddenImages ) {
-			isVisible = _isVisibleInContainer($img, container, options) && $img.is(":visible");
+			isVisible = _isVisibleInContainer( $img, container, options ) && $img.is(":visible");
 		}
 		
-		// Load the image if it's visible	
-		if(isVisible && _isInTheScreen ( container, $img, options.offset )) {
+		// Load the image if it is visible	
+		if( isVisible && _isInTheScreen( container, $img, options.offset ) ) {
 			_loadImage( options, $img );
 		}
 	}
-
+	
 	/* 
 	* Function that returns true if the image is visible inside the "window" (or specified container element)
 	*
@@ -271,7 +308,6 @@
 	* @param $img : image selected - jQuery obj
 	*/
 	function _loadImage ( options, $img ) {
-
 		$img.hide();
 		$img.attr("src", $img.attr("data-src"));
 		$img.removeAttr('data-src');
@@ -283,21 +319,21 @@
 			} else {
 				$img[options.effect]();
 			}
+			$img.css("opacity", 1);
+			$img.show();
 		} else {
 			$img.show();
 		}
 		
-		// Remove an image from the currentStack
-		_purgeStack( currentStack );
+		_purgeStack(currentStack);
 		
 		// Callback after each image is loaded
 		if ( !!options.callbackAfterEachImage ) {
 			options.callbackAfterEachImage.call( this, $img, options );
 		}
 		
-		// Callback after all images are loaded
-		if ( currentStack.length === 0 && !!options.callback && !isCallbackDone ) {
-			options.callback.call( $.fn.jail, options );
+		if ( _isAllImagesLoaded (currentStack) && !!options.callback && !isCallbackDone ) {
+			options.callback.call($.jail, options);
 			isCallbackDone = true;
 		}
 	}
@@ -325,10 +361,10 @@
 			} else if ( parent.css("overflow") === "scroll" ) {
 				if (!_isInTheScreen(parent, $img, options.offset)) {
 					isVisible = false;
-					currentStack.data("triggerEl", parent);
+					$(currentStack).data("triggerEl", parent);
 					
 					options.event = "scroll";
-					_bindEvent(options, currentStack);
+					_bindEvent(options, $(currentStack));
 					break;
 				}
 			}
@@ -353,6 +389,9 @@
 	$.fn.jail = function( options ) {
 
 		new $.jail( this, options );
+		
+		// Empty current stack
+		currentStack = [];
 		
 		return this;
 	};
