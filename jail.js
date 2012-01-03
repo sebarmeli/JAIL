@@ -215,6 +215,9 @@
 			
 			// Load only the images left
 			$(currentStack).each(function (){
+				if (this === window) {
+					return;
+				}
 				_loadImageIfVisible(options, this, currentStack);
 			});
 			
