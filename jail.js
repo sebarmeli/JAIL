@@ -311,34 +311,38 @@
 	* @param $img : image selected - jQuery obj
 	*/
 	function _loadImage ( options, $img ) {
-		$img.hide();
-		$img.attr("src", $img.attr("data-src"));
-		$img.removeAttr('data-src');
+		var cache = new Image();
+		cache.onload = function() {
+			$img.hide().attr("src", cache.src);
 
-		// Images loaded with some effect if existing
-		if(options.effect) {
-			if (options.speed) {
-				$img[options.effect](options.speed);
+			$img.removeAttr('data-src');
+
+			// Images loaded with some effect if existing
+			if(options.effect) {
+				if (options.speed) {
+					$img[options.effect](options.speed);
+				} else {
+					$img[options.effect]();
+				}
+				$img.css("opacity", 1);
+				$img.show();
 			} else {
-				$img[options.effect]();
+				$img.show();
 			}
-			$img.css("opacity", 1);
-			$img.show();
-		} else {
-			$img.show();
-		}
 		
-		_purgeStack(currentStack);
+			_purgeStack(currentStack);
 		
-		// Callback after each image is loaded
-		if ( !!options.callbackAfterEachImage ) {
-			options.callbackAfterEachImage.call( this, $img, options );
-		}
+			// Callback after each image is loaded
+			if ( !!options.callbackAfterEachImage ) {
+				options.callbackAfterEachImage.call( this, $img, options );
+			}
 		
-		if ( _isAllImagesLoaded (currentStack) && !!options.callback && !isCallbackDone ) {
-			options.callback.call($.jail, options);
-			isCallbackDone = true;
-		}
+			if ( _isAllImagesLoaded (currentStack) && !!options.callback && !isCallbackDone ) {
+				options.callback.call($.jail, options);
+				isCallbackDone = true;
+			}
+		};
+		cache.src = $img.attr("data-src");
 	}
 		
 	/* 
