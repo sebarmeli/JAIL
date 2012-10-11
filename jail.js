@@ -169,7 +169,7 @@
 		// Check if there are images to load
 		if (!!triggerEl && typeof triggerEl.bind === "function") {
 			triggerEl.bind( options.event, {options:options, images : images}, _bufferedEventListener );
-			$window.resize( {options:options, images : images}, _bufferedEventListener );
+			$window.bind('resize', {options:options, images : images}, _bufferedEventListener );
 		}
 	}
 
