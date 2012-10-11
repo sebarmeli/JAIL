@@ -17,7 +17,7 @@
 * @version 0.9.9
 *
 */
-(function ( name, definition ){
+;(function ( name, definition ){
 	// jquery plugin pattern - AMD + CommonJS - by Addy Osmani (https://github.com/addyosmani/jquery-plugin-patterns/blob/master/amd+commonjs/pluginCore.js)
 	var theModule = definition(jQuery),
 		hasDefine = typeof define === 'function' && define.amd;
@@ -354,7 +354,7 @@
 		var parent = $img.parent(),
 			isVisible = true;
 		
-		while ( parent.get(0).nodeName.toUpperCase() !== "BODY" ) {
+		while ( parent.length && parent.get(0).nodeName.toUpperCase() !== "BODY" ) {
 			// Consider the 'overflow' property
 			if ( parent.css("overflow") === "hidden" ) {
 				if (!_isInTheScreen(parent, $img, options.offset)) {
