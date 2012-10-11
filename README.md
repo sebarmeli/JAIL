@@ -11,7 +11,7 @@ First of all, this plugin requires you to make some HTML changes. The `data-src`
 		&lt;img class="lazy" src="/img/blank.gif" data-src="/img/image1.jpg" &gt;
 		&lt;noscript&gt;
 			&lt;img src="/img/image1.jpg" &gt;
-		&lt;noscript&gt;
+		&lt;/noscript&gt;
 	</code>
 </pre>
 
