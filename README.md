@@ -169,11 +169,11 @@ You can run Jasmine specs through phantomjs with :
 
 If you don't have phantomjs, please download it from [here](http://phantomjs.org/)
 
-You can run JSHint, Jasmine specs and minification tool simply launching
+You can run JSHint, Jasmine specs and minification tool simply launching: 
 
 ```grunt```
 
 ## Licence
 Copyright (c) 2011-2012 Sebastiano Armeli-Battana
 Licensed under the MIT license.
-https://github.com/sebarmeli/JAIL/blob/master/MIT-LICENSE.txt
+(https://github.com/sebarmeli/JAIL/blob/master/MIT-LICENSE.txt)

@@ -1,3 +1,10 @@
+JAIL 1.0 (14/10/2011) 
+----------------------- -
+- Important fix inside _isVisibleInContainer() aroudn checking if the parent of the image exists
+- Grunt.js support
+- Switched from YUITest to Jasmine
+- AMD support improvements (see example 14-15)
+
 JAIL 0.9.9 (30/12/2011) 
 -----------------------	-
 - fixed issue with callback
