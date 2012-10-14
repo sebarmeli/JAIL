@@ -2,7 +2,7 @@
 
 JAIL is a jQuery plugin that lazy load images making your page load faster. 
 
-[![Build Status](https://travis-ci.org/sebarmeli/jail.png)](https://travis-ci.org/sebarmeli/jail)
+[![Build Status](https://secure.travis-ci.org/sebarmeli/JAIL.png)](http://travis-ci.org/sebarmeli/JAIL)
 
 Images are downloaded when they are visible or when they become visible inside the viewport (area you see in your browser). Images can be loaded after an event is triggered (such as `click`, `mouseover`, and `scroll`) or after a specified delay.  It's advisable to call jail() after the DOM has been constructed (document ready).
 
