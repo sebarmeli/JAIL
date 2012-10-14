@@ -29,7 +29,7 @@ module.exports = function( grunt ) {
 		jasmine : {
 	      src: ['lib/**/*.js', 'src/jail.js'],
 	      specs : 'spec/**/*Spec.js',
-	      helpers: 'spec/helpers/*.js'
+	      helpers: ['spec/helpers/jasmine-jquery.js','spec/helpers/specHelper.js']
 	    },
 
 	    lint: {
