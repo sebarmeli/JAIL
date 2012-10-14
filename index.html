@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="JAIL : jQuery Asynchronous Image Loader Plugin" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>JAIL</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/sebarmeli/JAIL">View on GitHub</a>
+
+          <h1 id="project_title">JAIL</h1>
+          <h2 id="project_tagline">jQuery Asynchronous Image Loader Plugin</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/sebarmeli/JAIL/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/sebarmeli/JAIL/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Jquery Asynchronous Image Loader (JAIL)</h1>
+
+<p>JAIL is a jQuery plugin that lazy load images making your page load faster. </p>
+
+<p>Images are downloaded when they are visible or when they become visible inside the viewport (area you see in your browser). Images can be loaded after an event is triggered (such as <code>click</code>, <code>mouseover</code>, and <code>scroll</code>) or after a specified delay.  It's advisable to call jail() after the DOM has been constructed (document ready).</p>
+
+<h2>Getting Started</h2>
+
+<p>First of all, this plugin requires you to make some HTML changes. The <code>data-src</code> attribute (HTML5 data attribute) should contain the location of the image, instead the <code>src</code> attribute should contain a placeholder such as a really tiny image (E.g. 1 px x 1 px). Also, I would suggest to add a <code>noscript</code> block so that in case the user doesn't have Javascript enabled, the images will be displayed (progressive enhancement).</p>
+
+<div class="highlight"><pre>    <span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">"lazy"</span> <span class="na">src=</span><span class="s">"/img/blank.gif"</span> <span class="na">data-src=</span><span class="s">"/img/image1.jpg"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;noscript&gt;</span>
+        <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"/img/image1.jpg"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;noscript&gt;</span>
+</pre></div>
+
+<p>In a basic scenario, you just need to import <code>jquery</code>, <code>jail.js</code> and call the jail() function on the images you want to lazy load.</p>
+
+<div class="highlight"><pre>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/lib/jquery.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/src/jail.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s1">'img.lazy'</span><span class="p">).</span><span class="nx">jail</span><span class="p">();</span>
+        <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<p>The images in the viewport are loaded straight away after the DOM is ready. As soon other images become visible in the viewport (for instance after the user scrolls down), they are lazy loaded.</p>
+
+<h2>Config</h2>
+
+<p>You can add additional configuration options when you initially call jail():</p>
+
+<ul>
+<li>
+<code>timeout</code>     : number of msec after that the images will be loaded - Default: <code>10</code>
+</li>
+<li>
+<p><code>effect</code>      : any jQuery effect that makes the images display (e.g. "fadeIn") - Default: <code>NULL</code></p>
+
+<p><strong>NOTE:</strong> If you are loading a large number of images, it is best  NOT to use this setting.</p>
+</li>
+<li><p><code>speed</code>       : string or number determining how long the animation will run  - Default: 400</p></li>
+<li><p><code>triggerElement</code>    : selector that triggers the images to be loaded - Default: <code>NULL</code></p></li>
+<li><p><code>event</code>       : event : event that triggers the image to be loaded. You can choose among <code>load</code>, <code>click</code>, <code>mouseover</code>, 'scroll', etc. Default: <code>load</code></p></li>
+<li><p><code>callback</code>    : function that will be called after all the images are loaded - Default: ""</p></li>
+<li><p><code>callbackAfterEachImage</code>    : function that will be called after each image is loaded - Default: ""</p></li>
+<li><p><code>placeholder</code> : location of an image (such a loader) you want to display while waiting for the images to be loaded - Default: ""</p></li>
+<li><p><code>offset</code>      : an offset of "500" would cause any images that are less than 500px below the bottom of the window or 500px above the top of the window to load. - Default: 0</p></li>
+<li><p><code>loadHiddenImages</code> : boolean to load hidden images - Default: false (so hidden images are not loaded)</p></li>
+</ul><h2>How to invoke jail()</h2>
+
+<p>Here are some examples on how to invoke jail() in order to have a better understanding of how the plugin works</p>
+
+<h3>Load images after clicking on anchor with id 'link'. The images will fade in with speed 500. Placeholder specified.</h3>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">'img.lazy'</span><span class="p">).</span><span class="nx">jail</span><span class="p">({</span>
+            <span class="nx">triggerElement</span><span class="o">:</span><span class="s1">'a#link'</span><span class="p">,</span>
+            <span class="nx">event</span><span class="o">:</span> <span class="s1">'click'</span><span class="p">,</span>
+            <span class="nx">effect</span><span class="o">:</span> <span class="s1">'fadeIn'</span><span class="p">,</span>
+            <span class="nx">speed</span> <span class="o">:</span> <span class="mi">500</span><span class="p">,</span>
+            <span class="nx">placeholder</span> <span class="o">:</span> <span class="s1">'img/loader.gif'</span><span class="p">,</span>
+            <span class="nx">callback</span> <span class="o">:</span> <span class="nx">SA</span><span class="p">.</span><span class="nx">setActive</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+</pre></div>
+
+<h3>Initially load the visible images within <code>#my_container</code>. Then, as you scroll inside <code>#my_container</code>, images become visible</h3>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">'img.lazy'</span><span class="p">).</span><span class="nx">jail</span><span class="p">({</span>
+            <span class="nx">triggerElement</span><span class="o">:</span><span class="s1">'#my_container'</span><span class="p">,</span>
+            <span class="nx">event</span><span class="o">:</span> <span class="s1">'scroll'</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+</pre></div>
+
+<h3>After 1 second the hidden images are loaded</h3>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">'img.lazy'</span><span class="p">).</span><span class="nx">jail</span><span class="p">({</span>
+            <span class="nx">timeout</span> <span class="o">:</span> <span class="mi">1000</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+</pre></div>
+
+<h3>Load images after mouse-overing on the placeholder for the image</h3>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">'img.lazy'</span><span class="p">).</span><span class="nx">jail</span><span class="p">({</span>
+            <span class="nx">event</span><span class="o">:</span> <span class="s1">'mouseover'</span><span class="p">,</span>
+            <span class="nx">placeholder</span> <span class="o">:</span> <span class="s1">'img/loader.gif'</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+</pre></div>
+
+<h3>Load the images that are up to 300px over/below theviewport</h3>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">'img.lazy'</span><span class="p">).</span><span class="nx">jail</span><span class="p">({</span>
+            <span class="nx">offset</span> <span class="o">:</span> <span class="mi">300</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+</pre></div>
+
+<h3>Alert saying "all the images are loaded" is called after all the images are loaded, alert saying "one image is loaded" after one image is loaded</h3>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">'img.lazy'</span><span class="p">).</span><span class="nx">jail</span><span class="p">({</span>
+            <span class="nx">callback</span> <span class="o">:</span> <span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">alert</span><span class="p">(</span><span class="s2">"All the images are loaded"</span><span class="p">);}),</span>
+            <span class="nx">callbackAfterEachImage</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="nx">alert</span><span class="p">(</span><span class="s2">"one image is loaded"</span><span class="p">);}</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+</pre></div>
+
+<h3>Ignore hidden images to be loaded (images with or under a "display:none" or with hidden "visibility" or not visible inside a "overflow:hidden" element)</h3>
+
+<div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">'img.lazy'</span><span class="p">).</span><span class="nx">jail</span><span class="p">({</span>
+            <span class="nx">loadHiddenImages</span> <span class="o">:</span> <span class="kc">true</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+</pre></div>
+
+<h2>Demo</h2>
+
+<p>You can view a few demo examples usign JAIL <a href="https://github.com/sebarmeli/JAIL/tree/master/demo">here</a></p>
+
+<h2>AMD support</h2>
+
+<p>Plugin supports AMD through define() method. If you use RequireJS (version &gt; 2.0), you can require the plugin as follows:</p>
+
+<div class="highlight"><pre><span class="nx">requirejs</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+    <span class="nx">baseUrl</span><span class="o">:</span> <span class="s1">'lib'</span><span class="p">,</span>
+    <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">app</span><span class="o">:</span> <span class="s1">'src'</span>
+    <span class="p">},</span>
+    <span class="nx">shim</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s1">'app/jail'</span><span class="o">:</span> <span class="p">[</span><span class="s1">'jquery'</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">require</span><span class="p">([</span><span class="s2">"jquery"</span><span class="p">,</span> <span class="s2">"app/jail"</span><span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">'img.lazy'</span><span class="p">).</span><span class="nx">jail</span><span class="p">();</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>For more information, you view example 14 and example 15 from the <a href="https://github.com/sebarmeli/JAIL/tree/master/demo">demo folder</a></p>
+
+<h2>Testing / Building the plugin</h2>
+
+<p>After getting node and npm, install grunt and grunt-jasmine-runner.</p>
+
+<p><code>npm install grunt</code>
+<code>npm install grunt-jasmine-runner</code></p>
+
+<p>You can run Jasmine specs through phantomjs with :</p>
+
+<p><code>grunt jasmine</code></p>
+
+<p>If you don't have phantomjs, please download it from <a href="http://phantomjs.org/">here</a></p>
+
+<p>You can run JSHint, Jasmine specs and minification tool simply launching: <code>grunt</code></p>
+
+<h2>Licence</h2>
+
+<p>Copyright (c) 2011-2012 Sebastiano Armeli-Battana
+Licensed under the MIT license.
+(<a href="https://github.com/sebarmeli/JAIL/blob/master/MIT-LICENSE.txt">https://github.com/sebarmeli/JAIL/blob/master/MIT-LICENSE.txt</a>)</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">JAIL maintained by <a href="https://github.com/sebarmeli">sebarmeli</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
