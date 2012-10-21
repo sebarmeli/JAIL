@@ -121,7 +121,7 @@
 		} else {
 			
 			// Event on the image itself
-			images.bind( options.event, {options: options, images: images}, function(e) {
+			images.bind( options.event + '.jail', {options: options, images: images}, function(e) {
 				var $img = $(this),
 					options = e.data.options,
 					images = e.data.images;
@@ -132,7 +132,7 @@
 				_loadImage( options, $img );
 
 				// Image has been loaded so there is no need to listen anymore
-				$(e.currentTarget).unbind( e.type );
+				$(e.currentTarget).unbind( e.type + '.jail' );
 			});
 		}
 	};
@@ -180,8 +180,8 @@
 		
 		// Check if there are images to load
 		if (!!triggerElem && typeof triggerElem.bind === "function") {
-			triggerElem.bind( options.event, {options:options, images : images}, _bufferedEventListener );
-			$window.bind( 'resize', {options:options, images : images}, _bufferedEventListener );
+			triggerElem.bind( options.event + '.jail', {options:options, images : images}, _bufferedEventListener );
+			$window.bind( 'resize.jail', {options:options, images : images}, _bufferedEventListener );
 		}
 	}
 
@@ -237,7 +237,7 @@
 			
 			//Unbind when there are no images
 			if ( _isAllImagesLoaded (currentStack) ) {
-				$(e.currentTarget).unbind( e.type );
+				$(e.currentTarget).unbind( e.type + '.jail' );
 				return;
 			} 
 			// When images are not in the viewport, let's load them when they become available
