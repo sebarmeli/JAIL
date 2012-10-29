@@ -1,7 +1,7 @@
 /*
 *  JAIL: jQuery Asynchronous Image Loader
 *
-* Copyright (c) 2011=12 Sebastiano Armeli-Battana (http://www.sebastianoarmelibattana.com)
+* Copyright (c) 2011-12 Sebastiano Armeli-Battana (http://www.sebastianoarmelibattana.com)
 *
 * By Sebastiano Armeli-Battana (@sebarmeli)
 * Licensed under the MIT license.
