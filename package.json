@@ -2,7 +2,7 @@
 	"name": "jail",
 	"version": "1.0.0",
 	"title": "JAIL - Jquery Asynchronous Image Loader",
-	"description": "The main purpose of this plugin to animate color properties on elements using jQuery's .animate()",
+	"description": "The main purpose of this plugin to lazy load images",
 	"author": {
 		"name": "Sebastiano Armeli-Battana",
 		"url": "https://www.sebastianoarmelibattana.com",
