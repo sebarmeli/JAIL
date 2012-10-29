@@ -31,10 +31,6 @@
 			"url": "https://github.com/dlindahl"
 		}
 	],
-	"files": [
-		"jail.js",
-		"jail.min.js"
-	],
 	"licenses": [
 		{
 			"type": "MIT",
