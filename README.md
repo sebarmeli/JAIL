@@ -34,6 +34,7 @@ The images in the viewport are loaded straight away after the DOM is ready. As s
 ## Config
 You can add additional configuration options when you initially call jail():
 
+- `id`          : unique identifier for this jail instance. - Default: `jail`
 - `timeout`     : number of msec after that the images will be loaded - Default: `10`
 - `effect`      : any jQuery effect that makes the images display (e.g. "fadeIn") - Default: `NULL`
 
@@ -126,6 +127,17 @@ Here are some examples on how to invoke jail() in order to have a better underst
 	$(function(){
 		$('img.lazy').jail({
 			loadHiddenImages : true
+		});
+	});
+```
+
+### Create multiple jail instances for various image collections. Required when asynchronously rendering templates that contain images that should also be jailed.
+
+```javascript
+	$(function(){
+		$('img.lazy').jail({id: 'page'});
+		$('#template').load('/serverside.html', function(){
+			$('#template img.lazy').jail({id: 'template'});
 		});
 	});
 ```
