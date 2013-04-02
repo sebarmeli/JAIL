@@ -122,7 +122,7 @@
 		} else {
 			
 			// Event on the image itself
-			images.bind( options.event + '.' + options.id, {options: options, images: images}, function(e) {
+			images.on( options.event + '.' + options.id, {options: options, images: images}, function(e) {
 				var $img = $(this),
 					options = e.data.options,
 					images = e.data.images;
@@ -180,9 +180,9 @@
 		}
 		
 		// Check if there are images to load
-		if (!!triggerElem && typeof triggerElem.bind === "function") {
-			triggerElem.bind( options.event + '.' + options.id, {options:options, images : images}, _bufferedEventListener );
-			$window.bind( 'resize.'+options.id, {options:options, images : images}, _bufferedEventListener );
+		if (!!triggerElem && typeof triggerElem.on === "function") {
+			triggerElem.on( options.event + '.' + options.id, {options:options, images : images}, _bufferedEventListener );
+			$window.on( 'resize.'+options.id, {options:options, images : images}, _bufferedEventListener );
 		}
 	}
 
