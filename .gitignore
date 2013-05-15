@@ -1,3 +1,4 @@
+.idea
 archive
-node_module
+node_modules
 _SpecRunner.html
