@@ -2,3 +2,6 @@
 archive
 node_modules
 _SpecRunner.html
+
+*.sublime-project
+*.sublime-workspace
