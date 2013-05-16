@@ -359,6 +359,22 @@
 				isCallbackDone = true;
 			}
 		};
+
+		/*
+		 * Basic on error handler. For now we limit
+		 * the plugin to exectute any callback passed
+		 * in the options object. Let the developer
+		 * decide what to do with it.
+		 */
+		cache.onerror = function(){
+			
+			if(!('error' in options)) return;
+
+			var args = Array.prototype.slice.call(arguments, 0);
+			args = [$img, options].concat(args);
+			options.error.apply($.jail, args);
+		};
+
 		cache.src = $img.attr("data-src");
 	}
 		
