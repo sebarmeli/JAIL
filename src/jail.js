@@ -203,7 +203,7 @@
 			if(i ===  stack.length) {
 				break;
 			} else {
-				if (stack[i].getAttribute('data-src')) {
+				if ($(stack[i]).attr('data-src')) {
 					i++;
 				} else {
 					stack.splice( i, 1 );
