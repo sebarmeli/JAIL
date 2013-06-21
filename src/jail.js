@@ -342,10 +342,9 @@
 					$img[options.effect]();
 				}
 				$img.css("opacity", 1);
-				$img.show();
-			} else {
-				$img.show();
 			}
+			$img.show();
+			
 		
 			_purgeStack(currentStack);
 		
