@@ -14,7 +14,7 @@ First of all, this plugin requires you to make some HTML changes. The `data-src`
 	<img class="lazy" src="/img/blank.gif" data-src="/img/image1.jpg"/>
 	<noscript>
 		<img src="/img/image1.jpg"/>
-	<noscript>
+	</noscript>
 ```
 
 In a basic scenario, you just need to import `jquery`, `jail.js` and call the jail() function on the images you want to lazy load.
