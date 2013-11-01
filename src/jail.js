@@ -48,7 +48,8 @@
 			callback : null,
 			callbackAfterEachImage : null,
 			placeholder : false,
-			loadHiddenImages : false
+			loadHiddenImages : false,
+			dataAttribute: 'data-src'
 		},
 		
 		// current stack of images
@@ -198,12 +199,12 @@
 
 		if (stack.length === 0) { return; }
 
-		// Check on existence of 'data-src' attribute to verify if the image has been loaded
+		// Check on existence of dataAttribute value to verify if the image has been loaded
 		while(true) {
 			if(i ===  stack.length) {
 				break;
 			} else {
-				if ($(stack[i]).attr('data-src')) {
+				if ($(stack[i]).attr(dataAttribute)) {
 					i++;
 				} else {
 					stack.splice( i, 1 );
@@ -264,7 +265,7 @@
 		var bool = true;
 		
 		$(images).each(function(){
-			if ( !!$(this).attr("data-src") ) {
+			if ( !!$(this).attr(dataAttribute) ) {
 				bool = false;
 			}
 		});
@@ -319,7 +320,7 @@
 	}
 
 	/* 
-	* Main function --> Load the images copying the "data-href" attribute into the "src" attribute
+	* Main function --> Load the images copying the dataAttribute attribute into the "src" attribute
 	*
 	* @param options : configurations object
 	* @param $img : image selected - jQuery obj
@@ -332,7 +333,7 @@
 		cache.onload = function() {
 			$img.hide().attr("src", cache.src);
 			
-			$img.removeAttr('data-src');
+			$img.removeAttr(dataAttribute);
 			// Images loaded with some effect if existing
 			if( options.effect) {
 
@@ -375,7 +376,7 @@
 			options.error.apply($.jail, args);
 		};
 
-		cache.src = $img.attr("data-src");
+		cache.src = $img.attr(dataAttribute);
 	}
 		
 	/* 
