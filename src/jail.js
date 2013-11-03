@@ -204,7 +204,7 @@
 			if(i ===  stack.length) {
 				break;
 			} else {
-				if ($(stack[i]).attr(dataAttribute)) {
+				if ($(stack[i]).attr(options.dataAttribute)) {
 					i++;
 				} else {
 					stack.splice( i, 1 );
@@ -265,7 +265,7 @@
 		var bool = true;
 		
 		$(images).each(function(){
-			if ( !!$(this).attr(dataAttribute) ) {
+			if ( !!$(this).attr(options.dataAttribute) ) {
 				bool = false;
 			}
 		});
@@ -333,7 +333,7 @@
 		cache.onload = function() {
 			$img.hide().attr("src", cache.src);
 			
-			$img.removeAttr(dataAttribute);
+			$img.removeAttr(options.dataAttribute);
 			// Images loaded with some effect if existing
 			if( options.effect) {
 
@@ -376,7 +376,7 @@
 			options.error.apply($.jail, args);
 		};
 
-		cache.src = $img.attr(dataAttribute);
+		cache.src = $img.attr(options.dataAttribute);
 	}
 		
 	/* 
