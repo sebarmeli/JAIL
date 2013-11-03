@@ -193,7 +193,7 @@
 	*
 	* @param stack : current images stack
 	*/
-	function _purgeStack ( stack ) {
+	function _purgeStack ( options, stack ) {
 		// number of images not loaded
 		var i = 0;
 
@@ -261,7 +261,7 @@
 	* @param images : images under analysis
 	* @return boolean
 	*/
-	function _isAllImagesLoaded ( images ) {
+	function _isAllImagesLoaded (options, images ) {
 		var bool = true;
 		
 		$(images).each(function(){
