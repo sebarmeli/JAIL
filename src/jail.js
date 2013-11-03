@@ -191,6 +191,7 @@
 	* Remove any elements that have been loaded from the jQuery stack.
 	* This should speed up subsequent calls by not having to iterate over the loaded elements.
 	*
+	* @param options : configurations object
 	* @param stack : current images stack
 	*/
 	function _purgeStack ( options, stack ) {
@@ -258,6 +259,7 @@
 	/* 
 	* Check if all the images are loaded
 	*
+	* @param options : configurations object
 	* @param images : images under analysis
 	* @return boolean
 	*/
