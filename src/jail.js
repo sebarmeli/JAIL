@@ -20,16 +20,15 @@
 */
 ;(function ( name, definition ){
 
-	var theModule = definition(jQuery),
-		hasDefine = typeof define === 'function' && define.amd;
+    var hasDefine = typeof define === 'function' && define.amd;
 
 	if ( hasDefine ){  // AMD module
 
-		define( name , ['jquery'], theModule );
+		define( name , ['jquery'], definition );
 		
 	}  else { // assign 'jail' to global objects
 		
-		( this.jQuery || this.$ || this )[name] = theModule;
+		( this.jQuery || this.$ || this )[name] = definition(jQuery);
 
 	}
 }( 'jail', function ($) {

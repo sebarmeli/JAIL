@@ -155,9 +155,6 @@ requirejs.config({
     baseUrl: 'lib',
     paths: {
         app: 'src'
-    },
-    shim: {
-        'app/jail': ['jquery']
     }
 });
 
