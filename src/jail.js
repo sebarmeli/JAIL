@@ -24,7 +24,7 @@
 
 	if ( hasDefine ){  // AMD module
 
-		define( name , ['jquery'], definition );
+		define( ['jquery'], definition );
 		
 	}  else { // assign 'jail' to global objects
 		

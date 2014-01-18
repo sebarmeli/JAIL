@@ -158,7 +158,7 @@ requirejs.config({
     }
 });
 
-require(["jquery", "app/jail"], function() {
+require(["jquery", "app/jail"], function($) {
     $(function(){
 		$('img.lazy').jail();
 	});

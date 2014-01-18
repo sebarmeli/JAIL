@@ -4,14 +4,10 @@ requirejs.config({
     
     paths: {
         app: '../src'
-    },
-
-    shim: {
-        'app/jail': ['jquery']
     }
 });
 
-require(["jquery", "app/jail"], function() {
+require(["jquery", "app/jail"], function($) {
     $(function(){
 		$('img.lazy').each(function(i){
 			$(this).jail({
