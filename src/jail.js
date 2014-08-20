@@ -368,7 +368,7 @@
 		 */
 		cache.onerror = function(){
 			
-			if(!('error' in options)) return;
+			if(!('error' in options)) { return; }
 
 			var args = Array.prototype.slice.call(arguments, 0);
 			args = [$img, options].concat(args);
