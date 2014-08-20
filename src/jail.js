@@ -222,6 +222,8 @@
 	function _bufferedEventListener (e) {
 		var images = e.data.images,
 			options = e.data.options;
+		// Don't set a timer if one is set.
+		if (images.data("poller")) {return;}
 
 		images.data('poller', setTimeout(function() {
 			
@@ -251,6 +253,7 @@
 				images.data("triggerElem", container);
 				_bindEvent( options, $(currentStack) );
 			}
+			images.data("poller", null);
 		}, options.timeout));
 	}
 	
