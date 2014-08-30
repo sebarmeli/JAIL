@@ -4,10 +4,6 @@ requirejs.config({
     
     paths: {
         app: '../src'
-    },
-
-    shim: {
-        'app/jail': ['jquery']
     }
 });
 
