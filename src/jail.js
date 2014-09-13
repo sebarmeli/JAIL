@@ -48,7 +48,8 @@
 			callback : null,
 			callbackAfterEachImage : null,
 			placeholder : false,
-			loadHiddenImages : false
+			loadHiddenImages : false,
+			dataAttribute: 'data-src'
 		},
 		
 		// current stack of images
@@ -190,20 +191,21 @@
 	* Remove any elements that have been loaded from the jQuery stack.
 	* This should speed up subsequent calls by not having to iterate over the loaded elements.
 	*
+	* @param options : configurations object
 	* @param stack : current images stack
 	*/
-	function _purgeStack ( stack ) {
+	function _purgeStack ( options, stack ) {
 		// number of images not loaded
 		var i = 0;
 
 		if (stack.length === 0) { return; }
 
-		// Check on existence of 'data-src' attribute to verify if the image has been loaded
+		// Check on existence of dataAttribute value to verify if the image has been loaded
 		while(true) {
 			if(i ===  stack.length) {
 				break;
 			} else {
-				if ($(stack[i]).attr('data-src')) {
+				if ($(stack[i]).attr(options.dataAttribute)) {
 					i++;
 				} else {
 					stack.splice( i, 1 );
@@ -260,14 +262,15 @@
 	/* 
 	* Check if all the images are loaded
 	*
+	* @param options : configurations object
 	* @param images : images under analysis
 	* @return boolean
 	*/
-	function _isAllImagesLoaded ( images ) {
+	function _isAllImagesLoaded (options, images ) {
 		var bool = true;
 		
 		$(images).each(function(){
-			if ( !!$(this).attr("data-src") ) {
+			if ( !!$(this).attr(options.dataAttribute) ) {
 				bool = false;
 			}
 		});
@@ -322,7 +325,7 @@
 	}
 
 	/* 
-	* Main function --> Load the images copying the "data-href" attribute into the "src" attribute
+	* Main function --> Load the images copying the dataAttribute attribute into the "src" attribute
 	*
 	* @param options : configurations object
 	* @param $img : image selected - jQuery obj
@@ -335,7 +338,7 @@
 		cache.onload = function() {
 			$img.hide().attr("src", cache.src);
 			
-			$img.removeAttr('data-src');
+			$img.removeAttr(options.dataAttribute);
 			// Images loaded with some effect if existing
 			if( options.effect) {
 
@@ -378,7 +381,7 @@
 			options.error.apply($.jail, args);
 		};
 
-		cache.src = $img.attr("data-src");
+		cache.src = $img.attr(options.dataAttribute);
 	}
 		
 	/* 
