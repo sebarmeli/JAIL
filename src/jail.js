@@ -48,7 +48,8 @@
 			callback : null,
 			callbackAfterEachImage : null,
 			placeholder : false,
-			loadHiddenImages : false
+			loadHiddenImages : false,
+			loadAllImages : false
 		},
 		
 		// current stack of images
@@ -292,7 +293,7 @@
 		}
 		
 		// Load the image if it is not hidden and visible in the screen
-		if( isVisible && _isInTheScreen( container, $img, options.offset ) ) {
+		if( isVisible && (_isInTheScreen( container, $img, options.offset ) || options.loadAllImages )) {
 			_loadImage( options, $img );
 		}
 	}
