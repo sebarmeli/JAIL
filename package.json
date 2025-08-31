@@ -22,7 +22,7 @@
 		"jshint": "^2.13.6"
 	},
 	"scripts": {
-		"test": "grunt jasmine"
+		"test": "grunt test"
 	},
 	"keywords": [
 		"asynchronous",
@@ -41,5 +41,9 @@
 			"type": "MIT",
 			"url": "https://github.com/sebarmeli/JAIL/blob/master/MIT-LICENSE.txt"
 		}
-	]
+	],
+	"overrides": {
+		"puppeteer": "^24.17.1",
+		"ws": "^8.17.0"
+	}
 }
