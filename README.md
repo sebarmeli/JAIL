@@ -172,18 +172,25 @@ For more information, you view example 14 and example 15 from the [demo folder](
 
 ## Testing / Building the plugin
 
-After getting node and npm, install grunt and grunt-jasmine-runner.
+After getting node and npm, install the dependencies:
 
-```npm install grunt```
-```npm install grunt-jasmine-runner```
+```
+npm install
+```
 
-You can run Jasmine specs through phantomjs with :
+You can run the Jasmine specs with:
 
-```grunt jasmine```
+```
+npm test
+```
 
-If you don't have phantomjs, please download it from [here](http://phantomjs.org/)
+This will run JSHint, and then the Jasmine specs in a headless browser.
 
-You can run JSHint, Jasmine specs and minification tool simply launching: ```grunt```
+You can run JSHint, Jasmine specs and the minification tool by simply launching:
+
+```
+grunt
+```
 
 ## Licence
 

@@ -14,8 +14,8 @@
 *
 * @link http://github.com/sebarmeli/JAIL
 * @author Sebastiano Armeli-Battana
-* @date 14/10/2012
-* @version 1.0.0
+ * @date 30/08/2025
+ * @version 2.0.0
 *
 */
 ;(function ( name, definition ){
@@ -133,7 +133,7 @@
 				_loadImage( options, $img );
 
 				// Image has been loaded so there is no need to listen anymore
-				$(e.currentTarget).unbind( e.type + '.' + options.id );
+				$(e.currentTarget).off( e.type + '.' + options.id );
 			});
 		}
 	};
@@ -240,7 +240,7 @@
 			
 			//Unbind when there are no images
 			if ( _isAllImagesLoaded (currentStack) ) {
-				$(e.currentTarget).unbind( e.type + '.' + options.id );
+				$(e.currentTarget).off( e.type + '.' + options.id );
 				return;
 			} 
 			// When images are not in the viewport, let's load them when they become available
