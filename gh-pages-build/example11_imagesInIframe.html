@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>jQuery Asynch Image Loader - Example 11 - Images visible inside iframe are loaded</title>
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../src/jail.js"></script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="placeholder">
+				Placeholder
+			</div>
+			<iframe id="images" src="iframe_11.html" width="700px" height="500px;">
+			</iframe>
+				<script type="text/javascript">	$('#images').load(function(){$(document.getElementById("images").contentDocument.documentElement).find("html").context.children[0].children[4].innerHTML = "$(function(){$(\"img.lazy\").jail();});";});	
+		</script>
+		</div>
+	</body>
+</html>
+
+ 

@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>jQuery Asynch Image Loader - Example 3 - Image loaded after you click on placeholder</title>
+		<link href="css/style.css" rel="stylesheets" />
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../src/jail.js"></script>
+ 		<script type="text/javascript">
+			$(function(){
+				$('img.lazy').jail({
+					event: 'click', 
+					placeholder : 'img/loader.gif',
+					effect: 'fadeIn',
+					speed : 'slow'
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="content">
+					<p>Images loaded after you click on placeholder</p>
+					<ul>
+						<li class="clickable">
+							<img class="lazy" data-src="img/sample1_th.jpg" src="img/blank.gif"/>
+						</li>
+						<li class="clickable">
+							<img class="lazy" data-src="img/sample2_th.jpg" src="img/blank.gif"/>
+						</li>
+						<li class="clickable">
+							<img class="lazy" data-src="img/sample3_th.jpg" src="img/blank.gif"/>
+						</li>
+						<li class="clickable">
+							<img class="lazy" data-src="img/sample5_th.jpg" src="img/blank.gif"/>	
+						</li>
+					</ul>
+			</div>
+		</div>
+	</body>
+</html>
+
+ 

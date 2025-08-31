@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>jQuery Asynch Image Loader - Example 14 - AMD + basic call</title>
+		<script type="text/javascript" data-main="js/require-main" src="../lib/require.js"></script>
+		<style>
+			.content{float:left; width:auto;}
+			.content DIV {float:left; width:100%;}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="content">
+				<p> Images visible in the viewport loaded after DOM is ready</p>
+				<div>
+					<img class="lazy" data-src="img/sample1.jpg" src="img/blank.gif" width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample1.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample2.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample2.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample3.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample3.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample5.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample5.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample6.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript>
+						<img class="lazy" src="img/sample6.jpg" width="420" height="320"/>
+					</noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample7.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript>
+						<img class="lazy" src="img/sample7.jpg" width="420" height="320"/>
+					</noscript>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

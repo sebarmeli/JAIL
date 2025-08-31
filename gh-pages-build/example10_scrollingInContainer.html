@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>jQuery Asynch Image Loader - Example 10 - Images loaded after scrolling inside container</title>
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../src/jail.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('img.lazy').jail({
+					triggerElement : 'div.content',
+					event : 'scroll',
+					timeout : 100
+				});
+			});
+		</script>
+		<style>
+			.content{float:left; height:500px; overflow:auto;border:2px solid #000;}
+			.content DIV {float:left; height:500px;}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="content">
+				<p> Images loaded after scolling inside container</p>
+				<div>
+					<img class="lazy" data-src="img/sample1.jpg" src="img/blank.gif" width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample1.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample2.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample2.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample3.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample3.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample5.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample5.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample4.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample5.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample6.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample5.jpg" width="420" height="320"/></noscript>
+				</div>
+			
+			</div>
+		</div>
+	</body>
+</html>
+
+ 

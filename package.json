@@ -22,7 +22,9 @@
 		"jshint": "^2.13.6"
 	},
 	"scripts": {
-		"test": "grunt test"
+		"test": "grunt test",
+		"build:gh-pages": "./scripts/build-gh-pages.sh",
+		"deploy:gh-pages": "npm run build:gh-pages && git checkout gh-pages && rm -rf * && cp -r ./gh-pages-build/* . && git add . && git commit -m 'Update GitHub Pages' && git push origin gh-pages && git checkout -"
 	},
 	"keywords": [
 		"asynchronous",

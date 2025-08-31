@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>jQuery Asynch Image Loader - Example 12 - Load hidden images</title>
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../src/jail.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$('img.lazy').jail({
+					loadHiddenImages : true
+				});
+			});
+		</script>
+		<style>
+			.content{float:left; width:auto;}
+			.content DIV {float:left; width:100%;}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="content">
+				<p> Image hidden, not visible or inside an element that is hidden not loaded</p>
+				<div style="display:none;">
+					<div style="display:block;">
+						<div style="display:block;">
+							<img class="lazy" data-src="img/sample1.jpg" src="img/blank.gif" width="420" height="320"/>
+						</div >
+						<noscript><img class="nolazy" src="img/sample1.jpg" width="420" height="320"/></noscript>
+					</div>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample2.jpg" src="img/blank.gif"  width="420" height="320" />
+					<noscript><img class="nolazy" src="img/sample2.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample3.jpg" src="img/blank.gif"  width="420" height="320" style="display:none"/>
+					<noscript><img class="nolazy" src="img/sample3.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample4.jpg" src="img/blank.gif"  width="420" height="320" />
+					<noscript><img class="nolazy" src="img/sample4.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div>
+					<img class="lazy" data-src="img/sample5.jpg" src="img/blank.gif"  width="420" height="320" style="visibility:hidden;"/>
+					<noscript><img class="nolazy" src="img/sample5.jpg" width="420" height="320"/></noscript>
+				</div>
+				<div style="display:block; width:400px;height:300px; overflow:hidden; ">
+					<img class="lazy" data-src="img/sample6.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample6.jpg" width="420" height="320"/></noscript>
+					<img class="lazy" data-src="img/sample7.jpg" src="img/blank.gif"  width="420" height="320"/>
+					<noscript><img class="nolazy" src="img/sample7.jpg" width="420" height="320"/></noscript>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+ 

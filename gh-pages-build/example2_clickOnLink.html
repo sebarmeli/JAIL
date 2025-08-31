@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>jQuery Asynch Image Loader - Example 2 - Images loaded after click on a link</title>
+		<link href="css/style.css" rel="stylesheets" />
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../src/jail.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$('img.lazy').each(function(i){
+					$(this).jail({
+						triggerElement:'a#link' + (i + 1), 
+						event: 'click', 
+						effect: 'fadeIn',
+						speed : 500
+					});
+				});
+			});
+		</script>
+		<style>
+	
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="content">
+				<p> Image loaded after click on the link</p>
+				<ul>
+					<li class="group">
+						<a class="link" id="link1" href="#div1">Link1 </a>
+					</li>
+					<li class="group">
+						<a class="link" id="link2" href="#div2">Link2 </a>
+					</li>
+					<li class="group">
+						<a class="link" id="link3"  href="#div3">Link3 </a>
+					</li>
+					<li class="group">
+						<a class="link" id="link4"  href="#div4">Link4 </a>
+					</li>
+					<div id="div1">
+						<img class="lazy" data-src="img/sample1.jpg" src="img/blank.gif"/>
+					</div>
+					<div id="div2">
+						<img class="lazy" data-src="img/sample2.jpg" src="img/blank.gif"/>
+					</div>
+					<div id="div3">
+						<img class="lazy" data-src="img/sample3.jpg" src="img/blank.gif"/>
+					</div>
+					<div id="div4">
+						<img class="lazy" data-src="img/sample5.jpg" src="img/blank.gif"/>
+					</div>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
+
+ 

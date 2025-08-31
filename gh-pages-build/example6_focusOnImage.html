@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>jQuery Asynch Image Loader - Example 6 - Images loaded only when you focus on it</title>
+		<link href="css/style.css" rel="stylesheets" />
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../src/jail.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$('img.lazy').jail({offset : 200}).jail({
+					event :"focus",
+					placeholder : 'img/loader.gif'
+				});
+				
+				$('ul li a').click(function(){
+					var imgNumber = $(this).attr("href").substring(4);
+					if (!imgNumber) {
+						imgNumber = parseInt(imgNumber, 10);
+					}
+					$('img.lazy').eq(imgNumber - 1).focus();
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="content">
+				<p>Images loaded only when you focus on them</p>
+				<div>
+					<ul class="nav">
+						<li><a href="#img1">img1</a></li>
+						<li><a href="#img2">img2</a></li>
+						<li><a href="#img3">img3</a></li>
+						<li><a href="#img4">img4</a></li>
+						<li><a href="#img5">img5</a></li>
+						<li><a href="#img6">img6</a></li>
+						<li><a href="#img7">img7</a></li>
+					</ul>
+				</div>
+				<div>
+					<a name="img1"><img class="lazy" data-src="img/sample1.jpg" src="img/blank.gif" width="420" height="320"/>
+					<noscript>
+						<img class="lazy" src="img/sample1.jpg"  width="420" height="320"/>
+					</noscript></a>
+					</div>
+					<div>
+						<a name="img2"><img class="lazy" data-src="img/sample2.jpg" src="img/blank.gif" width="420" height="320"/>
+						<noscript>
+							<img class="lazy" src="img/sample2.jpg"  width="420" height="320"/>
+						</noscript></a>
+					</div>
+					 <div>
+						<a name="img3"><img class="lazy" data-src="img/sample3.jpg" src="img/blank.gif" width="420" height="320"/>
+						<noscript>
+							<img class="lazy" src="img/sample3.jpg"  width="420" height="320"/>
+						</noscript></a>
+					</div>
+					<div>
+						<a name="img4"><img class="lazy" data-src="img/sample4.jpg" src="img/blank.gif" width="420" height="320"/>
+						<noscript>
+							<img class="lazy" src="img/sample4.jpg"  width="420" height="320"/>
+						</noscript></a>
+					</div>
+					<div>
+						<a name="img5"><img class="lazy" data-src="img/sample5.jpg" src="img/blank.gif" width="420" height="320"/>
+						<noscript>
+							<img class="lazy" src="img/sample5.jpg"  width="420" height="320"/>
+						</noscript></a>
+					</div>
+					<div>
+						<a name="img6"><img class="lazy" data-src="img/sample6.jpg" src="img/blank.gif" width="420" height="320"/>
+						<noscript>
+							<img class="lazy" src="img/sample6.jpg"  width="420" height="320"/>
+						</noscript></a>
+					</div>
+					<div>
+						<a name="img7"><img class="lazy" data-src="img/sample7.jpg" src="img/blank.gif" width="420" height="320"/>
+						<noscript>
+							<img class="lazy" src="img/sample7.jpg"  width="420" height="320"/>
+						</noscript></a>
+					</div>
+					
+				</div>
+		</div>
+	</body>
+</html>
+

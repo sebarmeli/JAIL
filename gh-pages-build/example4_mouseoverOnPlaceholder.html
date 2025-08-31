@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>jQuery Asynch Image Loader - Example 4 - Images loaded after mouseover and callback</title>
+		<link href="css/style.css" rel="stylesheets" />
+		<script type="text/javascript" src="../lib/jquery.js"></script>
+		<script type="text/javascript" src="../src/jail.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$('img.lazy').jail({
+					event: 'mouseover', 
+					placeholder : 'img/loader.gif',
+					effect: 'fadeIn',
+					speed : '1500',
+					callback : (function(){alert("All the images are loaded");}),
+					callbackAfterEachImage : function() {alert("one image is loaded");}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="content">
+				<p>Images loaded after you mouseover on the image. Callback called after</p>
+				<ul>
+					<li class="mouseoverable">
+						<img class="lazy" data-src="img/sample1_th.jpg" src="img/blank.gif"/>
+						<noscript>
+						 	<img class="lazy" src="img/sample1_th.jpg"  width="200" height="150"/>
+						</noscript>
+					</li>
+					<li class="mouseoverable">
+						<img class="lazy" data-src="img/sample2_th.jpg" src="img/blank.gif" />
+						<noscript>
+						 	<img class="lazy" src="img/sample2_th.jpg" width="200" height="150"/>
+						</noscript>
+					</li>
+					<li class="mouseoverable">
+						<img class="lazy" data-src="img/sample3_th.jpg" src="img/blank.gif" />
+						<noscript>
+						 	<img class="lazy" src="img/sample3_th.jpg" width="200" height="150"/>
+						</noscript>
+					</li>
+					<li class="mouseoverable">
+						<img class="lazy" data-src="img/sample5_th.jpg" src="img/blank.gif" />
+						<noscript>
+						 	<img class="lazy" src="img/sample5_th.jpg" width="200" height="150"/>
+						</noscript>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
+
+ 
